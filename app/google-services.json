@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "625165464182",
+    "project_id": "be-better-1c855"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625165464182:android:171b6fe88c25d77b",
+        "android_client_info": {
+          "package_name": "shaishav.com.bebetter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625165464182-214qsvqqvge2tudqsab850s656f3uip5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "shaishav.com.bebetter",
+            "certificate_hash": "1556E9241AC18D1C971256DD581A3D40B0C594CF"
+          }
+        },
+        {
+          "client_id": "625165464182-97rk3kag402p38vli3g31a6u0gtvrnep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQX6i_UwVhMepn4w2T--y7YIKzy5TialM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

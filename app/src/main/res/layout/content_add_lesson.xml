@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="shaishav.com.bebetter.Activities.AddLesson"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_add_lesson">
+
+    <EditText
+        android:id="@+id/title"
+        android:layout_marginTop="8dp"
+        android:inputType="textCapSentences"
+        android:layout_width="match_parent"
+        android:imeOptions="actionNext"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        android:capitalize="sentences" />
+
+    <EditText
+        android:id="@+id/lesson"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionNext"
+        android:inputType="textMultiLine|textCapSentences"
+        android:lines="12"
+        android:maxLines="14"
+        android:scrollbars="vertical"
+        android:gravity="top|left"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:hint="What did you learn?"
+        android:capitalize="sentences" />
+
+    <EditText
+        android:id="@+id/category"
+        android:layout_marginTop="8dp"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:hint="Category"/>
+
+    <Button
+        android:id="@+id/save"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="Save"/>
+
+
+
+</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

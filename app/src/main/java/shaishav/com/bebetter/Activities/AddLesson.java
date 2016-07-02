@@ -1,0 +1,111 @@
+package shaishav.com.bebetter.Activities;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.Date;
+
+import shaishav.com.bebetter.Data.LessonSource;
+import shaishav.com.bebetter.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+public class AddLesson extends AppCompatActivity {
+
+    EditText title,lesson,category;
+    Button saveButton;
+    LessonSource lessonSource;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Add font
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("Exo2-Regular.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+        setContentView(R.layout.activity_add_lesson);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Add a lesson");
+        setSupportActionBar(toolbar);
+
+        // Add back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        initialize();
+        setEventListeners();
+
+    }
+
+    public void initialize(){
+
+        //Initialize UI components
+        title = (EditText)findViewById(R.id.title);
+        lesson = (EditText)findViewById(R.id.lesson);
+        category = (EditText)findViewById(R.id.category);
+        saveButton = (Button)findViewById(R.id.save);
+
+        //Database connection
+        lessonSource = new LessonSource(this);
+
+        title.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        lesson.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        category.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
+    }
+
+    public void setEventListeners(){
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String titleText = title.getText().toString().trim();
+                String lessonText = lesson.getText().toString().trim();
+                String categoryText = category.getText().toString();
+
+                if(titleText.length()>0 && lessonText.length()>0 && categoryText.length()>0) {
+                    lessonSource.open();
+                    lessonSource.createLesson(titleText,lessonText,categoryText,new Date().getTime());
+                    lessonSource.close();
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(getApplicationContext(),"Nice! Keep going!",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Snackbar.make(view,"Please check your input",Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+}
