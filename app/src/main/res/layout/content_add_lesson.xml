@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -27,6 +28,7 @@
         android:inputType="textCapSentences"
         android:layout_width="match_parent"
         android:imeOptions="actionNext"
+        android:textCursorDrawable="@null"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:layout_height="wrap_content"
@@ -36,6 +38,7 @@
     <EditText
         android:id="@+id/lesson"
         android:layout_marginTop="8dp"
+        android:textCursorDrawable="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:imeOptions="actionNext"
@@ -49,16 +52,49 @@
         android:hint="What did you learn?"
         android:capitalize="sentences" />
 
-    <EditText
+    <me.originqiu.library.EditTag
         android:id="@+id/category"
-        android:layout_marginTop="8dp"
-        android:imeOptions="actionDone"
-        android:inputType="textCapSentences"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:hint="Category"/>
+        app:tag_layout="@layout/view_sample_tag"
+        app:input_layout="@layout/view_sample_input_tag"
+        />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <Switch
+        android:id="@+id/make_public"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"/>
+
+        <TextView
+            android:text="Share your lesson?"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:padding="8dp"
+
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/tooltip"
+            android:src="@drawable/ic_info_outline_white_24dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/save"

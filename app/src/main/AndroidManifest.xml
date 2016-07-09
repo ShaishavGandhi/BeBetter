@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="shaishav.com.bebetter">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".Utils.App"
         android:allowBackup="true"

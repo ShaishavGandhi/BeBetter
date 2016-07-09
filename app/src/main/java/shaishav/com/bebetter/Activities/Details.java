@@ -12,8 +12,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
+import me.originqiu.library.EditTag;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -21,11 +25,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Details extends AppCompatActivity {
 
-    private String title,content,category;
+    private String title,content;
+    private List<String> category;
     private Date created_at;
     private long id;
 
-    private TextView title_et,content_et,category_et,date_et;
+    private TextView title_et,content_et,date_et;
+    private EditTag category_et;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,7 +71,7 @@ public class Details extends AppCompatActivity {
 
     public void initialize(){
         title_et = (TextView)findViewById(R.id.title);
-        category_et = (TextView)findViewById(R.id.category);
+        category_et = (EditTag) findViewById(R.id.category);
         date_et = (TextView)findViewById(R.id.created_at);
         content_et = (TextView)findViewById(R.id.content);
 
@@ -73,19 +79,18 @@ public class Details extends AppCompatActivity {
 
     public void bindData(){
         title_et.setText(title);
-        category_et.setText(category);
+        category_et.setTagList(category);
         String dateString = Constants.getFormattedDate(created_at);
         date_et.setText(dateString);
         content_et.setText(content);
-
-
     }
 
 
 
     private void getIntentData(Intent intent){
         title = intent.getStringExtra("title");
-        category = "#"+intent.getStringExtra("category");
+        String cats = intent.getStringExtra("category");
+        category = Arrays.asList(cats.split(","));
         content = intent.getStringExtra("content");
 
         created_at = new Date(intent.getLongExtra("created_at",0));
