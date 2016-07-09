@@ -5,8 +5,9 @@ package shaishav.com.bebetter.Data;
  */
 public class Lesson {
 
-    String title,lesson,category;
-    long id,server_id,created_at;
+    String title,lesson,category,server_id;
+    long id,created_at;
+    int is_public;
 
     public String getTitle(){
         return title;
@@ -40,11 +41,11 @@ public class Lesson {
         this.id = id;
     }
 
-    public long getServer_id(){
+    public String getServer_id(){
         return server_id;
     }
 
-    public void setServer_id(long server_id){
+    public void setServer_id(String server_id){
         this.server_id = server_id;
     }
 
@@ -54,6 +55,14 @@ public class Lesson {
 
     public void setCreated_at(long created_at){
         this.created_at = created_at;
+    }
+
+    public void setIs_public(int is_public){
+        this.is_public = is_public;
+    }
+
+    public int getIs_public(){
+        return is_public;
     }
 
 }

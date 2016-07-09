@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
+
         String name = preferences.getString(Constants.FULL_NAME,"");
         String email = preferences.getString(Constants.EMAIL,"");
         String photo = preferences.getString(Constants.DISPLAY_PIC,"");

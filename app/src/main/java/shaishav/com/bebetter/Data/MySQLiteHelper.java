@@ -10,9 +10,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_LESSON = "lesson";
-    public static final String COLUMN_CATEGORY = "category";
-    public static final String COLUMN_CREATED_AT = "created_at";
+    public static final String COLUMN_CATEGORY = "categories";
+    public static final String COLUMN_CREATED_AT = "createdAt";
     public static final String COLUMN_SERVER_ID = "server_id";
+    public static final String COLUMN_IS_PUBLIC="public";
 
     public static final String TABLE_USAGE = "usage";
     public static final String COLUMN_DATE = "date";
@@ -26,7 +27,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + TABLE_LESSON + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_TITLE
             + " text not null,"+COLUMN_LESSON+" text not null, "+COLUMN_CREATED_AT+" long not null, "
-            +COLUMN_CATEGORY+" text not null, "+COLUMN_SERVER_ID+" integer);";
+            +COLUMN_CATEGORY+" text not null, "+COLUMN_SERVER_ID+" text default 'NA', "+COLUMN_IS_PUBLIC+" int default 0);";
 
     private static final String CREATE_USAGE_STATS = "create table "
             + TABLE_USAGE + "(" + COLUMN_ID

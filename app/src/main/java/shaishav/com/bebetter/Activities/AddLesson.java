@@ -9,22 +9,36 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.List;
 
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
+import me.originqiu.library.EditTag;
+import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Utils.SyncRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class AddLesson extends AppCompatActivity {
 
-    EditText title,lesson,category;
+    EditText title,lesson;
+    EditTag category;
+    Switch isPublic;
+    ImageButton tooltip;
     Button saveButton;
     LessonSource lessonSource;
 
@@ -62,30 +76,53 @@ public class AddLesson extends AppCompatActivity {
         //Initialize UI components
         title = (EditText)findViewById(R.id.title);
         lesson = (EditText)findViewById(R.id.lesson);
-        category = (EditText)findViewById(R.id.category);
+        category = (EditTag)findViewById(R.id.category);
         saveButton = (Button)findViewById(R.id.save);
+        isPublic = (Switch)findViewById(R.id.make_public);
+        tooltip = (ImageButton)findViewById(R.id.tooltip);
+        tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Set tooltip
+                new SimpleTooltip.Builder(getApplicationContext())
+                        .anchorView(tooltip)
+                        .text("At Be Better, we feel that everyone in the community will benefit if we all share our experiences. Some of our lessons can be personal and specific to our personality. You typically would want to share experiences that can be extrapolated and beneficial to everyone. Please keep in mind that the quality of your feed is dependent on you")
+                        .gravity(Gravity.TOP)
+                        .animated(true)
+                        .transparentOverlay(false)
+                        .textColor(Color.WHITE)
+                        .build()
+                        .show();
+            }
+        });
 
         //Database connection
         lessonSource = new LessonSource(this);
 
         title.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         lesson.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        category.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
     }
+
+
 
     public void setEventListeners(){
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveButton.setEnabled(false);
                 String titleText = title.getText().toString().trim();
                 String lessonText = lesson.getText().toString().trim();
-                String categoryText = category.getText().toString();
+                List<String> catList = category.getTagList();
+                boolean is_public = isPublic.isChecked();
+                String categoryText = convertListToString(catList);
 
-                if(titleText.length()>0 && lessonText.length()>0 && categoryText.length()>0) {
+                if(titleText.length()>0 && lessonText.length()>0 && catList.size()>0) {
                     lessonSource.open();
-                    lessonSource.createLesson(titleText,lessonText,categoryText,new Date().getTime());
+                    Lesson lesson = lessonSource.createLesson(titleText,lessonText,categoryText,new Date().getTime(),is_public);
                     lessonSource.close();
+                    SyncRequests syncRequests = new SyncRequests(getApplicationContext());
+                    syncRequests.syncLesson(lesson);
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -106,6 +143,16 @@ public class AddLesson extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String convertListToString(List<String> tags){
+        String text = "";
+        for(int i=0; i<tags.size(); i++){
+            text += tags.get(i);
+            if(i!=tags.size()-1)
+                text+=", ";
+        }
+        return text;
     }
 
 }
