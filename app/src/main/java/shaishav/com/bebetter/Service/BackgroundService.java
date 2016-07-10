@@ -1,5 +1,7 @@
 package shaishav.com.bebetter.Service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -7,8 +9,11 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import shaishav.com.bebetter.Activities.MainActivity;
+import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Receiver.PhoneUnlockedReceiver;
 
 /**
@@ -30,6 +35,20 @@ public class BackgroundService extends Service {
         filter.addAction(Intent.ACTION_USER_PRESENT);
         final BroadcastReceiver mReceiver = new PhoneUnlockedReceiver();
         registerReceiver(mReceiver, filter);
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Be Better")
+                .setContentText("Your mobile usage is below your target")
+                .setPriority(Notification.PRIORITY_MIN)
+                .setContentIntent(pendingIntent).build();
+
+        startForeground(1337, notification);
 
 
     }
