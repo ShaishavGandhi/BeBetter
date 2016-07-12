@@ -28,12 +28,14 @@ import java.util.List;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.Fragments.DaySummary;
+import shaishav.com.bebetter.Fragments.Settings;
 import shaishav.com.bebetter.Service.BackgroundService;
 import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Fragments.LessonList;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
+import shaishav.com.bebetter.Utils.SyncRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -70,6 +72,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        SyncRequests requests = new SyncRequests(getApplicationContext());
+        requests.getSyncedLessons();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -164,23 +169,21 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
 
-        if (id == R.id.nav_daily_lessons) {
+        if (id == R.id.nav_daily_lessons)
             fragment = new LessonList();
-            fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
-        } else if (id == R.id.nav_summary) {
+        else if (id == R.id.nav_summary)
             fragment = new DaySummary();
-            fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
+        else if (id == R.id.nav_settings)
+            fragment = new Settings();
+        else if (id == R.id.nav_ideas)
+            return true;
+        else if (id == R.id.nav_share)
+            return true;
+        else if (id == R.id.nav_send)
+            return true;
 
-        } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
+        fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

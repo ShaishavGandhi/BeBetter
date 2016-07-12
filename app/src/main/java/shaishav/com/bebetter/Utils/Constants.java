@@ -3,6 +3,7 @@ package shaishav.com.bebetter.Utils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Shaishav on 19-06-2016.
@@ -23,11 +24,22 @@ public class Constants {
     public static final String POST_USER_NAME = "name";
     public static final String POST_USER_EMAIL = "email";
     public static final String POST_USER_PHOTO ="photo";
+    public static final String LAST_BACKED_UP="last_backed_up";
 
     public static final String LOCAL_ID="localId";
 
     public static String getFormattedDate(Date date){
         DateFormat dateFormat = new SimpleDateFormat("MMM dd");
         return dateFormat.format(date);
+    }
+
+    public static String convertListToString(List<String> tags){
+        String text = "";
+        for(int i=0; i<tags.size(); i++){
+            text += tags.get(i);
+            if(i!=tags.size()-1)
+                text+=", ";
+        }
+        return text;
     }
 }
