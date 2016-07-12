@@ -13,6 +13,7 @@ import java.util.Set;
 
 import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.Utils.Constants;
+import shaishav.com.bebetter.Utils.Notification;
 
 public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
@@ -58,6 +59,8 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
                 session_time = lock_time - last_unlock_time;
 
+
+
                 editor.putLong(Constants.UNLOCKED,last_unlock_time);
                 editor.putLong(Constants.SESSION,session_time);
 
@@ -65,10 +68,12 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
             else{
                 session_time = lock_time - last_unlock_time;
                 long prev_session = preferences.getLong(Constants.SESSION,0);
-                editor.putLong(Constants.SESSION,prev_session+session_time);
+                session_time += prev_session;
+                editor.putLong(Constants.SESSION,session_time);
             }
-
-
+            Notification notif = new Notification();
+            android.app.Notification notification = notif.createNotification(context,String.valueOf(session_time/(1000*60)));
+            notif.updateNotification(context,notification);
             editor.commit();
 
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
@@ -81,6 +86,7 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
                 storeSessionInDb(context,last_unlocked,preferences.getLong(Constants.SESSION,0));
                 editor.putLong(Constants.SESSION,0);
             }
+
 
             editor.putLong(Constants.UNLOCKED, unlocked);
             editor.commit();

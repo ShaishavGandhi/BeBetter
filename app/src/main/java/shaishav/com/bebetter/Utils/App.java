@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import java.util.Calendar;
 
@@ -23,12 +24,16 @@ public class App extends Application {
     public void onCreate(){
         super.onCreate();
 
-        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
+        String user = preferences.getString(Constants.USER,"");
+        //if(!user.equals("")) {
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        // Set daily reminder
-        setReminder();
-        setBackupSchedule();
-        startService(new Intent(getApplicationContext(), BackgroundService.class));
+            // Set daily reminder
+            setReminder();
+            setBackupSchedule();
+            startService(new Intent(getApplicationContext(), BackgroundService.class));
+        //}
     }
 
     public void setBackupSchedule(){

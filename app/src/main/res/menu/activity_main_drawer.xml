@@ -9,15 +9,16 @@
         <item
             android:id="@+id/nav_daily_lessons"
             android:icon="@drawable/ic_view_list_black_24dp"
-            android:title="Lessons" />
+            android:title="Lessons"
+            />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_ideas"
+            android:icon="@drawable/ic_lightbulb_outline_black_24dp"
+            android:title="Ideas" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings" />
     </group>
 
     <item android:title="Communicate">
@@ -28,8 +29,8 @@
                 android:title="Share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="About" />
         </menu>
     </item>
 

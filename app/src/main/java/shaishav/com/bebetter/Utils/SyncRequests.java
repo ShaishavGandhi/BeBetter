@@ -12,8 +12,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +40,7 @@ public class SyncRequests {
 
     public void syncLesson(Lesson lesson){
         final Lesson tempLesson = lesson;
-        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
         final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
         if(temp_user_email.equals(""))
             return;
@@ -52,6 +55,8 @@ public class SyncRequests {
                     lessonSource.open();
                     lessonSource.setServerId(server_id,Integer.parseInt(local_id));
                     lessonSource.close();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    updateLastBackupTime(editor,resp.getLong("createdAt"));
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -84,5 +89,60 @@ public class SyncRequests {
         for(Lesson lesson : lessons){
             syncLesson(lesson);
         }
+    }
+
+    public void getSyncedLessons(){
+        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+        if(temp_user_email.equals(""))
+            return;
+
+        String time = String.valueOf(preferences.getLong(Constants.LAST_BACKED_UP,0));
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.HOST + Constants.LESSON + "/" + temp_user_email + "/" + time, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray arr = new JSONArray(response);
+                    for(int i=0;i<arr.length();i++) {
+                        JSONObject json = arr.getJSONObject(i);
+                        JSONArray categories = json.getJSONArray("categories");
+
+                        List<String> cat_list = new ArrayList<>();
+                        for (int j = 0; j < categories.length(); j++) {
+                            cat_list.add(categories.get(j).toString());
+                        }
+                        String cat_string = Constants.convertListToString(cat_list);
+
+                        LessonSource lessonSource = new LessonSource(context);
+                        lessonSource.open();
+                        if(!lessonSource.isExisting(json.getString("_id")));
+                        {
+                            Lesson lesson = lessonSource.createLesson(json.getString("title"), json.getString("lesson"), cat_string,
+                                    json.getLong("createdAt"), json.getBoolean("public"));
+                            lessonSource.setServerId(json.getString("_id"),(int)lesson.getId());
+
+                            SharedPreferences.Editor editor = preferences.edit();
+                            updateLastBackupTime(editor,json.getLong("createdAt"));
+                        }
+                        lessonSource.close();
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,error.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(request);
+    }
+
+    private void updateLastBackupTime(SharedPreferences.Editor editor,long backup_time){
+        editor.putLong(Constants.LAST_BACKED_UP,backup_time);
+        editor.commit();
     }
 }

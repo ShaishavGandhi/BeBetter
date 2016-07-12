@@ -105,10 +105,10 @@ public class LessonSource {
         return posts;
     }
 
-    public boolean isExisting(long server_id){
+    public boolean isExisting(String server_id){
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,
-                null, MySQLiteHelper.COLUMN_SERVER_ID+" = "+server_id, null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
+                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
         cursor.moveToFirst();
 
         if(cursor.getCount()>0)

@@ -29,6 +29,7 @@ import me.originqiu.library.EditTag;
 import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.SyncRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -115,7 +116,7 @@ public class AddLesson extends AppCompatActivity {
                 String lessonText = lesson.getText().toString().trim();
                 List<String> catList = category.getTagList();
                 boolean is_public = isPublic.isChecked();
-                String categoryText = convertListToString(catList);
+                String categoryText = Constants.convertListToString(catList);
 
                 if(titleText.length()>0 && lessonText.length()>0 && catList.size()>0) {
                     lessonSource.open();
@@ -145,14 +146,6 @@ public class AddLesson extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String convertListToString(List<String> tags){
-        String text = "";
-        for(int i=0; i<tags.size(); i++){
-            text += tags.get(i);
-            if(i!=tags.size()-1)
-                text+=", ";
-        }
-        return text;
-    }
+
 
 }

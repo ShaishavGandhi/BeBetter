@@ -15,6 +15,7 @@ import android.widget.Toast;
 import shaishav.com.bebetter.Activities.MainActivity;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Receiver.PhoneUnlockedReceiver;
+import shaishav.com.bebetter.Utils.Constants;
 
 /**
  * Created by Shaishav on 26-06-2016.
@@ -36,17 +37,13 @@ public class BackgroundService extends Service {
         final BroadcastReceiver mReceiver = new PhoneUnlockedReceiver();
         registerReceiver(mReceiver, filter);
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        long usage = (getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE).getLong(Constants.SESSION,0))/(1000*60);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Be Better")
-                .setContentText("Your mobile usage is below your target")
-                .setPriority(Notification.PRIORITY_MIN)
-                .setContentIntent(pendingIntent).build();
+        shaishav.com.bebetter.Utils.Notification notif = new shaishav.com.bebetter.Utils.Notification();
+        Notification notification = notif.createNotification(this,String.valueOf(usage));
+
+
 
         startForeground(1337, notification);
 

@@ -28,6 +28,7 @@ import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
+import shaishav.com.bebetter.Utils.Notification;
 
 
 public class DaySummary extends Fragment {
@@ -139,6 +140,10 @@ public class DaySummary extends Fragment {
     private void setData(){
         animateCounter(current_session_tv,(int)Long.parseLong(current_session));
         animateCounter(daily_session_tv,(int)Long.parseLong(daily_session));
+
+        Notification notif = new Notification();
+        notif.updateNotification(getActivity().getApplicationContext(),
+                notif.createNotification(getActivity().getApplicationContext(),daily_session));
     }
 
     private void animateCounter(final TextView view,int count){

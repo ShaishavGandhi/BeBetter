@@ -41,7 +41,7 @@ public class Reminder extends BroadcastReceiver {
         //Create the notification
         notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.notif)
                 .setContentTitle("Hi "+name)
                 .setContentText("What did you learn today?")
                 .setAutoCancel(true);
