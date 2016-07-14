@@ -109,6 +109,7 @@ public class LessonSource {
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,
                 null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
+
         cursor.moveToFirst();
 
         if(cursor.getCount()>0)

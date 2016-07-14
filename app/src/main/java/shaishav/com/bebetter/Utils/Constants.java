@@ -16,15 +16,20 @@ public class Constants {
     public static final String UNLOCKED = "unlocked";
     public static final String SESSION = "session";
     public static final String EMAIL = "email";
+    public static final String FIRST_TIME = "first_time";
     public static final String DISPLAY_PIC="display_pic";
     public static final String HOST = "https://bebetterserver.herokuapp.com/api";
     public static final String USER = "/users";
     public static final String LESSON = "/lessons";
+    public static final String REMINDER_HOUR = "reminder_hour";
+    public static final String REMINDER_MINUTE = "reminder_minute";
+    public static final String GOAL = "goal";
 
     public static final String POST_USER_NAME = "name";
     public static final String POST_USER_EMAIL = "email";
     public static final String POST_USER_PHOTO ="photo";
     public static final String LAST_BACKED_UP="last_backed_up";
+
 
     public static final String LOCAL_ID="localId";
 
@@ -42,4 +47,6 @@ public class Constants {
         }
         return text;
     }
+
+
 }

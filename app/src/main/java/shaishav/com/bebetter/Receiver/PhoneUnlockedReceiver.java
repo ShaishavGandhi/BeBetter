@@ -49,7 +49,8 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
                 session_time = previousDate.getTime() - last_unlock_time;
 
-                storeSessionInDb(context,previousDate.getTime(),session_time);
+
+                storeSessionInDb(context,previousDate.getTime(),preferences.getLong(Constants.SESSION,0)+session_time);
 
                 previousDate.setDate(previousDate.getDate()+1);
                 previousDate.setHours(0);

@@ -66,11 +66,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <Switch
-        android:id="@+id/make_public"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"/>
+        <Switch
+            android:id="@+id/make_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/spark_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:sparkbutton_activeImage="@drawable/ic_info_black_24dp"
+            app:sparkbutton_inActiveImage="@drawable/ic_info_outline_white_24dp"/>
 
         <TextView
             android:text="Share your lesson?"
