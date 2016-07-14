@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //Initialize everything in this activity
+        initialize();
+
+        if(isFirstTime())
+            introduceApp();
+
         SyncRequests requests = new SyncRequests(getApplicationContext());
         requests.getSyncedLessons();
 
@@ -84,8 +90,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
 
         String name = preferences.getString(Constants.FULL_NAME,"");
         String email = preferences.getString(Constants.EMAIL,"");
@@ -104,9 +108,6 @@ public class MainActivity extends AppCompatActivity
         //Set first screen
         setFirstScreen();
 
-        //Initialize everything in this activity
-        initialize();
-
     }
 
     public void setFirstScreen(){
@@ -123,6 +124,8 @@ public class MainActivity extends AppCompatActivity
         lessonSource.open();
         lessonList = lessonSource.getAllLessons();
         lessonSource.close();
+
+        preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
 
     }
 
@@ -187,5 +190,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private boolean isFirstTime(){
+        return !preferences.getBoolean(Constants.FIRST_TIME,false);
+    }
+
+    private void introduceApp(){
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putBoolean(Constants.FIRST_TIME,true);
+//        editor.commit();
+
+        Intent intent = new Intent(this,Intro.class);
+        startActivity(intent);
     }
 }

@@ -169,6 +169,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             requestQueue.add(stringRequest);
         } else {
             // Signed out, show unauthenticated UI.
+            progressDialog.hide();
             View view = findViewById(R.id.sign_in_button);
             Snackbar.make(view,"Couldn't sign in",Snackbar.LENGTH_SHORT).show();
         }

@@ -115,7 +115,7 @@ public class SyncRequests {
 
                         LessonSource lessonSource = new LessonSource(context);
                         lessonSource.open();
-                        if(!lessonSource.isExisting(json.getString("_id")));
+                        if(!lessonSource.isExisting(json.getString("_id")))
                         {
                             Lesson lesson = lessonSource.createLesson(json.getString("title"), json.getString("lesson"), cat_string,
                                     json.getLong("createdAt"), json.getBoolean("public"));
