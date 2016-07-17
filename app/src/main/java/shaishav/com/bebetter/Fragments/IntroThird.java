@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
 
 /**
@@ -57,6 +58,7 @@ public class IntroThird extends Fragment {
                 int min = Integer.parseInt(editable.toString());
                 editor.putInt(Constants.GOAL,min);
                 editor.commit();
+
 
             }
         });
