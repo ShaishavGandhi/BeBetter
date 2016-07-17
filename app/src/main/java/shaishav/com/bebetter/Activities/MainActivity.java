@@ -34,6 +34,7 @@ import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Fragments.LessonList;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.SyncRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -107,6 +108,9 @@ public class MainActivity extends AppCompatActivity
 
         //Set first screen
         setFirstScreen();
+
+        Toast.makeText(MainActivity.this, preferences.getInt(Constants.REMINDER_HOUR,21)+" : "
+                +preferences.getInt(Constants.REMINDER_MINUTE,0), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -197,9 +201,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void introduceApp(){
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putBoolean(Constants.FIRST_TIME,true);
-//        editor.commit();
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.FIRST_TIME,true);
+        editor.commit();
 
         Intent intent = new Intent(this,Intro.class);
         startActivity(intent);
