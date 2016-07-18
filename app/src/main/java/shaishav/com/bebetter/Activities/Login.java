@@ -28,6 +28,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.auth.api.Auth;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,13 +141,28 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.HOST + Constants.USER, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
-                    storeLocally(name,email,display_pic);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        if(jsonObject.has("code")){
+                            if(jsonObject.getInt("code")==11000){
+                                Toast.makeText(getApplicationContext(),"Welcome back!",Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    progressDialog.hide();
-                    startActivity(intent);
-                    finish();
+                            }
+                            else
+                                return;
+                        }
+
+                        storeLocally(name,email,display_pic);
+
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        progressDialog.hide();
+                        startActivity(intent);
+                        finish();
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }, new Response.ErrorListener() {
                 @Override
