@@ -202,4 +202,11 @@ public class DaySummary extends Fragment {
         return usages;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        getData();
+        setData();
+    }
+
 }

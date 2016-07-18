@@ -79,6 +79,7 @@ public class Details extends AppCompatActivity {
 
     public void bindData(){
         title_et.setText(title);
+        category_et.setEditable(false);
         category_et.setTagList(category);
         String dateString = Constants.getFormattedDate(created_at);
         date_et.setText(dateString);
