@@ -126,22 +126,33 @@ public class DaySummary extends Fragment {
             entries.add(data);
         }
 
+        Entry todaysEntry = new Entry(Long.parseLong(daily_session),weeklyData.size());
+        xValues.add(Constants.getFormattedDate(new Date()));
+        entries.add(todaysEntry);
+
         LineDataSet dataset = new LineDataSet(entries,"Weekly Usage In Minutes");
         dataset.setDrawCubic(true);
         dataset.setColor(getResources().getColor(R.color.colorPrimary));
         dataset.setDrawFilled(true);
         dataset.setFillColor(getResources().getColor(R.color.colorPrimaryDark));
         dataset.setFillAlpha(200);
+        dataset.setCircleRadius(3);
+        dataset.disableDashedLine();
+        // TODO: Check this later
+        dataset.setCubicIntensity(100);
+        dataset.setCircleColorHole(getResources().getColor(R.color.colorPrimaryDark));
         dataset.setCircleColor(getResources().getColor(R.color.colorPrimaryDark));
-        dataset.setValueTextSize(13);
+        dataset.setValueTextSize(12);
 
         lineDataSets.add(dataset);
 
         LineData lineData = new LineData(xValues,lineDataSets);
 
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getAxisRight().setDrawGridLines(false);
+        lineChart.setDescription("");
         lineChart.setData(lineData);
         lineChart.invalidate();
-
 
     }
 
