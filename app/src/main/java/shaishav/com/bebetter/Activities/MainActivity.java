@@ -109,9 +109,6 @@ public class MainActivity extends AppCompatActivity
         //Set first screen
         setFirstScreen();
 
-        Toast.makeText(MainActivity.this, preferences.getInt(Constants.REMINDER_HOUR,21)+" : "
-                +preferences.getInt(Constants.REMINDER_MINUTE,0), Toast.LENGTH_SHORT).show();
-
     }
 
     public void setFirstScreen(){
@@ -120,15 +117,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-
     public void initialize(){
 
+        // Open connection to Db and get all lessons
         lessonSource = new LessonSource(this);
         lessonSource.open();
         lessonList = lessonSource.getAllLessons();
         lessonSource.close();
 
+        // Initialize preferences
         preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
 
     }

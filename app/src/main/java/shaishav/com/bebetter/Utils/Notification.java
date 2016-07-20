@@ -14,15 +14,20 @@ import shaishav.com.bebetter.R;
  */
 public class Notification {
 
-    public android.app.Notification createNotification(Context context,String usage){
+    public android.app.Notification createNotification(Context context,String usage, String goal){
         Intent notificationIntent = new Intent(context, MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 notificationIntent, 0);
+
+
         android.app.Notification notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notif)
                 .setContentTitle("Be Better")
-                .setContentText("Your mobile usage is "+usage+" min")
+                .setContentText("Your mobile usage is "+usage+" min. " +
+                        "Usage goal : "+goal+" min.")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("Your mobile usage is "+usage+" min. " +
+                        "Usage goal : "+goal+" min."))
                 .setPriority(android.app.Notification.PRIORITY_MIN)
                 .setContentIntent(pendingIntent).build();
 

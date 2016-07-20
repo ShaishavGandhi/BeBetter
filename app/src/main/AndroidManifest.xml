@@ -18,6 +18,8 @@
 
         <receiver android:name=".Receiver.Reminder" />
 
+        <receiver android:name=".Receiver.Backup" />
+
         <!-- <receiver android:name=".PhoneUnlockedReceiver"> -->
         <!-- <intent-filter > -->
         <!-- <action android:name="android.intent.action.USER_PRESENT"> -->

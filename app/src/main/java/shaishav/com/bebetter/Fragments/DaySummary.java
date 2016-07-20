@@ -4,6 +4,7 @@ import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.sax.TextElementListener;
 import android.support.v4.app.Fragment;
@@ -40,7 +41,7 @@ public class DaySummary extends Fragment {
     private UsageSource usageSource;
     private TextView current_session_tv,daily_session_tv,average_daily_usage_tv;
     private View rootView;
-    private String daily_session,current_session,average_daily_usage;
+    private String daily_session,current_session,average_daily_usage,daily_goal;
     private LineChart lineChart;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -48,7 +49,6 @@ public class DaySummary extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static DaySummary newInstance(String param1, String param2) {
         DaySummary fragment = new DaySummary();
 
@@ -103,12 +103,14 @@ public class DaySummary extends Fragment {
             daily_session = String.valueOf((preferences.getLong(Constants.SESSION, 0)) / (1000 * 60));
             daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session));
             average_daily_usage = String.valueOf(getAverageUsage()/(1000*60));
+            daily_goal = String.valueOf(preferences.getInt(Constants.GOAL,200));
 
         }
         else{
             current_session = String.valueOf(0);
             daily_session = String.valueOf(0);
             average_daily_usage = String.valueOf(0);
+            daily_goal = String.valueOf(200);
         }
 
         List<Usage> weeklyData = getWeeklyData();
@@ -138,8 +140,6 @@ public class DaySummary extends Fragment {
         dataset.setFillAlpha(200);
         dataset.setCircleRadius(3);
         dataset.disableDashedLine();
-        // TODO: Check this later
-        dataset.setCubicIntensity(100);
         dataset.setCircleColorHole(getResources().getColor(R.color.colorPrimaryDark));
         dataset.setCircleColor(getResources().getColor(R.color.colorPrimaryDark));
         dataset.setValueTextSize(12);
@@ -174,12 +174,15 @@ public class DaySummary extends Fragment {
 
     private void setData(){
         animateCounter(current_session_tv,(int)Long.parseLong(current_session));
+        if(Long.parseLong(daily_session) > Long.parseLong(daily_goal)){
+            daily_session_tv.setTextColor(Color.RED);
+        }
         animateCounter(daily_session_tv,(int)Long.parseLong(daily_session));
         animateCounter(average_daily_usage_tv,(int)Long.parseLong(average_daily_usage));
 
         Notification notif = new Notification();
         notif.updateNotification(getActivity().getApplicationContext(),
-                notif.createNotification(getActivity().getApplicationContext(),daily_session));
+                notif.createNotification(getActivity().getApplicationContext(),daily_session,daily_goal));
     }
 
     private void animateCounter(final TextView view,int count){
