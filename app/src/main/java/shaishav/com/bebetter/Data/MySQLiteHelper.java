@@ -20,6 +20,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USAGE="usage";
 
     private static final String DATABASE_NAME = "lessons.db";
+    // TODO: Set db version to 1
     private static final int DATABASE_VERSION = 1;
 
     // Database creation sql statement
@@ -32,7 +33,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String CREATE_USAGE_STATS = "create table "
             + TABLE_USAGE + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_DATE
-            + " long not null,"+COLUMN_USAGE+" long not null);";
+            + " long not null,"+COLUMN_USAGE+" long not null, "+COLUMN_SERVER_ID+" text default 'NA');";
 
 
     public MySQLiteHelper(Context context) {
@@ -48,13 +49,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // TODO: comment this out
 //        if(oldVersion<newVersion){
-//            final String ALTER_TBL = "ALTER TABLE "+MySQLiteHelper.TABLE_SONGS+" ADD COLUMN "
-//                    +COLUMN_COUNT+" long not null default 0" +
-//                    ","+COLUMN_NEXT_COUNT+" long not null default 0,"+COLUMN_STILL_EXISTING+" boolean not null default true;";
+//            final String ALTER_TBL = "UPDATE "+MySQLiteHelper.TABLE_USAGE+" SET "
+//                    +COLUMN_SERVER_ID+" = 'NA';";
 //            db.execSQL(ALTER_TBL);
-//            //db.execSQL(ORDER_DATABASE_CREATE);
-//        }
+            //db.execSQL(ORDER_DATABASE_CREATE);
+        }
     }
 
 }

@@ -38,10 +38,10 @@ public class BackgroundService extends Service {
         registerReceiver(mReceiver, filter);
 
         long usage = (getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE).getLong(Constants.SESSION,0))/(1000*60);
-
+        long goal = (getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE).getInt(Constants.GOAL,200));
 
         shaishav.com.bebetter.Utils.Notification notif = new shaishav.com.bebetter.Utils.Notification();
-        Notification notification = notif.createNotification(this,String.valueOf(usage));
+        Notification notification = notif.createNotification(this,String.valueOf(usage),String.valueOf(goal));
 
 
 

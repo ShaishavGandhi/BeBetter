@@ -24,6 +24,8 @@ import java.util.Map;
 import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
+import shaishav.com.bebetter.Data.Usage;
+import shaishav.com.bebetter.Data.UsageSource;
 
 /**
  * Created by Shaishav on 05-07-2016.
@@ -38,12 +40,60 @@ public class SyncRequests {
         this.queue = Volley.newRequestQueue(context);
     }
 
+    public void syncUsage(Usage usage) {
+        final Usage tempUsage = usage;
+        if (!checkIfSignedIn())
+            return;
+
+        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+
+        StringRequest request = new StringRequest(Request.Method.POST, Constants.HOST + Constants.USAGE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject obj = new JSONObject(response);
+                    String server_id = obj.getString("_id");
+                    int local_id = obj.getInt("localId");
+
+                    UsageSource usageSource = new UsageSource(context);
+                    usageSource.open();
+                    usageSource.setServerId(server_id,local_id);
+                    usageSource.close();
+
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(MySQLiteHelper.COLUMN_USAGE,String.valueOf(tempUsage.getUsage()));
+                params.put(MySQLiteHelper.COLUMN_ID,String.valueOf(tempUsage.getId()));
+                params.put(MySQLiteHelper.COLUMN_DATE,String.valueOf(tempUsage.getDate()));
+                params.put(Constants.POST_USER_EMAIL,temp_user_email);
+                return params;
+            }
+        };
+
+        queue.add(request);
+    }
+
     public void syncLesson(Lesson lesson){
         final Lesson tempLesson = lesson;
-        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
-        if(temp_user_email.equals(""))
+        if(!checkIfSignedIn())
             return;
+
+        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        final String temp_user_email = preferences.getString(Constants.USER,"");
+
         StringRequest request = new StringRequest(Request.Method.POST, Constants.HOST + Constants.LESSON, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -88,6 +138,12 @@ public class SyncRequests {
     public void syncLesson(List<Lesson> lessons){
         for(Lesson lesson : lessons){
             syncLesson(lesson);
+        }
+    }
+
+    public void syncUsage(List<Usage> usages){
+        for(Usage usage : usages){
+            syncUsage(usage);
         }
     }
 
@@ -144,5 +200,13 @@ public class SyncRequests {
     private void updateLastBackupTime(SharedPreferences.Editor editor,long backup_time){
         editor.putLong(Constants.LAST_BACKED_UP,backup_time);
         editor.commit();
+    }
+
+    public boolean checkIfSignedIn(){
+        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+        if(temp_user_email.equals(""))
+            return false;
+        return true;
     }
 }

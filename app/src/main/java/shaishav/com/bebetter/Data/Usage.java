@@ -6,6 +6,7 @@ package shaishav.com.bebetter.Data;
 public class Usage {
 
     long id,date,usage;
+    String server_id;
 
     public long getId(){
         return id;
@@ -23,4 +24,7 @@ public class Usage {
 
     public long getUsage(){return usage;}
 
+    public String getServer_id(){return server_id;}
+
+    public void setServer_id(String server_id){this.server_id = server_id;}
 }

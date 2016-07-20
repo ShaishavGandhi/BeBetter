@@ -24,7 +24,6 @@ public class App extends Application {
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
         if(preferences.getBoolean(Constants.FIRST_TIME,false)) {
-
             // Set daily reminder
             setReminder(this);
             setBackupSchedule(this);
@@ -37,7 +36,7 @@ public class App extends Application {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 15);
+        calendar.set(Calendar.MINUTE, 45);
         calendar.set(Calendar.SECOND, 00);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis() ,24*60*60*1000,pendingIntent);
@@ -49,7 +48,7 @@ public class App extends Application {
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
         int hour = preferences.getInt(Constants.REMINDER_HOUR,21);
         int minute = preferences.getInt(Constants.REMINDER_MINUTE,0);
-        if(!preferences.getBoolean(Constants.FIRST_TIME,false)) {
+        if(preferences.getBoolean(Constants.FIRST_TIME,false)) {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, hour);

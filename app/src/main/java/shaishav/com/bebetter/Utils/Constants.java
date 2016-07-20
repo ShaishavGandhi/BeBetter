@@ -21,6 +21,7 @@ public class Constants {
     public static final String HOST = "https://bebetterserver.herokuapp.com/api";
     public static final String USER = "/users";
     public static final String LESSON = "/lessons";
+    public static final String USAGE = "/usages";
     public static final String REMINDER_HOUR = "reminder_hour";
     public static final String REMINDER_MINUTE = "reminder_minute";
     public static final String GOAL = "goal";

@@ -73,7 +73,9 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
                 editor.putLong(Constants.SESSION,session_time);
             }
             Notification notif = new Notification();
-            android.app.Notification notification = notif.createNotification(context,String.valueOf(session_time/(1000*60)));
+            int goal = preferences.getInt(Constants.GOAL,0);
+            android.app.Notification notification = notif.createNotification(context,String.valueOf(session_time/(1000*60)),
+                    String.valueOf(goal));
             notif.updateNotification(context,notification);
             editor.commit();
 
