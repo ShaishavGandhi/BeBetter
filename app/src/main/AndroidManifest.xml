@@ -14,10 +14,9 @@
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name=".Receiver.Reminder" />
-
         <receiver android:name=".Receiver.Backup" />
 
         <!-- <receiver android:name=".PhoneUnlockedReceiver"> -->
@@ -60,8 +59,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.Intro"
-            android:theme="@style/Theme.Intro"/>
+        <activity
+            android:name=".Activities.Intro"
+            android:theme="@style/Theme.Intro" />
+
+        <receiver android:name=".Utils.TimeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/time_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
