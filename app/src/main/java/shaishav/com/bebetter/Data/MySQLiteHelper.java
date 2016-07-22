@@ -55,7 +55,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 //                    +COLUMN_SERVER_ID+" = 'NA';";
 //            db.execSQL(ALTER_TBL);
             //db.execSQL(ORDER_DATABASE_CREATE);
-        }
+//        }
     }
 
 }
