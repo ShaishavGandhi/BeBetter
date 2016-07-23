@@ -1,25 +1,29 @@
 package shaishav.com.bebetter.Receiver;
 
 import android.app.KeyguardManager;
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.ArraySet;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import java.util.Date;
 import java.util.Set;
 
 import shaishav.com.bebetter.Data.UsageSource;
+import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.Notification;
+import shaishav.com.bebetter.Utils.TimeWidget;
 
 public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
     public static boolean wasScreenOn = true;
     public long session_time;
-    Set<String> set;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -79,6 +83,8 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
             notif.updateNotification(context,notification);
             editor.commit();
 
+
+
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
             // and do whatever you need to do here
             long last_unlocked = preferences.getLong(Constants.UNLOCKED,0);
@@ -93,6 +99,14 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
             editor.putLong(Constants.UNLOCKED, unlocked);
             editor.commit();
+
+            //Update screen widget if present
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_widget);
+            ComponentName thisWidget = new ComponentName(context, TimeWidget.class);
+            AppWidgetManager.getInstance( context ).updateAppWidget( thisWidget, views );
+
+            updateWidget(context);
 
         }else if(intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
             KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
@@ -116,5 +130,15 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
         usageSource.open();
         usageSource.createUsage(date,session_time);
         usageSource.close();
+    }
+
+    void updateWidget(Context context){
+        Intent intent = new Intent(context,TimeWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+        // since it seems the onUpdate() is only fired on that:
+        int ids[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, TimeWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        context.sendBroadcast(intent);
     }
 }

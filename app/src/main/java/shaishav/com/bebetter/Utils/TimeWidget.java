@@ -15,7 +15,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Implementation of App Widget functionality.
  */
 public class TimeWidget extends AppWidgetProvider {
-    
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
