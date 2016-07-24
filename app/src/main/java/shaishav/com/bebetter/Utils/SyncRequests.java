@@ -2,6 +2,7 @@ package shaishav.com.bebetter.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -147,9 +148,53 @@ public class SyncRequests {
         }
     }
 
+    public void getSyncedUsages(){
+        if(!checkIfSignedIn())
+            return;
+        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        final String temp_user_email = preferences.getString(Constants.EMAIL,"");
+
+        String time = String.valueOf(new Date().getTime());
+
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.HOST + Constants.USAGE + "/" + temp_user_email + "/" + time, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    JSONArray arr = new JSONArray(response);
+                    Log.v("A","Got result of length " +arr.length());
+                    for(int i=0;i<arr.length();i++) {
+                        JSONObject json = arr.getJSONObject(i);
+
+                        UsageSource usageSource = new UsageSource(context);
+                        usageSource.open();
+                        if(!usageSource.isExisting(json.getString("_id")))
+                        {
+                            Usage usage = usageSource.createUsage(json.getLong("date"),json.getLong("usage"));
+                            usageSource.setServerId(json.getString("_id"),(int)usage.getId());
+
+                        }
+                        usageSource.close();
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,error.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(request);
+
+    }
+
     public void getSyncedLessons(){
         final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+        final String temp_user_email = preferences.getString(Constants.EMAIL,"");
         if(temp_user_email.equals(""))
             return;
 
@@ -204,7 +249,7 @@ public class SyncRequests {
 
     public boolean checkIfSignedIn(){
         final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+        final String temp_user_email = preferences.getString(Constants.EMAIL,"");
         if(temp_user_email.equals(""))
             return false;
         return true;

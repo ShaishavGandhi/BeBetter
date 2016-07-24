@@ -79,7 +79,7 @@ public class UsageSource {
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_USAGE,
                 null, MySQLiteHelper.COLUMN_DATE + " > "+lower_threshold+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+higher_threshold,
-                null, null, null, MySQLiteHelper.COLUMN_ID+" ASC");
+                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
 
         cursor.moveToFirst();
 
@@ -122,7 +122,7 @@ public class UsageSource {
     public boolean isExisting(String server_id){
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_USAGE,
-                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
+                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_DATE+" desc");
 
         cursor.moveToFirst();
 

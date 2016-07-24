@@ -48,7 +48,6 @@ public class Backup extends BroadcastReceiver {
         usageSource = new UsageSource(context);
         usageSource.open();
         usages = usageSource.getUsagesForBackup();
-        Toast.makeText(context, usages.size()+" no of usages trying to backup",Toast.LENGTH_SHORT).show();
         usageSource.close();
 
         SyncRequests syncRequests = new SyncRequests(context);

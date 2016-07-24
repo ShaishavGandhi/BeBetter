@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity
 
         SyncRequests requests = new SyncRequests(getApplicationContext());
         requests.getSyncedLessons();
+        requests.getSyncedUsages();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity
         name_tv.setText(name);
         email_tv.setText(email);
 
+        if(!photo.equals(""))
         Picasso.with(getApplicationContext()).load(photo).into((ImageView)navigationView.getHeaderView(0).findViewById(R.id.imageView));
 
 
