@@ -46,6 +46,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     SharedPreferences.Editor editor;
     GoogleApiClient mGoogleApiClient;
     ProgressDialog progressDialog;
+    String display_pic;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -136,7 +137,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
             final String name = acct.getDisplayName();
             final String email = acct.getEmail();
-            final String display_pic = acct.getPhotoUrl().toString();
+            display_pic = "";
+            if(acct.getPhotoUrl() != null)
+                display_pic = acct.getPhotoUrl().toString();
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.HOST + Constants.USER, new Response.Listener<String>() {
                 @Override
