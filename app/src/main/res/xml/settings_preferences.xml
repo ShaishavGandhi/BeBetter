@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Reminder">
+
+        <Preference
+            android:key="reminderTime"
+            android:title="Choose time at which you get lesson reminders">
+
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

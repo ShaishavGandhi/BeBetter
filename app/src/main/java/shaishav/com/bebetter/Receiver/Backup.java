@@ -25,6 +25,7 @@ import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
+import shaishav.com.bebetter.Service.BackupService;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.SyncRequests;
 
@@ -33,26 +34,12 @@ import shaishav.com.bebetter.Utils.SyncRequests;
  */
 public class Backup extends BroadcastReceiver {
 
-    LessonSource lessonSource;
-    List<Lesson> lessons;
-    UsageSource usageSource;
-    List<Usage> usages;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        lessonSource = new LessonSource(context);
-        lessonSource.open();
-        lessons = lessonSource.getLessonsForBackup();
-        lessonSource.close();
 
-        usageSource = new UsageSource(context);
-        usageSource.open();
-        usages = usageSource.getUsagesForBackup();
-        usageSource.close();
-
-        SyncRequests syncRequests = new SyncRequests(context);
-        syncRequests.syncLesson(lessons);
-        syncRequests.syncUsage(usages);
+        Intent serviceIntent = new Intent(context, BackupService.class);
+        context.startService(serviceIntent);
 
     }
 }
