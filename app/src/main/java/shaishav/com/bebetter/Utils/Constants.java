@@ -49,5 +49,30 @@ public class Constants {
         return text;
     }
 
+    public static String getTimeInAMPM(int hourOfDay, int minute){
+        String AM_PM;
+        String time = "";
+        int hour = hourOfDay;
+        if (hour < 12)
+            AM_PM = "AM";
+        else {
+            AM_PM = "PM";
+            hour -= 12;
+        }
+
+        if (hour < 10)
+            time += "0" + hour + ":";
+        else
+            time += hour + ":";
+        if (minute < 10)
+            time += "0" + minute;
+        else
+            time += minute;
+
+        time += " " + AM_PM;
+
+        return time;
+    }
+
 
 }

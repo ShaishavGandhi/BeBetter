@@ -18,7 +18,6 @@
 
         <receiver android:name=".Receiver.Reminder" />
         <receiver android:name=".Receiver.Backup" />
-
         <!-- <receiver android:name=".PhoneUnlockedReceiver"> -->
         <!-- <intent-filter > -->
         <!-- <action android:name="android.intent.action.USER_PRESENT"> -->
@@ -72,6 +71,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/time_widget_info" />
         </receiver>
+
+        <service android:name=".Service.BackupService">
+
+        </service>
+
     </application>
 
 </manifest>

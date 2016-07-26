@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setFirstScreen(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container_body,new DaySummary()).commit();
 
     }
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = null;
 
 
