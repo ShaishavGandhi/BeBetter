@@ -77,7 +77,7 @@ public class SyncRequests {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put(MySQLiteHelper.COLUMN_USAGE,String.valueOf(tempUsage.getUsage()));
-                params.put(MySQLiteHelper.COLUMN_ID,String.valueOf(tempUsage.getId()));
+                params.put(Constants.LOCAL_ID,String.valueOf(tempUsage.getId()));
                 params.put(MySQLiteHelper.COLUMN_DATE,String.valueOf(tempUsage.getDate()));
                 params.put(Constants.POST_USER_EMAIL,temp_user_email);
                 return params;
