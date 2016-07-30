@@ -4,7 +4,7 @@ Repository of the Android application BeBetter, not yet published on PlayStore. 
 
 BeBetter *keeps track* of your mobile phone usage and warns you when you've exceeded your average etc.
 
-1.01<sup>365</sup> = 37.8
+1.01<sup>365</sup> = 37.8</br>
 0.99<sup>365</sup> = 0.03
 
 BeBetter believes that you should learn at least one new thing, fact, skill, trivia etc and log it just to keep track of all the things that you learn but forget.
