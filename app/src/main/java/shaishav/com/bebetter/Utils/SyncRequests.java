@@ -35,10 +35,22 @@ public class SyncRequests {
 
     Context context;
     RequestQueue queue;
+    private boolean inProgress;
+    public static SyncRequests syncRequests;
 
-    public SyncRequests(Context context){
+
+
+    protected SyncRequests(Context context){
         this.context = context;
         this.queue = Volley.newRequestQueue(context);
+    }
+
+    public static SyncRequests getInstance(Context context){
+        if(syncRequests == null){
+            syncRequests = new SyncRequests(context);
+        }
+
+        return syncRequests;
     }
 
     public void syncUsage(Usage usage) {
