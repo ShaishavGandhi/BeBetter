@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import java.io.File;
 import java.util.Calendar;
 
 import shaishav.com.bebetter.Receiver.Backup;
@@ -18,9 +19,17 @@ import shaishav.com.bebetter.Service.BackgroundService;
  */
 public class App extends Application {
 
+    private static App instance;
+
+
+    public static App getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate(){
         super.onCreate();
+        instance = this;
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
         if(preferences.getBoolean(Constants.FIRST_TIME,false)) {
@@ -57,6 +66,61 @@ public class App extends Application {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24 * 60 * 60 * 1000, pendingIntent);
         }
+
+    }
+
+    public void clearApplicationData() {
+
+        File cacheDirectory = getCacheDir();
+        File applicationDirectory = new File(cacheDirectory.getParent());
+        if (applicationDirectory.exists()) {
+
+            String[] fileNames = applicationDirectory.list();
+
+            for (String fileName : fileNames) {
+
+                if (!fileName.equals("lib")) {
+
+                    deleteFile(new File(applicationDirectory, fileName));
+
+                }
+
+            }
+
+        }
+
+        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+
+    }
+
+    public static boolean deleteFile(File file) {
+
+        boolean deletedAll = true;
+
+        if (file != null) {
+
+            if (file.isDirectory()) {
+
+                String[] children = file.list();
+
+                for (int i = 0; i < children.length; i++) {
+
+                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
+
+                }
+
+            } else {
+
+                deletedAll = file.delete();
+
+            }
+
+        }
+
+        return deletedAll;
 
     }
 }
