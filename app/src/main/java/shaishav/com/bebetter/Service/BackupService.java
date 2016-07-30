@@ -38,7 +38,7 @@ public class BackupService extends IntentService {
         usages = usageSource.getUsagesForBackup();
         usageSource.close();
 
-        SyncRequests syncRequests = new SyncRequests(getApplicationContext());
+        SyncRequests syncRequests = SyncRequests.getInstance(getApplicationContext());
         syncRequests.syncLesson(lessons);
         syncRequests.syncUsage(usages);
 
