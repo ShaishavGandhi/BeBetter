@@ -27,6 +27,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.json.JSONObject;
 
@@ -76,6 +78,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        if(mGoogleApiClient.isConnected()){
+            signOut();
+        }
 
         //Set event listeners
         setEventListeners();
@@ -194,6 +200,17 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             Snackbar.make(view,"Couldn't sign in",Snackbar.LENGTH_SHORT).show();
         }
     }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Toast.makeText(getApplicationContext(),"Signed Out!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
     public void storeLocally(String name,String email,String display_pic){
         editor.putString(Constants.FULL_NAME,name);

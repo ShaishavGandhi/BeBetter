@@ -28,6 +28,7 @@ import java.util.List;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.Fragments.DaySummary;
+import shaishav.com.bebetter.Fragments.LogOut;
 import shaishav.com.bebetter.Fragments.Settings;
 import shaishav.com.bebetter.Service.BackgroundService;
 import shaishav.com.bebetter.Data.Lesson;
@@ -187,6 +188,8 @@ public class MainActivity extends AppCompatActivity
             return true;
         else if (id == R.id.nav_send)
             return true;
+        else if(id == R.id.log_out)
+            fragment = new LogOut();
 
 
         fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
