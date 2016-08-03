@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.sax.TextElementListener;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,8 @@ public class DaySummary extends Fragment {
         lineChart = (LineChart)rootView.findViewById(R.id.usage_chart);
 
         usageSource = new UsageSource(getActivity().getApplicationContext());
+
+
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefresh);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -114,6 +117,12 @@ public class DaySummary extends Fragment {
         }
 
         List<Usage> weeklyData = getWeeklyData();
+
+
+        for(Usage usage : weeklyData)
+        Log.v("bebetter","server_id : "+usage.getServer_id()+" localID : "+usage.getId());
+
+
         ArrayList<String> xValues = new ArrayList<String>();
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
@@ -204,9 +213,9 @@ public class DaySummary extends Fragment {
 
     private List<Usage> getWeeklyData(){
         Date date = new Date();
-        date.setDate(date.getDate()-7);
+        date.setDate(date.getDate()-70);
         long lower_threshold = date.getTime();
-        date.setDate(date.getDate()+14);
+        date.setDate(date.getDate()+140);
         long higher_threshold = date.getTime();
 
         usageSource.open();
