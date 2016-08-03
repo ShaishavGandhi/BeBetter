@@ -58,6 +58,7 @@ public class SyncRequests {
         if (!checkIfSignedIn())
             return;
 
+
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
         final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
 

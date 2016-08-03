@@ -12,4 +12,44 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="Backup">
+
+        <SwitchPreference
+            android:key="backup"
+            android:title="Backup your lessons, usages and ideas to server">
+
+        </SwitchPreference>
+
+        <Preference
+            android:key="backupStatus"
+            android:title="Backup Status">
+
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Usage">
+
+        <ListPreference
+            android:key="timeDisplay"
+            android:summary="Display your mobile usage in hours/minutes"
+            android:entryValues="@array/HoursMinutes"
+            >
+
+        </ListPreference>
+
+        <Preference
+            android:key="service"
+            android:title="Keep foreground service running"
+            android:summary="Disabling this will cause the app to stop monitoring your usage"
+            >
+
+        </Preference>
+
+    </PreferenceCategory>
+
+
+
 </PreferenceScreen>

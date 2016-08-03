@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_LESSON = "lessons";
+    public static final String TABLE_IDEAS = "ideas";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_LESSON = "lesson";
@@ -35,6 +36,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " integer primary key autoincrement, " + COLUMN_DATE
             + " long not null,"+COLUMN_USAGE+" long not null, "+COLUMN_SERVER_ID+" text default 'NA');";
 
+    private static final String CREATE_IDEAS = "create table "
+            + TABLE_IDEAS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_TITLE
+            + " text not null,"+COLUMN_LESSON+" long not null,"
+            +COLUMN_SERVER_ID+" text default 'NA');";
+
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,6 +51,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
         database.execSQL(CREATE_USAGE_STATS);
+        database.execSQL(CREATE_IDEAS);
 
     }
 

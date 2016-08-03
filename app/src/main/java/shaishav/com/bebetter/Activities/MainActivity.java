@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         if(isFirstTime())
             introduceApp();
 
-        SyncRequests requests = new SyncRequests(getApplicationContext());
+        SyncRequests requests = SyncRequests.getInstance(getApplicationContext());
         requests.getSyncedLessons();
         requests.getSyncedUsages();
 

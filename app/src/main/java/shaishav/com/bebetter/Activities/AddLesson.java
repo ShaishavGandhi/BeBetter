@@ -122,7 +122,7 @@ public class AddLesson extends AppCompatActivity {
                     lessonSource.open();
                     Lesson lesson = lessonSource.createLesson(titleText,lessonText,categoryText,new Date().getTime(),is_public);
                     lessonSource.close();
-                    SyncRequests syncRequests = new SyncRequests(getApplicationContext());
+                    SyncRequests syncRequests = SyncRequests.getInstance(getApplicationContext());
                     syncRequests.syncLesson(lesson);
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
