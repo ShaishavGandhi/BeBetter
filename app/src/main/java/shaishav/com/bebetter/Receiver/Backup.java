@@ -38,6 +38,13 @@ public class Backup extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
 
+        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        long count = preferences.getLong("onReceive",0);
+        editor.putLong("onReceive",++count);
+        editor.commit();
+
+
         Intent serviceIntent = new Intent(context, BackupService.class);
         context.startService(serviceIntent);
 

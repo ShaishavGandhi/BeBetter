@@ -67,6 +67,7 @@ public class SyncRequests {
             public void onResponse(String response) {
                 try{
                     JSONObject obj = new JSONObject(response);
+                    obj = obj.getJSONObject("usage");
                     String server_id = obj.getString("_id");
                     int local_id = obj.getInt("localId");
 
@@ -113,6 +114,7 @@ public class SyncRequests {
             public void onResponse(String response) {
                 try {
                     JSONObject resp = new JSONObject(response);
+                    resp = resp.getJSONObject("lesson");
                     String server_id = resp.getString("_id");
                     String local_id = resp.getString("localId");
                     LessonSource lessonSource = new LessonSource(context);
