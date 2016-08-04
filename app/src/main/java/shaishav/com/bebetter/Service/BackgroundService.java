@@ -30,7 +30,7 @@ public class BackgroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(this,"Service created",Toast.LENGTH_LONG).show();
+
         final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
@@ -66,6 +66,6 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy(){
 
-        Toast.makeText(this,"Service destroyed",Toast.LENGTH_LONG).show();
+        
     }
 }
