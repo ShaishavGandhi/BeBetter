@@ -143,6 +143,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
             final String name = acct.getDisplayName();
             final String email = acct.getEmail();
+            final String gcm_token = preferences.getString(Constants.GCM_TOKEN,"");
             display_pic = "";
             if(acct.getPhotoUrl() != null)
                 display_pic = acct.getPhotoUrl().toString();
@@ -186,6 +187,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     params.put(Constants.POST_USER_NAME,name);
                     params.put(Constants.POST_USER_EMAIL,email);
                     params.put(Constants.POST_USER_PHOTO,display_pic);
+                    params.put(Constants.GCM_TOKEN,gcm_token);
                     return params;
 
                 }

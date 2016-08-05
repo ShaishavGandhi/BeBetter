@@ -118,11 +118,6 @@ public class DaySummary extends Fragment {
 
         List<Usage> weeklyData = getWeeklyData();
 
-
-        for(Usage usage : weeklyData)
-        Log.v("bebetter","server_id : "+usage.getServer_id()+" localID : "+usage.getId());
-
-
         ArrayList<String> xValues = new ArrayList<String>();
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 

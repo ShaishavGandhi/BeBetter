@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
 import java.util.Calendar;
@@ -38,6 +41,24 @@ public class App extends Application {
             setBackupSchedule(this);
             startService(new Intent(getApplicationContext(), BackgroundService.class));
         }
+
+        String token = getGcmId();
+        saveToken(token);
+    }
+
+    private void saveToken(String token){
+        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String existing_token = preferences.getString(Constants.GCM_TOKEN,"");
+
+        if(!existing_token.equals(token)){
+            editor.putString(Constants.GCM_TOKEN,token);
+            editor.commit();
+
+            SyncRequests syncRequests = SyncRequests.getInstance(getApplicationContext());
+            syncRequests.updateGcmId(token);
+        }
+
     }
 
     public void setBackupSchedule(Context context){
@@ -93,6 +114,11 @@ public class App extends Application {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.commit();
+
+    }
+
+    public String getGcmId(){
+        return FirebaseInstanceId.getInstance().getToken();
 
     }
 

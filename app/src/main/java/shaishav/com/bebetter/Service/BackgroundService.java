@@ -52,20 +52,13 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this,"Service started",Toast.LENGTH_LONG).show();
         return super.onStartCommand(intent,flags,startId);
     }
 
-//    public class LocalBinder extends Binder {
-//        BackgroundService getService() {
-//            return BackgroundService.this;
-//        }
-//
-//    }
 
     @Override
     public void onDestroy(){
 
-        
+
     }
 }

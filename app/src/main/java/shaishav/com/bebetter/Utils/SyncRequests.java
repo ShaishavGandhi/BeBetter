@@ -99,6 +99,7 @@ public class SyncRequests {
         };
 
         queue.add(request);
+
     }
 
     public void syncLesson(Lesson lesson){
@@ -268,5 +269,42 @@ public class SyncRequests {
         if(temp_user_email.equals(""))
             return false;
         return true;
+    }
+
+    public void updateGcmId(final String gcm_token){
+        if (!checkIfSignedIn())
+            return;
+
+        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+
+        StringRequest request = new StringRequest(Request.Method.POST, Constants.HOST + Constants.USER+"/update", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(Constants.GCM_TOKEN,gcm_token);
+                params.put(Constants.POST_USER_EMAIL,temp_user_email);
+                return params;
+            }
+        };
+
+        queue.add(request);
+
+
     }
 }
