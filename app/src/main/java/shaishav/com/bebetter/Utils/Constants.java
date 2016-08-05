@@ -25,6 +25,7 @@ public class Constants {
     public static final String REMINDER_HOUR = "reminder_hour";
     public static final String REMINDER_MINUTE = "reminder_minute";
     public static final String GOAL = "goal";
+    public static final String GCM_TOKEN="gcm_id";
 
     public static final String POST_USER_NAME = "name";
     public static final String POST_USER_EMAIL = "email";

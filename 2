@@ -1,0 +1,430 @@
+Singleton Pattern, Ideas implementation started
+
+* Singleton pattern for SyncRequests
+* Made data layer for implementation of ideas
+* Add settings
+
+
+Signed-off-by: shaishavgandhi05 <shaishgandhi@gmail.com>
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   app/src/main/AndroidManifest.xml
+#	modified:   app/src/main/java/shaishav/com/bebetter/Activities/AddLesson.java
+#	modified:   app/src/main/java/shaishav/com/bebetter/Activities/MainActivity.java
+#	new file:   app/src/main/java/shaishav/com/bebetter/Data/Idea.java
+#	new file:   app/src/main/java/shaishav/com/bebetter/Data/IdeaSource.java
+#	modified:   app/src/main/java/shaishav/com/bebetter/Data/MySQLiteHelper.java
+#	modified:   app/src/main/java/shaishav/com/bebetter/Fragments/DaySummary.java
+#	modified:   app/src/main/java/shaishav/com/bebetter/Utils/SyncRequests.java
+#	modified:   app/src/main/res/layout/fragment_lesson.xml
+#	new file:   app/src/main/res/values/array.xml
+#	modified:   app/src/main/res/xml/settings_preferences.xml
+#
+# ------------------------ >8 ------------------------
+# Do not touch the line above.
+# Everything below will be removed.
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 2f60542..d10b753 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -18,14 +18,6 @@
+ 
+         <receiver android:name=".Receiver.Reminder" />
+         <receiver android:name=".Receiver.Backup" />
+-        <!-- <receiver android:name=".PhoneUnlockedReceiver"> -->
+-        <!-- <intent-filter > -->
+-        <!-- <action android:name="android.intent.action.USER_PRESENT"> -->
+-
+-
+-        <!-- </action> -->
+-        <!-- </intent-filter> -->
+-        <!-- </receiver> -->
+ 
+         <activity
+             android:name=".Activities.AddLesson"
+diff --git a/app/src/main/java/shaishav/com/bebetter/Activities/AddLesson.java b/app/src/main/java/shaishav/com/bebetter/Activities/AddLesson.java
+index 130eb7b..26d1a69 100644
+--- a/app/src/main/java/shaishav/com/bebetter/Activities/AddLesson.java
++++ b/app/src/main/java/shaishav/com/bebetter/Activities/AddLesson.java
+@@ -122,7 +122,7 @@ public class AddLesson extends AppCompatActivity {
+                     lessonSource.open();
+                     Lesson lesson = lessonSource.createLesson(titleText,lessonText,categoryText,new Date().getTime(),is_public);
+                     lessonSource.close();
+-                    SyncRequests syncRequests = new SyncRequests(getApplicationContext());
++                    SyncRequests syncRequests = SyncRequests.getInstance(getApplicationContext());
+                     syncRequests.syncLesson(lesson);
+                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                     startActivity(intent);
+diff --git a/app/src/main/java/shaishav/com/bebetter/Activities/MainActivity.java b/app/src/main/java/shaishav/com/bebetter/Activities/MainActivity.java
+index f988e2e..7df3756 100644
+--- a/app/src/main/java/shaishav/com/bebetter/Activities/MainActivity.java
++++ b/app/src/main/java/shaishav/com/bebetter/Activities/MainActivity.java
+@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
+         if(isFirstTime())
+             introduceApp();
+ 
+-        SyncRequests requests = new SyncRequests(getApplicationContext());
++        SyncRequests requests = SyncRequests.getInstance(getApplicationContext());
+         requests.getSyncedLessons();
+         requests.getSyncedUsages();
+ 
+diff --git a/app/src/main/java/shaishav/com/bebetter/Data/Idea.java b/app/src/main/java/shaishav/com/bebetter/Data/Idea.java
+new file mode 100644
+index 0000000..79a609d
+--- /dev/null
++++ b/app/src/main/java/shaishav/com/bebetter/Data/Idea.java
+@@ -0,0 +1,35 @@
++package shaishav.com.bebetter.Data;
++
++/**
++ * Created by Shaishav on 02-08-2016.
++ */
++public class Idea {
++
++    long id, date;
++    String title;
++
++    public String getTitle(){
++        return title;
++    }
++
++    public void setTitle(String title){
++        this.title = title;
++    }
++
++    public long getId(){
++        return id;
++    }
++
++    public void setId(long id){
++        this.id = id;
++    }
++
++    public void setDate(long date){
++        this.date = date;
++    }
++
++    public long getDate(){
++        return date;
++    }
++
++}
+diff --git a/app/src/main/java/shaishav/com/bebetter/Data/IdeaSource.java b/app/src/main/java/shaishav/com/bebetter/Data/IdeaSource.java
+new file mode 100644
+index 0000000..76b6478
+--- /dev/null
++++ b/app/src/main/java/shaishav/com/bebetter/Data/IdeaSource.java
+@@ -0,0 +1,124 @@
++package shaishav.com.bebetter.Data;
++
++import android.content.ContentValues;
++import android.content.Context;
++import android.database.Cursor;
++import android.database.SQLException;
++import android.database.sqlite.SQLiteDatabase;
++
++import java.util.ArrayList;
++import java.util.Date;
++import java.util.List;
++
++/**
++ * Created by Shaishav on 02-08-2016.
++ */
++public class IdeaSource {
++
++    private SQLiteDatabase database;
++    private MySQLiteHelper dbHelper;
++    private Context context;
++
++
++
++    public IdeaSource(Context context) {
++        dbHelper = new MySQLiteHelper(context);
++        this.context = context;
++    }
++
++    public void open() throws SQLException {
++        database = dbHelper.getWritableDatabase();
++    }
++
++    public void close() {
++        dbHelper.close();
++    }
++
++    public Idea createIdea(String title){
++        ContentValues contentValues = new ContentValues();
++        contentValues.put(MySQLiteHelper.COLUMN_TITLE,title);
++        contentValues.put(MySQLiteHelper.COLUMN_DATE, new Date().getTime());
++
++        long insertId = database.insert(MySQLiteHelper.TABLE_IDEAS, null, contentValues);
++
++
++
++        Cursor cursor = database.query(MySQLiteHelper.TABLE_IDEAS,null,MySQLiteHelper.COLUMN_DATE+"="+insertId,null,null,null
++                ,MySQLiteHelper.COLUMN_ID+" desc");
++
++        cursor.moveToFirst();
++
++
++
++        Idea idea = cursorToPost(cursor);
++        cursor.close();
++
++        return idea;
++    }
++
++    public List<Idea> getAllUsages(){
++        List<Idea> ideas = new ArrayList<Idea>();
++
++        Cursor cursor = database.query(MySQLiteHelper.TABLE_IDEAS,
++                null, null, null, null, null, MySQLiteHelper.COLUMN_DATE+" desc");
++
++        cursor.moveToFirst();
++        while (!cursor.isAfterLast()) {
++            Idea idea = cursorToPost(cursor);
++            ideas.add(idea);
++            cursor.moveToNext();
++        }
++        // make sure to close the cursor
++        cursor.close();
++        return ideas;
++    }
++
++    public List<Idea> getIdeasForBackup(){
++        List<Idea> ideas = new ArrayList<Idea>();
++
++        Cursor cursor = database.query(MySQLiteHelper.TABLE_IDEAS,
++                null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_DATE+" asc");
++
++        cursor.moveToFirst();
++        while (!cursor.isAfterLast()) {
++            Idea idea = cursorToPost(cursor);
++            ideas.add(idea);
++            cursor.moveToNext();
++        }
++        // make sure to close the cursor
++        cursor.close();
++        return ideas;
++    }
++
++    public void setServerId(String server_id,int id){
++        ContentValues cv = new ContentValues();
++        cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);
++
++        database.update(MySQLiteHelper.TABLE_IDEAS,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
++    }
++
++
++    public boolean isExisting(String server_id){
++
++        Cursor cursor = database.query(MySQLiteHelper.TABLE_IDEAS,
++                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_DATE+" desc");
++
++        cursor.moveToFirst();
++
++        if(cursor.getCount()>0)
++            return true;
++        else
++            return false;
++
++    }
++
++    private Idea cursorToPost(Cursor cursor){
++        Idea idea = new Idea();
++        idea.setId(cursor.getLong(0));
++        idea.setDate(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_DATE)));
++        idea.setTitle(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_TITLE)));
++
++        return idea;
++    }
++
++}
+diff --git a/app/src/main/java/shaishav/com/bebetter/Data/MySQLiteHelper.java b/app/src/main/java/shaishav/com/bebetter/Data/MySQLiteHelper.java
+index 019d25b..ab44de7 100644
+--- a/app/src/main/java/shaishav/com/bebetter/Data/MySQLiteHelper.java
++++ b/app/src/main/java/shaishav/com/bebetter/Data/MySQLiteHelper.java
+@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
+ public class MySQLiteHelper extends SQLiteOpenHelper {
+ 
+     public static final String TABLE_LESSON = "lessons";
++    public static final String TABLE_IDEAS = "ideas";
+     public static final String COLUMN_ID = "_id";
+     public static final String COLUMN_TITLE = "title";
+     public static final String COLUMN_LESSON = "lesson";
+@@ -35,6 +36,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
+             + " integer primary key autoincrement, " + COLUMN_DATE
+             + " long not null,"+COLUMN_USAGE+" long not null, "+COLUMN_SERVER_ID+" text default 'NA');";
+ 
++    private static final String CREATE_IDEAS = "create table "
++            + TABLE_IDEAS + "(" + COLUMN_ID
++            + " integer primary key autoincrement, " + COLUMN_TITLE
++            + " text not null,"+COLUMN_LESSON+" long not null,"
++            +COLUMN_SERVER_ID+" text default 'NA');";
++
+ 
+     public MySQLiteHelper(Context context) {
+         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+@@ -44,6 +51,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
+     public void onCreate(SQLiteDatabase database) {
+         database.execSQL(DATABASE_CREATE);
+         database.execSQL(CREATE_USAGE_STATS);
++        database.execSQL(CREATE_IDEAS);
+ 
+     }
+ 
+diff --git a/app/src/main/java/shaishav/com/bebetter/Fragments/DaySummary.java b/app/src/main/java/shaishav/com/bebetter/Fragments/DaySummary.java
+index c1d3fb5..a8e0a9c 100644
+--- a/app/src/main/java/shaishav/com/bebetter/Fragments/DaySummary.java
++++ b/app/src/main/java/shaishav/com/bebetter/Fragments/DaySummary.java
+@@ -9,6 +9,7 @@ import android.os.Bundle;
+ import android.sax.TextElementListener;
+ import android.app.Fragment;
+ import android.support.v4.widget.SwipeRefreshLayout;
++import android.util.Log;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -83,6 +84,8 @@ public class DaySummary extends Fragment {
+         lineChart = (LineChart)rootView.findViewById(R.id.usage_chart);
+ 
+         usageSource = new UsageSource(getActivity().getApplicationContext());
++
++
+         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefresh);
+ 
+         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+@@ -114,6 +117,12 @@ public class DaySummary extends Fragment {
+         }
+ 
+         List<Usage> weeklyData = getWeeklyData();
++
++
++        for(Usage usage : weeklyData)
++        Log.v("bebetter","server_id : "+usage.getServer_id()+" localID : "+usage.getId());
++
++
+         ArrayList<String> xValues = new ArrayList<String>();
+         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
+ 
+@@ -204,9 +213,9 @@ public class DaySummary extends Fragment {
+ 
+     private List<Usage> getWeeklyData(){
+         Date date = new Date();
+-        date.setDate(date.getDate()-7);
++        date.setDate(date.getDate()-70);
+         long lower_threshold = date.getTime();
+-        date.setDate(date.getDate()+14);
++        date.setDate(date.getDate()+140);
+         long higher_threshold = date.getTime();
+ 
+         usageSource.open();
+diff --git a/app/src/main/java/shaishav/com/bebetter/Utils/SyncRequests.java b/app/src/main/java/shaishav/com/bebetter/Utils/SyncRequests.java
+index 9bbe284..df2fd2d 100644
+--- a/app/src/main/java/shaishav/com/bebetter/Utils/SyncRequests.java
++++ b/app/src/main/java/shaishav/com/bebetter/Utils/SyncRequests.java
+@@ -58,6 +58,7 @@ public class SyncRequests {
+         if (!checkIfSignedIn())
+             return;
+ 
++
+         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
+         final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+ 
+diff --git a/app/src/main/res/layout/fragment_lesson.xml b/app/src/main/res/layout/fragment_lesson.xml
+index ed50f28..9f8385c 100644
+--- a/app/src/main/res/layout/fragment_lesson.xml
++++ b/app/src/main/res/layout/fragment_lesson.xml
+@@ -6,11 +6,11 @@
+     app:cardElevation="2dp"
+     android:layout_marginBottom="8dp"
+     app:cardCornerRadius="2dp">
+-<LinearLayout
++<RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:padding="8dp"
+-    android:orientation="vertical">
++    >
+ 
+     <TextView
+         android:id="@+id/id"
+@@ -26,8 +26,9 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_margin="@dimen/text_margin"
++        android:layout_below="@+id/id"
+         android:textSize="16dp"
+         android:text="29th June"
+         android:textAppearance="?attr/textAppearanceListItem" />
+-</LinearLayout>
++</RelativeLayout>
+ </android.support.v7.widget.CardView>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/array.xml b/app/src/main/res/values/array.xml
+new file mode 100644
+index 0000000..3c436ea
+--- /dev/null
++++ b/app/src/main/res/values/array.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string-array name="HoursMinutes">
++        <item>Hours</item>
++        <item>Minutes</item>
++    </string-array>
++</resources>
+diff --git a/app/src/main/res/xml/settings_preferences.xml b/app/src/main/res/xml/settings_preferences.xml
+index db384ca..f2682f6 100644
+--- a/app/src/main/res/xml/settings_preferences.xml
++++ b/app/src/main/res/xml/settings_preferences.xml
+@@ -12,4 +12,44 @@
+ 
+     </PreferenceCategory>
+ 
++    <PreferenceCategory
++        android:title="Backup">
++
++        <SwitchPreference
++            android:key="backup"
++            android:title="Backup your lessons, usages and ideas to server">
++
++        </SwitchPreference>
++
++        <Preference
++            android:key="backupStatus"
++            android:title="Backup Status">
++
++        </Preference>
++
++    </PreferenceCategory>
++
++    <PreferenceCategory
++        android:title="Usage">
++
++        <ListPreference
++            android:key="timeDisplay"
++            android:summary="Display your mobile usage in hours/minutes"
++            android:entryValues="@array/HoursMinutes"
++            >
++
++        </ListPreference>
++
++        <Preference
++            android:key="service"
++            android:title="Keep foreground service running"
++            android:summary="Disabling this will cause the app to stop monitoring your usage"
++            >
++
++        </Preference>
++
++    </PreferenceCategory>
++
++
++
+ </PreferenceScreen>
+\ No newline at end of file
