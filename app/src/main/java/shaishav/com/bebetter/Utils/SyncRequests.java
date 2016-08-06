@@ -6,9 +6,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -98,6 +100,8 @@ public class SyncRequests {
             }
         };
 
+        request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         queue.add(request);
 
     }
@@ -149,6 +153,7 @@ public class SyncRequests {
             }
         };
 
+        request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
     }
 
@@ -205,6 +210,7 @@ public class SyncRequests {
         });
 
         queue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
     }
 
@@ -255,6 +261,7 @@ public class SyncRequests {
             }
         });
 
+        request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
     }
 
@@ -304,6 +311,7 @@ public class SyncRequests {
         };
 
         queue.add(request);
+        request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
 
     }
