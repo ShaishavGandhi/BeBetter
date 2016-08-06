@@ -17,7 +17,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name=".Receiver.Reminder" />
-        <receiver android:name=".Receiver.Backup" />
+        <receiver android:name=".Receiver.Backup" >
+
+        </receiver>
 
         <activity
             android:name=".Activities.AddLesson"
