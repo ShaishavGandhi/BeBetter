@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 import java.util.Date;
 import java.util.Set;
 
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
@@ -22,7 +23,7 @@ import shaishav.com.bebetter.Utils.TimeWidget;
 
 public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
-    public static boolean wasScreenOn = true;
+
     public long session_time;
 
     @Override
@@ -30,75 +31,78 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+        PreferenceSource preferenceSource = PreferenceSource.getInstance(context);
 
 
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             // do whatever you need to do here
 
-            long lock_time = new Date().getTime();
-            Log.e("LOB","Locked at : "+new Date(lock_time).toLocaleString());
-            editor.putLong(Constants.LOCKED,lock_time);
+//            long lock_time = new Date().getTime();
+//            editor.putLong(Constants.LOCKED,lock_time);
+//
+//            long last_unlock_time = preferences.getLong(Constants.UNLOCKED,0);
+//
+//            if(last_unlock_time==0) {
+//                editor.commit();
+//                return;
+//            }
+//
+//            if(dayChanged(lock_time,last_unlock_time)){
+//                Date previousDate = new Date(last_unlock_time);
+//                previousDate.setHours(23);
+//                previousDate.setMinutes(59);
+//
+//                session_time = previousDate.getTime() - last_unlock_time;
+//
+//
+//                storeSessionInDb(context,previousDate.getTime(),preferences.getLong(Constants.SESSION,0)+session_time);
+//
+//                previousDate.setDate(previousDate.getDate()+1);
+//                previousDate.setHours(0);
+//                previousDate.setMinutes(0);
+//
+//                last_unlock_time = previousDate.getTime();
+//
+//                session_time = lock_time - last_unlock_time;
+//
+//
+//
+//                editor.putLong(Constants.UNLOCKED,last_unlock_time);
+//                editor.putLong(Constants.SESSION,session_time);
+//
+//            }
+//            else{
+//                session_time = lock_time - last_unlock_time;
+//                long prev_session = preferences.getLong(Constants.SESSION,0);
+//                session_time += prev_session;
+//                editor.putLong(Constants.SESSION,session_time);
+//            }
+//            Notification notif = new Notification();
+//            int goal = preferences.getInt(Constants.GOAL,0);
+//            android.app.Notification notification = notif.createNotification(context,String.valueOf(session_time/(1000*60)),
+//                    String.valueOf(goal));
+//            notif.updateNotification(context,notification);
+//            editor.commit();
 
-            long last_unlock_time = preferences.getLong(Constants.UNLOCKED,0);
-
-            if(last_unlock_time==0) {
-                editor.commit();
-                return;
-            }
-
-            if(dayChanged(lock_time,last_unlock_time)){
-                Date previousDate = new Date(last_unlock_time);
-                previousDate.setHours(23);
-                previousDate.setMinutes(59);
-
-                session_time = previousDate.getTime() - last_unlock_time;
-
-
-                storeSessionInDb(context,previousDate.getTime(),preferences.getLong(Constants.SESSION,0)+session_time);
-
-                previousDate.setDate(previousDate.getDate()+1);
-                previousDate.setHours(0);
-                previousDate.setMinutes(0);
-
-                last_unlock_time = previousDate.getTime();
-
-                session_time = lock_time - last_unlock_time;
-
-
-
-                editor.putLong(Constants.UNLOCKED,last_unlock_time);
-                editor.putLong(Constants.SESSION,session_time);
-
-            }
-            else{
-                session_time = lock_time - last_unlock_time;
-                long prev_session = preferences.getLong(Constants.SESSION,0);
-                session_time += prev_session;
-                editor.putLong(Constants.SESSION,session_time);
-            }
-            Notification notif = new Notification();
-            int goal = preferences.getInt(Constants.GOAL,0);
-            android.app.Notification notification = notif.createNotification(context,String.valueOf(session_time/(1000*60)),
-                    String.valueOf(goal));
-            notif.updateNotification(context,notification);
-            editor.commit();
-
+            preferenceSource.savePhoneLockTime();
 
 
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
             // and do whatever you need to do here
-            long last_unlocked = preferences.getLong(Constants.UNLOCKED,0);
+//            long last_unlocked = preferences.getLong(Constants.UNLOCKED,0);
+//
+//            long unlocked = new Date().getTime();
+//            Log.e("LOB","Unlocked at : "+new Date(unlocked).toLocaleString());
+//            if(dayChanged(last_unlocked,unlocked) && last_unlocked!=0){
+//                storeSessionInDb(context,last_unlocked,preferences.getLong(Constants.SESSION,0));
+//                editor.putLong(Constants.SESSION,0);
+//            }
+//
+//
+//            editor.putLong(Constants.UNLOCKED, unlocked);
+//            editor.commit();
 
-            long unlocked = new Date().getTime();
-            Log.e("LOB","Unlocked at : "+new Date(unlocked).toLocaleString());
-            if(dayChanged(last_unlocked,unlocked) && last_unlocked!=0){
-                storeSessionInDb(context,last_unlocked,preferences.getLong(Constants.SESSION,0));
-                editor.putLong(Constants.SESSION,0);
-            }
-
-
-            editor.putLong(Constants.UNLOCKED, unlocked);
-            editor.commit();
+            preferenceSource.savePhoneUnlockTime();
 
             //Update screen widget if present
 
@@ -108,28 +112,7 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
             updateWidget(context);
 
-        }else if(intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-            KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-            if (keyguardManager.isKeyguardSecure()) {
-
-            }
         }
-    }
-
-    private boolean dayChanged(long lock_time,long unlock_time){
-
-        Date lock_date = new Date(lock_time);
-        Date unlock_date = new Date(unlock_time);
-
-        return lock_date.getDate()!=unlock_date.getDate();
-
-    }
-
-    public void storeSessionInDb(Context context, long date, long session_time){
-        UsageSource usageSource = new UsageSource(context);
-        usageSource.open();
-        usageSource.createUsage(date,session_time);
-        usageSource.close();
     }
 
     void updateWidget(Context context){

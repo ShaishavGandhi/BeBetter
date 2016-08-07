@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.sax.TextElementListener;
 import android.app.Fragment;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import im.dacer.androidcharts.LineView;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.R;
@@ -40,10 +42,11 @@ public class DaySummary extends Fragment {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private UsageSource usageSource;
-    private TextView current_session_tv,daily_session_tv,average_daily_usage_tv;
+    private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv;
     private View rootView;
-    private String daily_session,current_session,average_daily_usage,daily_goal;
+    private String daily_session,current_session,average_daily_usage,daily_goal,total_usage;
     private LineChart lineChart;
+    LineView lineView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public DaySummary() {
@@ -81,7 +84,12 @@ public class DaySummary extends Fragment {
         current_session_tv = (TextView)rootView.findViewById(R.id.current_session);
         daily_session_tv = (TextView)rootView.findViewById(R.id.daily_usage);
         average_daily_usage_tv = (TextView)rootView.findViewById(R.id.average_daily_usage);
+        total_usage_tv = (TextView)rootView.findViewById(R.id.total_usage);
         lineChart = (LineChart)rootView.findViewById(R.id.usage_chart);
+        lineView = (LineView)rootView.findViewById(R.id.usage_chart_2);
+        lineView.setDrawDotLine(true); //optional
+        lineView.setColorArray(new String[]{"#674172"});
+        lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
 
         usageSource = new UsageSource(getActivity().getApplicationContext());
 
@@ -116,11 +124,21 @@ public class DaySummary extends Fragment {
             daily_goal = String.valueOf(200);
         }
 
+        usageSource.open();
+        total_usage = String.valueOf(usageSource.getTotalUsage()/(1000*60*60));
+        usageSource.close();
+
+        total_usage = String.valueOf(Long.valueOf(current_session) + Long.valueOf(total_usage));
+
+
+        ArrayList<String> xAxes = new ArrayList<>();
+        ArrayList<Integer> yAxes = new ArrayList<>();
+
         List<Usage> weeklyData = getWeeklyData();
 
-        for(Usage usage : weeklyData){
-            Log.v("bebetterusage",usage.getId()+" : "+usage.getServer_id()+" : "+usage.getDate());
-        }
+//        for(Usage usage : weeklyData){
+//            Log.v("bebetterusage",usage.getId()+" : "+usage.getServer_id()+" : "+usage.getDate());
+//        }
 
         ArrayList<String> xValues = new ArrayList<String>();
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
@@ -130,11 +148,21 @@ public class DaySummary extends Fragment {
         for(int i=0;i<weeklyData.size();i++){
             Date date = new Date(weeklyData.get(i).getDate());
             xValues.add(Constants.getFormattedDate(date));
+            xAxes.add(Constants.getFormattedDate(date));
 
             Entry data = new Entry((weeklyData.get(i).getUsage()/(1000*60)),i);
+            yAxes.add((int)(weeklyData.get(i).getUsage()/(1000*60)));
 
             entries.add(data);
         }
+
+
+        yAxes.add((int)Long.parseLong(daily_session));
+        xAxes.add(Constants.getFormattedDate(new Date()));
+        ArrayList<ArrayList<Integer>> data = new ArrayList<ArrayList<Integer>>();
+        data.add(yAxes);
+        lineView.setBottomTextList(xAxes);
+        lineView.setDataList(data);
 
         Entry todaysEntry = new Entry(Long.parseLong(daily_session),weeklyData.size());
         xValues.add(Constants.getFormattedDate(new Date()));
@@ -185,8 +213,9 @@ public class DaySummary extends Fragment {
         if(Long.parseLong(daily_session) > Long.parseLong(daily_goal)){
             daily_session_tv.setTextColor(Color.RED);
         }
-        animateCounter(daily_session_tv,(int)Long.parseLong(daily_session));
-        animateCounter(average_daily_usage_tv,(int)Long.parseLong(average_daily_usage));
+        animateCounter(daily_session_tv, (int)Long.parseLong(daily_session));
+        animateCounter(average_daily_usage_tv, (int)Long.parseLong(average_daily_usage));
+        animateCounter(total_usage_tv, Integer.parseInt(total_usage));
 
         Notification notif = new Notification();
         notif.updateNotification(getActivity().getApplicationContext(),

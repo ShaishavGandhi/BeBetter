@@ -17,15 +17,10 @@
 
         <SwitchPreference
             android:key="backup"
-            android:title="Backup your lessons, usages and ideas to server">
+            android:title="Sync data to cloud"
+            android:summary="All your ideas, lessons and usages are safe in the cloud.">
 
         </SwitchPreference>
-
-        <Preference
-            android:key="backupStatus"
-            android:title="Backup Status">
-
-        </Preference>
 
     </PreferenceCategory>
 
@@ -42,13 +37,6 @@
 
         </ListPreference>
 
-        <Preference
-            android:key="service"
-            android:title="Keep foreground service running"
-            android:summary="Disabling this will cause the app to stop monitoring your usage"
-            >
-
-        </Preference>
 
     </PreferenceCategory>
 

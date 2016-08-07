@@ -111,6 +111,16 @@ public class UsageSource {
         return posts;
     }
 
+    public int getTotalUsage(){
+        Cursor cur = database.rawQuery("SELECT SUM("+MySQLiteHelper.COLUMN_USAGE+") FROM "+MySQLiteHelper.TABLE_USAGE, null);
+        if(cur.moveToFirst())
+        {
+            return cur.getInt(0);
+        }
+
+        return 0;
+    }
+
     public void setServerId(String server_id,int id){
         ContentValues cv = new ContentValues();
         cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);

@@ -43,8 +43,10 @@ public class SyncRequests {
 
 
     protected SyncRequests(Context context){
+
         this.context = context;
         this.queue = Volley.newRequestQueue(context);
+
     }
 
     public static SyncRequests getInstance(Context context){
