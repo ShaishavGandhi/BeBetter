@@ -43,8 +43,6 @@ public class BackgroundService extends Service {
         shaishav.com.bebetter.Utils.Notification notif = new shaishav.com.bebetter.Utils.Notification();
         Notification notification = notif.createNotification(this,String.valueOf(usage),String.valueOf(goal));
 
-
-
         startForeground(1337, notification);
 
 
@@ -59,6 +57,7 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy(){
 
+        stopForeground(true);
 
     }
 }

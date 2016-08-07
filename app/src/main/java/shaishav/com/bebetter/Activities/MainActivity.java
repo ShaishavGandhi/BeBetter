@@ -109,9 +109,6 @@ public class MainActivity extends AppCompatActivity
         Picasso.with(getApplicationContext()).load(photo).into((ImageView)navigationView.getHeaderView(0).findViewById(R.id.imageView));
 
 
-        Toast.makeText(MainActivity.this,String.valueOf(preferences.getLong("onReceive",0)), Toast.LENGTH_SHORT).show();
-
-
         //Set first screen
         setFirstScreen();
 

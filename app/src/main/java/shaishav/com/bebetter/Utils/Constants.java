@@ -26,6 +26,9 @@ public class Constants {
     public static final String REMINDER_MINUTE = "reminder_minute";
     public static final String GOAL = "goal";
     public static final String GCM_TOKEN="gcm_id";
+    public static final String PREFERENCE_BACKUP = "backup_status";
+    public static final String PREFERENCE_FOREGROUND = "foreground";
+    public static final String PREFERENCE_USAGE_UNIT = "usage_unit";
 
     public static final String POST_USER_NAME = "name";
     public static final String POST_USER_EMAIL = "email";

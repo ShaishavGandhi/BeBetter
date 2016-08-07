@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import java.util.Map;
 
+import shaishav.com.bebetter.Activities.AddLesson;
 import shaishav.com.bebetter.Activities.MainActivity;
 import shaishav.com.bebetter.R;
 
@@ -19,12 +20,11 @@ import shaishav.com.bebetter.R;
 public class Notification {
 
     public android.app.Notification createNotification(Context context,String usage, String goal){
+
         Intent notificationIntent = new Intent(context, MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 notificationIntent, 0);
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         android.app.Notification notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notif)
@@ -33,14 +33,46 @@ public class Notification {
                         "Usage goal : "+goal+" min.")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("Your mobile usage is "+usage+" min. " +
                         "Usage goal : "+goal+" min."))
-                .setSound(defaultSoundUri)
                 .setPriority(android.app.Notification.PRIORITY_MIN)
                 .setContentIntent(pendingIntent).build();
 
         return notification;
+
+    }
+
+    public void createReminderNotification(Context context,String name){
+        //Create intent for the activity where you enter the lesson
+        Intent resultIntent = new Intent(context, AddLesson.class);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        //Create the notification
+        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.notif)
+                .setContentTitle("Hi "+name)
+                .setSound(defaultSoundUri)
+                .setContentText("What did you learn today?")
+                .setAutoCancel(true);
+
+        //Set intent to notification
+        builder.setContentIntent(resultPendingIntent);
+
+        //Notify
+        notificationManager.notify(1,builder.build());
+
     }
 
     public void createQuoteNotification(Context context,Map<String,String> map){
+
         String photo = map.get("photo");
         String quote = map.get("quote");
         String author = map.get("author");
@@ -65,12 +97,13 @@ public class Notification {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
-
     }
 
     public void updateNotification(Context context,android.app.Notification notification){
+
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1337,notification);
+
     }
 
 }

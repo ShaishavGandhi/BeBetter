@@ -45,8 +45,10 @@ public class Backup extends BroadcastReceiver {
         editor.commit();
 
 
-        Intent serviceIntent = new Intent(context, BackupService.class);
-        context.startService(serviceIntent);
+        if(preferences.getBoolean(Constants.PREFERENCE_BACKUP,true)) {
+            Intent serviceIntent = new Intent(context, BackupService.class);
+            context.startService(serviceIntent);
+        }
 
     }
 }

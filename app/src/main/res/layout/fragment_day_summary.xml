@@ -137,7 +137,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Weekly Usage"
+            android:text="Usage Trend"
             android:textAlignment="center"
             android:paddingBottom="10dp"
             android:paddingTop="5dp"
@@ -153,6 +153,7 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             android:layout_marginBottom="8dp"
             android:id="@+id/usage_chart"
             android:layout_width="match_parent"
@@ -160,6 +161,16 @@
 
 
         </com.github.mikephil.charting.charts.LineChart>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <view
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                class="im.dacer.androidcharts.LineView"
+                android:id="@+id/usage_chart_2" />
+        </HorizontalScrollView>
 
     </LinearLayout>
 
@@ -206,6 +217,59 @@
 
             <TextView
                 android:text="min"
+                android:textAlignment="center"
+                android:layout_marginBottom="10dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardElevation="1dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="2dp">
+
+        <LinearLayout
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Total Usage"
+                android:textAlignment="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="5dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:padding="5dp"
+                android:background="#ccc"></View>
+
+            <TextView
+                android:id="@+id/total_usage"
+                android:text="193"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:paddingTop="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Display3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="hours"
                 android:textAlignment="center"
                 android:layout_marginBottom="10dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
