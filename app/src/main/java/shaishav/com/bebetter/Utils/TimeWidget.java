@@ -8,6 +8,7 @@ import android.widget.RemoteViews;
 
 import java.util.Date;
 
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -47,9 +48,9 @@ public class TimeWidget extends AppWidgetProvider {
     }
 
     public static String getData(Context context){
-        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        String current_session = String.valueOf((new Date().getTime() - preferences.getLong(Constants.UNLOCKED, 0)) / (1000 * 60));
-        String daily_session = String.valueOf((preferences.getLong(Constants.SESSION, 0)) / (1000 * 60));
+        PreferenceSource preferenceSource = PreferenceSource.getInstance(context);
+        String current_session = String.valueOf((new Date().getTime() - preferenceSource.getLastUnlockedTime()) / (1000 * 60));
+        String daily_session = String.valueOf((preferenceSource.getSessionTime()) / (1000 * 60));
         daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session));
         return daily_session;
     }

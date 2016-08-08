@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 
@@ -30,12 +31,15 @@ public class IntroSecond extends Fragment {
 
     public static TextView time_tv;
     public static Context context;
+    static PreferenceSource preferenceSource;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.intro_second, container, false);
         context = getActivity().getApplicationContext();
+        preferenceSource = PreferenceSource.getInstance(context);
+
         Button button = (Button)rootView.findViewById(R.id.reminder_time);
         time_tv = (TextView)rootView.findViewById(R.id.time);
         button.setOnClickListener(new View.OnClickListener() {
@@ -51,11 +55,7 @@ public class IntroSecond extends Fragment {
 
 
     public static void setReminderTime(int hourOfDay,int minute){
-        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(Constants.REMINDER_HOUR,hourOfDay);
-        editor.putInt(Constants.REMINDER_MINUTE,minute);
-        editor.commit();
+        preferenceSource.saveReminderTime(hourOfDay, minute);
     }
 
      public static class TimePickerFragment extends DialogFragment

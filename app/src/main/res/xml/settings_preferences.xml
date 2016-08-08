@@ -37,6 +37,13 @@
 
         </ListPreference>
 
+        <Preference
+            android:key="goal"
+            android:title="Daily Usage Goal"
+            android:summary="">
+
+        </Preference>
+
 
     </PreferenceCategory>
 

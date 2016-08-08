@@ -96,6 +96,27 @@ public class PreferenceSource {
 
     }
 
+    public long getLastBackedUpTime(){
+        return preferences.getLong(Constants.LAST_BACKED_UP,0);
+    }
+
+    public void setLastBackedUpTime(long time){
+        editor.putLong(Constants.LAST_BACKED_UP, time);
+        editor.commit();
+    }
+
+    public long getLastUnlockedTime(){
+        return preferences.getLong(Constants.UNLOCKED,0);
+    }
+
+    public long getLastLockedTime(){
+        return preferences.getLong(Constants.LOCKED,0);
+    }
+
+    public long getSessionTime(){
+        return preferences.getLong(Constants.SESSION, 0);
+    }
+
     public void setBackupPreference(int hourOfDay, int minute){
 
         editor.putInt(Constants.REMINDER_HOUR,hourOfDay);
@@ -104,6 +125,59 @@ public class PreferenceSource {
 
         App app = new App();
         app.setReminder(context.getApplicationContext());
+    }
+
+    public String getReminderTime(){
+        int hour = preferences.getInt(Constants.REMINDER_HOUR,0);
+        int minute = preferences.getInt(Constants.REMINDER_MINUTE,0);
+        return Constants.getTimeInAMPM(hour,minute);
+    }
+
+    public void saveUserData(String name, String email, String display_pic){
+        editor.putString(Constants.FULL_NAME,name);
+        editor.putString(Constants.EMAIL,email);
+        editor.putString(Constants.DISPLAY_PIC,display_pic);
+        editor.commit();
+    }
+
+    public String getName(){
+        return preferences.getString(Constants.FULL_NAME,"");
+    }
+
+    public void setName(String name){
+        editor.putString(Constants.FULL_NAME, name);
+    }
+
+    public String getEmail(){
+        return preferences.getString(Constants.EMAIL,"");
+    }
+
+    public void saveReminderTime(int hour, int minute){
+        editor.putInt(Constants.REMINDER_HOUR, hour);
+        editor.putInt(Constants.REMINDER_MINUTE,minute);
+        editor.commit();
+    }
+
+    public boolean isBackupEnabled(){
+        return preferences.getBoolean(Constants.PREFERENCE_BACKUP,true);
+    }
+
+    public void setIsBackupEnabled(boolean backup){
+        editor.putBoolean(Constants.PREFERENCE_BACKUP,backup);
+        editor.commit();
+    }
+
+    public String getGcm(){
+        return preferences.getString(Constants.GCM_TOKEN,"");
+    }
+
+    public int getGoal(){
+        return preferences.getInt(Constants.GOAL,200);
+    }
+
+    public void setGoal(int goal){
+        editor.putInt(Constants.GOAL,goal);
+        editor.commit();
     }
 
     public void setIsForegroundServiceRunning(boolean isRunning){

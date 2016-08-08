@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -16,9 +17,13 @@ import android.preference.SwitchPreference;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import java.util.Calendar;
 
@@ -34,13 +39,11 @@ import shaishav.com.bebetter.Utils.Constants;
  */
 public class Settings extends PreferenceFragment {
 
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
     PreferenceSource preferenceSource;
 
-    Preference reminderTime;
+    Preference reminderTime,goal;
     SwitchPreference backup;
-    String reminder_time_val;
+    String reminder_time_val,goal_val;
     boolean backup_val;
 
     public Settings() {
@@ -51,8 +54,7 @@ public class Settings extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings_preferences);
-        preferences = getActivity().getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        editor = preferences.edit();
+
 
         initialize();
         getPreferencesData();
@@ -64,14 +66,15 @@ public class Settings extends PreferenceFragment {
     public void initialize(){
         reminderTime = findPreference("reminderTime");
         backup = (SwitchPreference)findPreference("backup");
-
+        goal = findPreference("goal");
         preferenceSource = PreferenceSource.getInstance(getActivity());
     }
 
     public void getPreferencesData(){
 
-        reminder_time_val =  getReminderTime();
-        backup_val = preferences.getBoolean(Constants.PREFERENCE_BACKUP,true);
+        reminder_time_val =  preferenceSource.getReminderTime();
+        backup_val = preferenceSource.isBackupEnabled();
+        goal_val = String.valueOf(preferenceSource.getGoal());
 
     }
 
@@ -79,6 +82,7 @@ public class Settings extends PreferenceFragment {
 
         reminderTime.setSummary(reminder_time_val);
         backup.setChecked(backup_val);
+        goal.setSummary(goal_val + " min");
 
     }
 
@@ -105,31 +109,41 @@ public class Settings extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 SwitchPreference temp = (SwitchPreference)preference;
-                editor.putBoolean(Constants.PREFERENCE_BACKUP,!temp.isChecked());
-                editor.commit();
+                preferenceSource.setIsBackupEnabled(!temp.isChecked());
                 return true;
             }
         });
 
+        goal.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new LovelyTextInputDialog(getActivity())
+                        .setTopColorRes(R.color.colorPrimary)
+                        .setTopTitle("Usage Goal")
+                        .setTopTitleColor(Color.WHITE)
+                        .setMessage("Enter your usage goal in min")
+                        .setIcon(R.drawable.ic_smartphone_white_24dp)
+                        .setInputType(InputType.TYPE_CLASS_NUMBER)
+                        .setConfirmButton("Cool!", new LovelyTextInputDialog.OnTextInputConfirmListener() {
+                            @Override
+                            public void onTextInputConfirmed(String text) {
+                                int min = Integer.parseInt(text);
+                                goal.setSummary(text+" min");
+                                preferenceSource.setGoal(min);
+                            }
+
+                        }).show();
+                return true;
+            }
+        });
 
     }
-
 
     public void setTimeOnView(Preference reminderTime,int hourOfDay, int minute){
 
         reminderTime.setSummary(Constants.getTimeInAMPM(hourOfDay,minute));
 
     }
-
-
-    public String getReminderTime(){
-
-        int hour = preferences.getInt(Constants.REMINDER_HOUR,0);
-        int minute = preferences.getInt(Constants.REMINDER_MINUTE,0);
-        return Constants.getTimeInAMPM(hour,minute);
-
-    }
-
 
 
 

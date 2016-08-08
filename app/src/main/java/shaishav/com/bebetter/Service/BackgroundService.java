@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import shaishav.com.bebetter.Activities.MainActivity;
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Receiver.PhoneUnlockedReceiver;
 import shaishav.com.bebetter.Utils.Constants;
@@ -37,8 +38,10 @@ public class BackgroundService extends Service {
         final BroadcastReceiver mReceiver = new PhoneUnlockedReceiver();
         registerReceiver(mReceiver, filter);
 
-        long usage = (getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE).getLong(Constants.SESSION,0))/(1000*60);
-        long goal = (getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE).getInt(Constants.GOAL,200));
+        PreferenceSource preferenceSource = PreferenceSource.getInstance(getApplicationContext());
+
+        long usage = preferenceSource.getSessionTime()/(1000*60);
+        long goal = preferenceSource.getGoal();
 
         shaishav.com.bebetter.Utils.Notification notif = new shaishav.com.bebetter.Utils.Notification();
         Notification notification = notif.createNotification(this,String.valueOf(usage),String.valueOf(goal));
