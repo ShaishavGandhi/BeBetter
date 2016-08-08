@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -44,8 +45,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         View.OnClickListener{
 
     final int RC_SIGN_IN = 0;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    PreferenceSource preferenceSource;
     GoogleApiClient mGoogleApiClient;
     ProgressDialog progressDialog;
     String display_pic;
@@ -89,10 +89,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     public void initialize(){
-        //Preferences
-        preferences = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-        editor = preferences.edit();
-
+        preferenceSource = PreferenceSource.getInstance(getApplicationContext());
         progressDialog = new ProgressDialog(Login.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
@@ -143,7 +140,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
             final String name = acct.getDisplayName();
             final String email = acct.getEmail();
-            final String gcm_token = preferences.getString(Constants.GCM_TOKEN,"");
+            final String gcm_token = preferenceSource.getGcm();
             display_pic = "";
             if(acct.getPhotoUrl() != null)
                 display_pic = acct.getPhotoUrl().toString();
@@ -215,9 +212,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
     public void storeLocally(String name,String email,String display_pic){
-        editor.putString(Constants.FULL_NAME,name);
-        editor.putString(Constants.EMAIL,email);
-        editor.putString(Constants.DISPLAY_PIC,display_pic);
-        editor.commit();
+        preferenceSource.saveUserData(name,email,display_pic);
+
     }
 }

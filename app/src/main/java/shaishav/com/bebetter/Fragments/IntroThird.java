@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
@@ -26,6 +27,8 @@ import shaishav.com.bebetter.Utils.Constants;
 public class IntroThird extends Fragment {
 
 
+    PreferenceSource preferenceSource;
+
     public IntroThird() {
         // Required empty public constructor
     }
@@ -35,12 +38,12 @@ public class IntroThird extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.intro_third, container, false);
+
+        preferenceSource = PreferenceSource.getInstance(getActivity());
         EditText editText = (EditText)rootView.findViewById(R.id.goal);
         editText.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        SharedPreferences preferences = getActivity().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = preferences.edit();
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -56,8 +59,7 @@ public class IntroThird extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 int min = Integer.parseInt(editable.toString());
-                editor.putInt(Constants.GOAL,min);
-                editor.commit();
+                preferenceSource.setGoal(min);
 
 
             }

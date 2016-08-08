@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 
 import shaishav.com.bebetter.Activities.AddLesson;
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 
@@ -18,14 +19,13 @@ import shaishav.com.bebetter.Utils.Constants;
  */
 public class Reminder extends BroadcastReceiver {
 
-    SharedPreferences preferences;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         shaishav.com.bebetter.Utils.Notification notification = new shaishav.com.bebetter.Utils.Notification();
-        preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        notification.createReminderNotification(context,preferences.getString(Constants.FULL_NAME,""));
+        PreferenceSource preferenceSource = PreferenceSource.getInstance(context);
+        notification.createReminderNotification(context,preferenceSource.getName());
 
     }
 

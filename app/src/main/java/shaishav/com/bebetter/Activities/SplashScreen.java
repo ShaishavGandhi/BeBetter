@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
+import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -14,7 +16,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SplashScreen extends AppCompatActivity {
 
-    SharedPreferences preferences;
+    PreferenceSource preferenceSource;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -31,6 +33,8 @@ public class SplashScreen extends AppCompatActivity {
         );
         setContentView(R.layout.activity_splash_screen);
 
+        preferenceSource = PreferenceSource.getInstance(getApplicationContext());
+
 
         new CountDownTimer(2000,100){
 
@@ -41,9 +45,8 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                //Check if first name is there
-                preferences = getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-                if(preferences.getString(Constants.FULL_NAME,"").equals("")){
+
+                if(preferenceSource.getEmail().equals("")){
                     Intent intent = new Intent(getApplicationContext(),Login.class);
                     startActivity(intent);
                     finish();

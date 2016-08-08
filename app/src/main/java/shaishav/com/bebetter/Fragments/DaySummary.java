@@ -24,12 +24,14 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.w3c.dom.Text;
 
+import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import im.dacer.androidcharts.LineView;
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.R;
@@ -39,8 +41,7 @@ import shaishav.com.bebetter.Utils.Notification;
 
 public class DaySummary extends Fragment {
 
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    PreferenceSource preferenceSource;
     private UsageSource usageSource;
     private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv;
     private View rootView;
@@ -78,8 +79,7 @@ public class DaySummary extends Fragment {
     }
 
     private void initialize(){
-        preferences = getActivity().getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        editor = preferences.edit();
+        preferenceSource = PreferenceSource.getInstance(getActivity());
 
         current_session_tv = (TextView)rootView.findViewById(R.id.current_session);
         daily_session_tv = (TextView)rootView.findViewById(R.id.daily_usage);
@@ -88,7 +88,7 @@ public class DaySummary extends Fragment {
         lineChart = (LineChart)rootView.findViewById(R.id.usage_chart);
         lineView = (LineView)rootView.findViewById(R.id.usage_chart_2);
         lineView.setDrawDotLine(true); //optional
-        lineView.setColorArray(new String[]{"#674172"});
+        lineView.setColorArray(new String[]{"#674172","#F25268","#F25268"});
         lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
 
         usageSource = new UsageSource(getActivity().getApplicationContext());
@@ -109,12 +109,12 @@ public class DaySummary extends Fragment {
 
     private void getData(){
 
-        if(preferences.getLong(Constants.UNLOCKED,0)!=0) {
-            current_session = String.valueOf((new Date().getTime() - preferences.getLong(Constants.UNLOCKED, 0)) / (1000 * 60));
-            daily_session = String.valueOf((preferences.getLong(Constants.SESSION, 0)) / (1000 * 60));
+        if(preferenceSource.getLastUnlockedTime()!=0) {
+            current_session = String.valueOf((new Date().getTime() - preferenceSource.getLastUnlockedTime()) / (1000 * 60));
+            daily_session = String.valueOf((preferenceSource.getSessionTime()) / (1000 * 60));
             daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session));
             average_daily_usage = String.valueOf(getAverageUsage()/(1000*60));
-            daily_goal = String.valueOf(preferences.getInt(Constants.GOAL,200));
+            daily_goal = String.valueOf(preferenceSource.getGoal());
 
         }
         else{
@@ -133,6 +133,7 @@ public class DaySummary extends Fragment {
 
         ArrayList<String> xAxes = new ArrayList<>();
         ArrayList<Integer> yAxes = new ArrayList<>();
+        ArrayList<Integer> threshold = new ArrayList<>();
 
         List<Usage> weeklyData = getWeeklyData();
 
@@ -149,7 +150,7 @@ public class DaySummary extends Fragment {
             Date date = new Date(weeklyData.get(i).getDate());
             xValues.add(Constants.getFormattedDate(date));
             xAxes.add(Constants.getFormattedDate(date));
-
+            threshold.add(preferenceSource.getGoal());
             Entry data = new Entry((weeklyData.get(i).getUsage()/(1000*60)),i);
             yAxes.add((int)(weeklyData.get(i).getUsage()/(1000*60)));
 
@@ -158,9 +159,11 @@ public class DaySummary extends Fragment {
 
 
         yAxes.add((int)Long.parseLong(daily_session));
+        threshold.add(preferenceSource.getGoal());
         xAxes.add(Constants.getFormattedDate(new Date()));
         ArrayList<ArrayList<Integer>> data = new ArrayList<ArrayList<Integer>>();
         data.add(yAxes);
+        data.add(threshold);
         lineView.setBottomTextList(xAxes);
         lineView.setDataList(data);
 

@@ -27,6 +27,7 @@ import java.util.Map;
 import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
 
@@ -39,6 +40,7 @@ public class SyncRequests {
     RequestQueue queue;
     private boolean inProgress;
     public static SyncRequests syncRequests;
+    PreferenceSource preferenceSource;
 
 
 
@@ -46,6 +48,7 @@ public class SyncRequests {
 
         this.context = context;
         this.queue = Volley.newRequestQueue(context);
+        this.preferenceSource = PreferenceSource.getInstance(context);
 
     }
 
@@ -63,8 +66,8 @@ public class SyncRequests {
             return;
 
 
-        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+
+        final String temp_user_email = preferenceSource.getEmail();
 
         StringRequest request = new StringRequest(Request.Method.POST, Constants.HOST + Constants.USAGE, new Response.Listener<String>() {
             @Override
@@ -113,8 +116,7 @@ public class SyncRequests {
         if(!checkIfSignedIn())
             return;
 
-        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.USER,"");
+        final String temp_user_email = preferenceSource.getEmail();
 
         StringRequest request = new StringRequest(Request.Method.POST, Constants.HOST + Constants.LESSON, new Response.Listener<String>() {
             @Override
@@ -128,8 +130,7 @@ public class SyncRequests {
                     lessonSource.open();
                     lessonSource.setServerId(server_id,Integer.parseInt(local_id));
                     lessonSource.close();
-                    SharedPreferences.Editor editor = preferences.edit();
-                    updateLastBackupTime(editor,resp.getLong("createdAt"));
+                    preferenceSource.setLastBackedUpTime(resp.getLong("createdAt"));
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -174,8 +175,8 @@ public class SyncRequests {
     public void getSyncedUsages(){
         if(!checkIfSignedIn())
             return;
-        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.EMAIL,"");
+
+        final String temp_user_email = preferenceSource.getEmail();
 
         String time = String.valueOf(new Date().getTime());
 
@@ -217,12 +218,12 @@ public class SyncRequests {
     }
 
     public void getSyncedLessons(){
-        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.EMAIL,"");
+
+        final String temp_user_email = preferenceSource.getEmail();
         if(temp_user_email.equals(""))
             return;
 
-        String time = String.valueOf(preferences.getLong(Constants.LAST_BACKED_UP,0));
+        String time = String.valueOf(preferenceSource.getLastBackedUpTime());
         StringRequest request = new StringRequest(Request.Method.GET, Constants.HOST + Constants.LESSON + "/" + temp_user_email + "/" + time, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -246,8 +247,7 @@ public class SyncRequests {
                                     json.getLong("createdAt"), json.getBoolean("public"));
                             lessonSource.setServerId(json.getString("_id"),(int)lesson.getId());
 
-                            SharedPreferences.Editor editor = preferences.edit();
-                            updateLastBackupTime(editor,json.getLong("createdAt"));
+                            preferenceSource.setLastBackedUpTime(json.getLong("createdAt"));
                         }
                         lessonSource.close();
                     }
@@ -267,14 +267,10 @@ public class SyncRequests {
         queue.add(request);
     }
 
-    private void updateLastBackupTime(SharedPreferences.Editor editor,long backup_time){
-        editor.putLong(Constants.LAST_BACKED_UP,backup_time);
-        editor.commit();
-    }
+
 
     public boolean checkIfSignedIn(){
-        final SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.EMAIL,"");
+        final String temp_user_email = preferenceSource.getEmail();
         if(temp_user_email.equals(""))
             return false;
         return true;
@@ -284,8 +280,8 @@ public class SyncRequests {
         if (!checkIfSignedIn())
             return;
 
-        SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCES,Context.MODE_PRIVATE);
-        final String temp_user_email = preferences.getString(Constants.POST_USER_EMAIL,"");
+
+        final String temp_user_email = preferenceSource.getEmail();
 
         StringRequest request = new StringRequest(Request.Method.POST, Constants.HOST + Constants.USER+"/update", new Response.Listener<String>() {
             @Override
