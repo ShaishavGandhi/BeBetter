@@ -27,15 +27,6 @@
     <PreferenceCategory
         android:title="Usage">
 
-        <ListPreference
-            android:key="timeDisplay"
-            android:title="Mobile Usage Unit"
-            android:summary="Display your mobile usage in hours/minutes"
-            android:entries="@array/HoursMinutes"
-            android:entryValues="@array/HoursMinutes"
-            >
-
-        </ListPreference>
 
         <Preference
             android:key="goal"

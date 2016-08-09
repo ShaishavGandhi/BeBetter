@@ -105,6 +105,18 @@ public class PreferenceSource {
         editor.commit();
     }
 
+    public long getUsageUnit(){
+        return preferences.getLong(Constants.PREFERENCE_USAGE_UNIT,1000*60);
+    }
+
+    public void setUsageUnit(String usageUnit){
+        if(usageUnit.equals("Hours"))
+            editor.putLong(Constants.PREFERENCE_USAGE_UNIT,1000*60*60);
+        else
+            editor.putLong(Constants.PREFERENCE_USAGE_UNIT,1000*60);
+        editor.commit();
+    }
+
     public long getLastUnlockedTime(){
         return preferences.getLong(Constants.UNLOCKED,0);
     }
@@ -171,12 +183,12 @@ public class PreferenceSource {
         return preferences.getString(Constants.GCM_TOKEN,"");
     }
 
-    public int getGoal(){
-        return preferences.getInt(Constants.GOAL,200);
+    public long getGoal(){
+        return preferences.getLong(Constants.GOAL,200*1000*60);
     }
 
-    public void setGoal(int goal){
-        editor.putInt(Constants.GOAL,goal);
+    public void setGoal(long goal){
+        editor.putLong(Constants.GOAL,goal);
         editor.commit();
     }
 

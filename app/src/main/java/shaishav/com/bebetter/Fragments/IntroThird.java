@@ -59,7 +59,7 @@ public class IntroThird extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 int min = Integer.parseInt(editable.toString());
-                preferenceSource.setGoal(min);
+                preferenceSource.setGoal(min*1000*60);
 
 
             }

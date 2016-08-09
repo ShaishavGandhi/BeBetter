@@ -1,1 +1,1 @@
-include ':app', ':AndroidCharts', ':AndroidChartsExample', ':timeparser'
+include ':app', ':AndroidCharts'

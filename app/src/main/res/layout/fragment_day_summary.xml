@@ -151,16 +151,6 @@
             android:padding="5dp"
             android:background="#ccc"></View>
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            android:layout_marginBottom="8dp"
-            android:id="@+id/usage_chart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp">
-
-
-        </com.github.mikephil.charting.charts.LineChart>
 
         <HorizontalScrollView
             android:layout_marginTop="8dp"
