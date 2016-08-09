@@ -40,8 +40,8 @@ public class BackgroundService extends Service {
 
         PreferenceSource preferenceSource = PreferenceSource.getInstance(getApplicationContext());
 
-        long usage = preferenceSource.getSessionTime()/(1000*60);
-        long goal = preferenceSource.getGoal();
+        long usage = preferenceSource.getSessionTime()/(preferenceSource.getUsageUnit());
+        long goal = preferenceSource.getGoal()/(preferenceSource.getUsageUnit());
 
         shaishav.com.bebetter.Utils.Notification notif = new shaishav.com.bebetter.Utils.Notification();
         Notification notification = notif.createNotification(this,String.valueOf(usage),String.valueOf(goal));

@@ -46,7 +46,6 @@ public class DaySummary extends Fragment {
     private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv;
     private View rootView;
     private String daily_session,current_session,average_daily_usage,daily_goal,total_usage;
-    private LineChart lineChart;
     LineView lineView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -85,11 +84,12 @@ public class DaySummary extends Fragment {
         daily_session_tv = (TextView)rootView.findViewById(R.id.daily_usage);
         average_daily_usage_tv = (TextView)rootView.findViewById(R.id.average_daily_usage);
         total_usage_tv = (TextView)rootView.findViewById(R.id.total_usage);
-        lineChart = (LineChart)rootView.findViewById(R.id.usage_chart);
         lineView = (LineView)rootView.findViewById(R.id.usage_chart_2);
         lineView.setDrawDotLine(true); //optional
         lineView.setColorArray(new String[]{"#674172","#F25268","#F25268"});
         lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
+
+
 
         usageSource = new UsageSource(getActivity().getApplicationContext());
 
@@ -111,9 +111,12 @@ public class DaySummary extends Fragment {
 
         if(preferenceSource.getLastUnlockedTime()!=0) {
             current_session = String.valueOf((new Date().getTime() - preferenceSource.getLastUnlockedTime()) / (1000 * 60));
-            daily_session = String.valueOf((preferenceSource.getSessionTime()) / (1000 * 60));
-            daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session));
-            average_daily_usage = String.valueOf(getAverageUsage()/(1000*60));
+            daily_session = String.valueOf((preferenceSource.getSessionTime()) / (preferenceSource.getUsageUnit()));
+            if(preferenceSource.getUsageUnit()==1000*60)
+                daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session));
+            else
+                daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session)/60);
+            average_daily_usage = String.valueOf(getAverageUsage()/(preferenceSource.getUsageUnit()));
             daily_goal = String.valueOf(preferenceSource.getGoal());
 
         }
@@ -128,7 +131,7 @@ public class DaySummary extends Fragment {
         total_usage = String.valueOf(usageSource.getTotalUsage()/(1000*60*60));
         usageSource.close();
 
-        total_usage = String.valueOf(Long.valueOf(current_session) + Long.valueOf(total_usage));
+        total_usage = String.valueOf((Long.valueOf(daily_session) + Long.valueOf(total_usage)*60)/60);
 
 
         ArrayList<String> xAxes = new ArrayList<>();
@@ -137,61 +140,24 @@ public class DaySummary extends Fragment {
 
         List<Usage> weeklyData = getWeeklyData();
 
-//        for(Usage usage : weeklyData){
-//            Log.v("bebetterusage",usage.getId()+" : "+usage.getServer_id()+" : "+usage.getDate());
-//        }
 
-        ArrayList<String> xValues = new ArrayList<String>();
-        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
-
-        ArrayList<Entry> entries = new ArrayList<>();
 
         for(int i=0;i<weeklyData.size();i++){
             Date date = new Date(weeklyData.get(i).getDate());
-            xValues.add(Constants.getFormattedDate(date));
             xAxes.add(Constants.getFormattedDate(date));
-            threshold.add(preferenceSource.getGoal());
-            Entry data = new Entry((weeklyData.get(i).getUsage()/(1000*60)),i);
-            yAxes.add((int)(weeklyData.get(i).getUsage()/(1000*60)));
-
-            entries.add(data);
+            threshold.add((int)(preferenceSource.getGoal()/(preferenceSource.getUsageUnit())));
+            yAxes.add((int)(weeklyData.get(i).getUsage()/(preferenceSource.getUsageUnit())));
         }
 
 
         yAxes.add((int)Long.parseLong(daily_session));
-        threshold.add(preferenceSource.getGoal());
+        threshold.add((int)(preferenceSource.getGoal()/(preferenceSource.getUsageUnit())));
         xAxes.add(Constants.getFormattedDate(new Date()));
         ArrayList<ArrayList<Integer>> data = new ArrayList<ArrayList<Integer>>();
         data.add(yAxes);
         data.add(threshold);
         lineView.setBottomTextList(xAxes);
         lineView.setDataList(data);
-
-        Entry todaysEntry = new Entry(Long.parseLong(daily_session),weeklyData.size());
-        xValues.add(Constants.getFormattedDate(new Date()));
-        entries.add(todaysEntry);
-
-        LineDataSet dataset = new LineDataSet(entries,"Weekly Usage In Minutes");
-        dataset.setDrawCubic(true);
-        dataset.setColor(getResources().getColor(R.color.colorPrimary));
-        dataset.setDrawFilled(true);
-        dataset.setFillColor(getResources().getColor(R.color.colorPrimaryDark));
-        dataset.setFillAlpha(200);
-        dataset.setCircleRadius(3);
-        dataset.disableDashedLine();
-        dataset.setCircleColorHole(getResources().getColor(R.color.colorPrimaryDark));
-        dataset.setCircleColor(getResources().getColor(R.color.colorPrimaryDark));
-        dataset.setValueTextSize(12);
-
-        lineDataSets.add(dataset);
-
-        LineData lineData = new LineData(xValues,lineDataSets);
-
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.getAxisRight().setDrawGridLines(false);
-        lineChart.setDescription("");
-        lineChart.setData(lineData);
-        lineChart.invalidate();
 
     }
 

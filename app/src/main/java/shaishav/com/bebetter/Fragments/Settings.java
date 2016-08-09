@@ -11,9 +11,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -43,8 +45,10 @@ public class Settings extends PreferenceFragment {
 
     Preference reminderTime,goal;
     SwitchPreference backup;
+    long usage_unit_val;
     String reminder_time_val,goal_val;
     boolean backup_val;
+    String usageUnitText;
 
     public Settings() {
         // Required empty public constructor
@@ -67,14 +71,21 @@ public class Settings extends PreferenceFragment {
         reminderTime = findPreference("reminderTime");
         backup = (SwitchPreference)findPreference("backup");
         goal = findPreference("goal");
+
         preferenceSource = PreferenceSource.getInstance(getActivity());
+
+        if(preferenceSource.getUsageUnit() == 1000*60)
+            usageUnitText = "min";
+        else
+            usageUnitText = "hours";
     }
 
     public void getPreferencesData(){
 
         reminder_time_val =  preferenceSource.getReminderTime();
         backup_val = preferenceSource.isBackupEnabled();
-        goal_val = String.valueOf(preferenceSource.getGoal());
+        goal_val = String.valueOf(preferenceSource.getGoal()/(preferenceSource.getUsageUnit()));
+        usage_unit_val = preferenceSource.getUsageUnit();
 
     }
 
@@ -82,7 +93,8 @@ public class Settings extends PreferenceFragment {
 
         reminderTime.setSummary(reminder_time_val);
         backup.setChecked(backup_val);
-        goal.setSummary(goal_val + " min");
+        goal.setSummary(goal_val + " "+usageUnitText);
+
 
     }
 
@@ -116,26 +128,34 @@ public class Settings extends PreferenceFragment {
 
         goal.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
+            public boolean onPreferenceClick(final Preference preference) {
                 new LovelyTextInputDialog(getActivity())
                         .setTopColorRes(R.color.colorPrimary)
                         .setTopTitle("Usage Goal")
                         .setTopTitleColor(Color.WHITE)
-                        .setMessage("Enter your usage goal in min")
+                        .setMessage("Enter your usage goal in "+usageUnitText)
                         .setIcon(R.drawable.ic_smartphone_white_24dp)
                         .setInputType(InputType.TYPE_CLASS_NUMBER)
                         .setConfirmButton("Cool!", new LovelyTextInputDialog.OnTextInputConfirmListener() {
                             @Override
                             public void onTextInputConfirmed(String text) {
-                                int min = Integer.parseInt(text);
-                                goal.setSummary(text+" min");
-                                preferenceSource.setGoal(min);
+                                if(!text.equals("")) {
+                                    int min = Integer.parseInt(text);
+                                    goal.setSummary(text + " "+usageUnitText);
+                                    preferenceSource.setGoal(min*preferenceSource.getUsageUnit());
+                                    Toast.makeText(getActivity(), "Goal changed to " + text + " "+usageUnitText+"!", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(getActivity(),"Please enter your usage goal",Toast.LENGTH_SHORT).show();
+                                }
                             }
 
                         }).show();
                 return true;
             }
         });
+
+
 
     }
 
