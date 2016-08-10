@@ -23,6 +23,12 @@
 
         </receiver>
 
+        <receiver android:name=".Receiver.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".Activities.AddLesson"
             android:label="@string/title_activity_add_lesson"
