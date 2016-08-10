@@ -117,7 +117,7 @@ public class DaySummary extends Fragment {
             else
                 daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session)/60);
             average_daily_usage = String.valueOf(getAverageUsage()/(preferenceSource.getUsageUnit()));
-            daily_goal = String.valueOf(preferenceSource.getGoal());
+            daily_goal = String.valueOf(preferenceSource.getGoal()/preferenceSource.getUsageUnit());
 
         }
         else{
