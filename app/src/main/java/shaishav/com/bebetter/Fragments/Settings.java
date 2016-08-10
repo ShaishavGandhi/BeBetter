@@ -136,6 +136,7 @@ public class Settings extends PreferenceFragment {
                         .setMessage("Enter your usage goal in "+usageUnitText)
                         .setIcon(R.drawable.ic_smartphone_white_24dp)
                         .setInputType(InputType.TYPE_CLASS_NUMBER)
+                        .setConfirmButtonColor(R.color.colorPrimaryDark)
                         .setConfirmButton("Cool!", new LovelyTextInputDialog.OnTextInputConfirmListener() {
                             @Override
                             public void onTextInputConfirmed(String text) {
