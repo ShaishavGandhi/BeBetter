@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:background="@color/colorPrimaryDark"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="left" >
+    <ImageView android:id="@+id/notifimage"
+        android:layout_width="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp" />
+    <TextView android:id="@+id/notiftitle"
+        android:layout_width="wrap_content"
+        android:text="BeBetter"
+        android:layout_marginTop="12dp"
+        android:textSize="16sp"
+        android:layout_marginRight="8dp"
+        android:textColor="@android:color/white"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/notifimage" />
+
+    <TextView android:id="@+id/notiftext"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="13sp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:text="Your usage is 130 min. Usage goal : 230 min"
+        android:layout_toRightOf="@id/notifimage"
+        android:layout_below="@id/notiftitle" />
+</RelativeLayout>

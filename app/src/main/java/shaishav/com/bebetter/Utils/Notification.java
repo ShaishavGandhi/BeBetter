@@ -4,14 +4,17 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
 
 import java.util.Map;
 
 import shaishav.com.bebetter.Activities.AddLesson;
 import shaishav.com.bebetter.Activities.MainActivity;
+import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 
 /**
@@ -26,14 +29,23 @@ public class Notification {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 notificationIntent, 0);
 
+        RemoteViews mContentView = new RemoteViews(context.getPackageName(), R.layout.notification);
+        mContentView.setImageViewResource(R.id.notifimage, R.drawable.logo);
+        mContentView.setTextViewText(R.id.notiftitle, "BeBetter");
+        mContentView.setTextColor(R.id.notiftitle,Color.WHITE);
+        mContentView.setTextColor(R.id.notiftext,Color.WHITE);
+        PreferenceSource preferenceSource = PreferenceSource.getInstance(context);
+        if(Long.parseLong(usage) > (preferenceSource.getGoal()/preferenceSource.getUsageUnit()))
+            mContentView.setTextColor(R.id.notiftext, Color.RED);
+
+        mContentView.setTextViewText(R.id.notiftext, "Your mobile usage is "+usage+" min. " +
+                "Usage goal : "+goal+" min.");
+
         android.app.Notification notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notif)
-                .setContentTitle("Be Better")
-                .setContentText("Your mobile usage is "+usage+" min. " +
-                        "Usage goal : "+goal+" min.")
-                .setStyle(new NotificationCompat.BigTextStyle().bigText("Your mobile usage is "+usage+" min. " +
-                        "Usage goal : "+goal+" min."))
+                .setCustomContentView(mContentView)
                 .setPriority(android.app.Notification.PRIORITY_MIN)
+                .setCustomBigContentView(mContentView)
                 .setContentIntent(pendingIntent).build();
 
         return notification;
