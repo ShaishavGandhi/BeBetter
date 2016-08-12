@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -55,8 +54,8 @@ public class App extends Application {
             editor.putString(Constants.GCM_TOKEN,token);
             editor.commit();
 
-            SyncRequests syncRequests = SyncRequests.getInstance(getApplicationContext());
-            syncRequests.updateGcmId(token);
+            NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
+            networkRequests.updateGcmId(token);
         }
 
     }

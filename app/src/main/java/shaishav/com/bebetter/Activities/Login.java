@@ -29,6 +29,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -140,7 +141,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
             final String name = acct.getDisplayName();
             final String email = acct.getEmail();
-            final String gcm_token = preferenceSource.getGcm();
+            final String gcm_token = FirebaseInstanceId.getInstance().getToken();
             display_pic = "";
             if(acct.getPhotoUrl() != null)
                 display_pic = acct.getPhotoUrl().toString();

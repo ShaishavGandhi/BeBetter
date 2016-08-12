@@ -18,26 +18,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
-import java.util.Date;
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Usage;
-import shaishav.com.bebetter.Data.UsageSource;
 import shaishav.com.bebetter.Fragments.DaySummary;
 import shaishav.com.bebetter.Fragments.LogOut;
 import shaishav.com.bebetter.Fragments.Settings;
-import shaishav.com.bebetter.Service.BackgroundService;
 import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Fragments.LessonList;
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
-import shaishav.com.bebetter.Utils.SyncRequests;
+import shaishav.com.bebetter.Utils.NetworkRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -81,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         if(isFirstTime())
             introduceApp();
 
-        SyncRequests requests = SyncRequests.getInstance(getApplicationContext());
+        NetworkRequests requests = NetworkRequests.getInstance(getApplicationContext());
         requests.getSyncedLessons();
         requests.getSyncedUsages();
 
@@ -111,6 +106,24 @@ public class MainActivity extends AppCompatActivity
 
         //Set first screen
         setFirstScreen();
+
+        String token = getGcmId();
+        saveToken(token);
+
+    }
+
+    private void saveToken(String token){
+        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String existing_token = preferences.getString(Constants.GCM_TOKEN,"");
+
+        if(!existing_token.equals(token)){
+            editor.putString(Constants.GCM_TOKEN,token);
+            editor.commit();
+
+            NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
+            networkRequests.updateGcmId(token);
+        }
 
     }
 
@@ -209,5 +222,10 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = new Intent(this,Intro.class);
         startActivity(intent);
+    }
+
+    public String getGcmId(){
+        return FirebaseInstanceId.getInstance().getToken();
+
     }
 }

@@ -9,7 +9,7 @@ import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
-import shaishav.com.bebetter.Utils.SyncRequests;
+import shaishav.com.bebetter.Utils.NetworkRequests;
 
 /**
  * Created by Shaishav on 25-07-2016.
@@ -38,9 +38,9 @@ public class BackupService extends IntentService {
         usages = usageSource.getUsagesForBackup();
         usageSource.close();
 
-        SyncRequests syncRequests = SyncRequests.getInstance(getApplicationContext());
-        syncRequests.syncLesson(lessons);
-        syncRequests.syncUsage(usages);
+        NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
+        networkRequests.syncLesson(lessons);
+        networkRequests.syncUsage(usages);
 
     }
 }

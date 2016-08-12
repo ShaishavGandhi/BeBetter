@@ -1,7 +1,7 @@
 package shaishav.com.bebetter.Utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,8 +10,8 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -34,17 +34,17 @@ import shaishav.com.bebetter.Data.UsageSource;
 /**
  * Created by Shaishav on 05-07-2016.
  */
-public class SyncRequests {
+public class NetworkRequests {
 
     Context context;
     RequestQueue queue;
     private boolean inProgress;
-    public static SyncRequests syncRequests;
+    public static NetworkRequests networkRequests;
     PreferenceSource preferenceSource;
 
 
 
-    protected SyncRequests(Context context){
+    protected NetworkRequests(Context context){
 
         this.context = context;
         this.queue = Volley.newRequestQueue(context);
@@ -52,12 +52,12 @@ public class SyncRequests {
 
     }
 
-    public static SyncRequests getInstance(Context context){
-        if(syncRequests == null){
-            syncRequests = new SyncRequests(context);
+    public static NetworkRequests getInstance(Context context){
+        if(networkRequests == null){
+            networkRequests = new NetworkRequests(context);
         }
 
-        return syncRequests;
+        return networkRequests;
     }
 
     public void syncUsage(Usage usage) {
@@ -312,5 +312,23 @@ public class SyncRequests {
         request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
 
+    }
+
+    public void getImage(Map<String,String> map){
+        final String photo = map.get("photo");
+        final String quote = map.get("quote");
+        final String author = map.get("author");
+
+        ImageRequest request = new ImageRequest(photo, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+
+                Notification notification = new Notification();
+                notification.createQuoteNotification(context,quote,author,response);
+
+            }
+        },0,0,null,null);
+
+        queue.add(request);
     }
 }
