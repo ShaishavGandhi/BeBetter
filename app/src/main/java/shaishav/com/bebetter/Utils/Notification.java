@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -66,13 +67,20 @@ public class Notification {
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
+        RemoteViews mContentView = new RemoteViews(context.getPackageName(), R.layout.notification);
+        mContentView.setImageViewResource(R.id.notifimage, R.drawable.logo);
+        mContentView.setTextViewText(R.id.notiftitle, "Hi "+name);
+        mContentView.setTextColor(R.id.notiftitle,Color.WHITE);
+        mContentView.setTextColor(R.id.notiftext,Color.WHITE);
+        mContentView.setTextViewText(R.id.notiftext,"What did you learn today?");
+
         //Create the notification
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notif)
-                .setContentTitle("Hi "+name)
+                .setContent(mContentView)
+                .setCustomBigContentView(mContentView)
                 .setSound(defaultSoundUri)
-                .setContentText("What did you learn today?")
                 .setAutoCancel(true);
 
         //Set intent to notification
@@ -83,11 +91,8 @@ public class Notification {
 
     }
 
-    public void createQuoteNotification(Context context,Map<String,String> map){
+    public void createQuoteNotification(Context context, String quote, String author, Bitmap image){
 
-        String photo = map.get("photo");
-        String quote = map.get("quote");
-        String author = map.get("author");
 
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -95,11 +100,19 @@ public class Notification {
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        RemoteViews mContentView = new RemoteViews(context.getPackageName(), R.layout.image_notification);
+        mContentView.setImageViewResource(R.id.notifimage, R.drawable.logo);
+        mContentView.setTextViewText(R.id.notiftitle, "Quote of the Day");
+        mContentView.setTextColor(R.id.notiftitle,Color.WHITE);
+        mContentView.setTextColor(R.id.notiftext,Color.WHITE);
+        mContentView.setTextViewText(R.id.notiftext,quote+" \n-"+author);
+        mContentView.setImageViewBitmap(R.id.notifbigimage,image);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notif)
-                .setContentTitle("Quote of the Day")
-                .setContentText(quote+" \n-"+author)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(quote+"\n-"+author))
+                .setContent(mContentView)
+                .setCustomBigContentView(mContentView)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

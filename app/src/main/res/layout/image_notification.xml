@@ -37,4 +37,11 @@
         android:text="Your usage is 130 min. Usage goal : 230 min"
         android:layout_toRightOf="@id/notifimage"
         android:layout_below="@id/notiftitle" />
+
+    <ImageView
+        android:id="@+id/notifbigimage"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/notiftext"
+        android:scaleType="centerCrop"
+        android:layout_height="match_parent" />
 </RelativeLayout>

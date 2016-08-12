@@ -136,7 +136,7 @@ public class PreferenceSource {
         editor.commit();
 
         App app = new App();
-        app.setReminder(context.getApplicationContext());
+        app.setReminder(context);
     }
 
     public String getReminderTime(){

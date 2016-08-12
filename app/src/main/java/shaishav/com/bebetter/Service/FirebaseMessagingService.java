@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
+
+import shaishav.com.bebetter.Utils.NetworkRequests;
 import shaishav.com.bebetter.Utils.Notification;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
@@ -13,8 +15,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage){
 
         Map<String,String> data = remoteMessage.getData();
-        Notification notification = new Notification();
-        notification.createQuoteNotification(getApplicationContext(),data);
+        NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
+        networkRequests.getImage(data);
         Log.d("BeBetterGCM", "From: " + remoteMessage.getFrom());
 
     }
