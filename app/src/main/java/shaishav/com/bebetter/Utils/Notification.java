@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import java.util.Map;
@@ -92,33 +93,59 @@ public class Notification {
 
     }
 
-    public void createQuoteNotification(Context context, String quote, String author, Bitmap image){
-
+    public void createQuoteNotification(Context context, String quote, String author){
 
         Intent intent = new Intent(context, Quote.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("author",author);
         intent.putExtra("quote",quote);
-        intent.putExtra("image",image);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        RemoteViews mContentView = new RemoteViews(context.getPackageName(), R.layout.image_notification);
-        mContentView.setImageViewResource(R.id.notifimage, R.drawable.logo);
-        mContentView.setTextViewText(R.id.notiftitle, "Quote of the Day");
-        mContentView.setTextColor(R.id.notiftitle,Color.WHITE);
-        mContentView.setTextColor(R.id.notiftext,Color.WHITE);
-        mContentView.setTextViewText(R.id.notiftext,quote+" \n-"+author);
-        mContentView.setImageViewBitmap(R.id.notifbigimage,image);
+
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notif)
-                .setContent(mContentView)
-                .setCustomBigContentView(mContentView)
+                .setContentTitle("Quote of the Day")
+                .setContentText(quote+" \n-"+author)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(quote+" \n"+author))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+    }
+
+    public void createQuoteNotification(Context context, String quote, String author,Bitmap bitmap){
+
+        Intent intent = new Intent(context, Quote.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("author",author);
+        intent.putExtra("quote",quote);
+        intent.putExtra("image",bitmap);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        RemoteViews mContentView = new RemoteViews(context.getPackageName(), R.layout.image_notification);
+        mContentView.setTextColor(R.id.notiftext,Color.WHITE);
+        mContentView.setTextViewText(R.id.notiftext,quote+"\n"+author);
+        mContentView.setImageViewBitmap(R.id.notifbigimage, bitmap);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.notif)
+                .setContentTitle("Quote of the Day")
+                .setContentText(quote+" \n-"+author)
+                .setCustomBigContentView(mContentView)
+                .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
