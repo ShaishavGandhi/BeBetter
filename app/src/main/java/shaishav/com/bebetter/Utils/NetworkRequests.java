@@ -318,17 +318,24 @@ public class NetworkRequests {
         final String photo = map.get("photo");
         final String quote = map.get("quote");
         final String author = map.get("author");
+        final Notification notification = new Notification();
+        notification.createQuoteNotification(context, quote, author);
 
         ImageRequest request = new ImageRequest(photo, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
 
-                Notification notification = new Notification();
-                notification.createQuoteNotification(context,quote,author,response);
+                notification.createQuoteNotification(context, quote, author, response);
 
             }
-        },0,0,null,null);
-
+        }, 0, 0, null, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        //request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
+        //queue.start();
     }
 }

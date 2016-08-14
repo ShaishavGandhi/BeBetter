@@ -26,13 +26,17 @@ public class Quote extends AppCompatActivity {
 
         String author = intent.getStringExtra("author");
         String quote = intent.getStringExtra("quote");
-        Bitmap image = (Bitmap)intent.getParcelableExtra("image");
 
         CircleImageView imageView = (CircleImageView)findViewById(R.id.image);
         TextView quote_tv = (TextView)findViewById(R.id.quote);
         TextView author_tv = (TextView)findViewById(R.id.author);
 
-        imageView.setImageBitmap(image);
+
+        if(intent.hasExtra("image")) {
+            Bitmap image = intent.getParcelableExtra("image");
+            imageView.setImageBitmap(image);
+        }
+
         quote_tv.setText(quote);
         author_tv.setText(author);
 
