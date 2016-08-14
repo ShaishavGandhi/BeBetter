@@ -15,6 +15,7 @@ import java.util.Map;
 
 import shaishav.com.bebetter.Activities.AddLesson;
 import shaishav.com.bebetter.Activities.MainActivity;
+import shaishav.com.bebetter.Activities.Quote;
 import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.R;
 
@@ -94,8 +95,11 @@ public class Notification {
     public void createQuoteNotification(Context context, String quote, String author, Bitmap image){
 
 
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, Quote.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("author",author);
+        intent.putExtra("quote",quote);
+        intent.putExtra("image",image);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
