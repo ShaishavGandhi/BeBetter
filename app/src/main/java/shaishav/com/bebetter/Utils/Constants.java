@@ -1,5 +1,7 @@
 package shaishav.com.bebetter.Utils;
 
+import android.content.Context;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,6 +53,10 @@ public class Constants {
                 text+=", ";
         }
         return text;
+    }
+
+    public void changeGoal(Context context){
+
     }
 
     public static String getTimeInAMPM(int hourOfDay, int minute){

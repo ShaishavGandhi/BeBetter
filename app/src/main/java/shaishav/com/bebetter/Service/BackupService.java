@@ -39,8 +39,11 @@ public class BackupService extends IntentService {
         usageSource.close();
 
         NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
-        networkRequests.syncLesson(lessons);
-        networkRequests.syncUsage(usages);
+
+        if(networkRequests.isNetworkAvailable()) {
+            networkRequests.syncLesson(lessons);
+            networkRequests.syncUsage(usages);
+        }
 
     }
 }

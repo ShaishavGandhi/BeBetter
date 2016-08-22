@@ -77,8 +77,10 @@ public class MainActivity extends AppCompatActivity
             introduceApp();
 
         NetworkRequests requests = NetworkRequests.getInstance(getApplicationContext());
-        requests.getSyncedLessons();
-        requests.getSyncedUsages();
+        if(requests.isNetworkAvailable()) {
+            requests.getSyncedLessons();
+            requests.getSyncedUsages();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -122,7 +124,8 @@ public class MainActivity extends AppCompatActivity
             editor.commit();
 
             NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
-            networkRequests.updateGcmId(token);
+            if(networkRequests.isNetworkAvailable())
+                networkRequests.updateGcmId(token);
         }
 
     }
