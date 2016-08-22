@@ -2,6 +2,8 @@ package shaishav.com.bebetter.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -38,7 +40,6 @@ public class NetworkRequests {
 
     Context context;
     RequestQueue queue;
-    private boolean inProgress;
     public static NetworkRequests networkRequests;
     PreferenceSource preferenceSource;
 
@@ -337,5 +338,13 @@ public class NetworkRequests {
         //request.setRetryPolicy(new DefaultRetryPolicy(8000,1,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
         //queue.start();
+    }
+
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
