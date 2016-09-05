@@ -20,7 +20,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_USAGE="usage";
 
-    private static final String DATABASE_NAME = "lessons.db";
+    public static final String TABLE_GOAL = "goal";
+    public static final String COLUMN_GOAL = "goal";
+
+    private static final String DATABASE_NAME = "bebetter.db";
     // TODO: Set db version to 1
     private static final int DATABASE_VERSION = 1;
 
@@ -36,10 +39,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " integer primary key autoincrement, " + COLUMN_DATE
             + " long not null,"+COLUMN_USAGE+" long not null, "+COLUMN_SERVER_ID+" text default 'NA');";
 
-    private static final String CREATE_IDEAS = "create table "
-            + TABLE_IDEAS + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_TITLE
-            + " text not null,"+COLUMN_LESSON+" long not null,"
+    private static final String CREATE_GOAL = "create table "
+            + TABLE_GOAL + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_DATE
+            + " long not null,"+COLUMN_GOAL+" long not null,"
             +COLUMN_SERVER_ID+" text default 'NA');";
 
 
@@ -51,7 +54,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
         database.execSQL(CREATE_USAGE_STATS);
-        database.execSQL(CREATE_IDEAS);
+        database.execSQL(CREATE_GOAL);
 
     }
 
