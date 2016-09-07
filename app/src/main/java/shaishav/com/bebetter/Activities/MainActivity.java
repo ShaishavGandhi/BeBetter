@@ -77,10 +77,10 @@ public class MainActivity extends AppCompatActivity
             introduceApp();
 
         NetworkRequests requests = NetworkRequests.getInstance(getApplicationContext());
-        if(requests.isNetworkAvailable()) {
-            requests.getSyncedLessons();
-            requests.getSyncedUsages();
-        }
+//        if(requests.isNetworkAvailable()) {
+//            requests.getSyncedLessons();
+//            requests.getSyncedUsages();
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -198,8 +198,6 @@ public class MainActivity extends AppCompatActivity
             fragment = new DaySummary();
         else if (id == R.id.nav_settings)
             fragment = new Settings();
-        else if (id == R.id.nav_ideas)
-            return true;
         else if (id == R.id.nav_share)
             return true;
         else if (id == R.id.nav_send)
@@ -223,7 +221,7 @@ public class MainActivity extends AppCompatActivity
         editor.putBoolean(Constants.FIRST_TIME,true);
         editor.commit();
 
-        Intent intent = new Intent(this,Intro.class);
+        Intent intent = new Intent(this,IntroActivity.class);
         startActivity(intent);
     }
 

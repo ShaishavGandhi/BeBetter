@@ -1,11 +1,15 @@
 package shaishav.com.bebetter.Data;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Shaishav on 26-06-2016.
  */
 public class Usage {
 
     long id,date,usage;
+
+    @SerializedName("_id")
     String server_id;
 
     public long getId(){

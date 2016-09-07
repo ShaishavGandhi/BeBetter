@@ -19,7 +19,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name=".Receiver.Reminder" />
-        <receiver android:name=".Receiver.Backup"></receiver>
+        <receiver android:name=".Receiver.Backup" />
         <receiver android:name=".Receiver.NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -86,6 +86,10 @@
         <activity
             android:name=".Activities.Quote"
             android:label="@string/title_activity_quote"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.IntroActivity"
+            android:label="@string/title_activity_intro"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

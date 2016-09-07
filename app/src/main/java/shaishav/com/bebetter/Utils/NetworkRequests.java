@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.api.Api;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,12 +27,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import shaishav.com.bebetter.Data.Lesson;
 import shaishav.com.bebetter.Data.LessonSource;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
+import shaishav.com.bebetter.Data.User;
 
 /**
  * Created by Shaishav on 05-07-2016.
@@ -60,6 +67,7 @@ public class NetworkRequests {
 
         return networkRequests;
     }
+
 
     public void syncUsage(Usage usage) {
         final Usage tempUsage = usage;
@@ -347,4 +355,5 @@ public class NetworkRequests {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
 }

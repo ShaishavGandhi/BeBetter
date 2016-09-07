@@ -1,11 +1,16 @@
 package shaishav.com.bebetter.Data;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Shaishav on 15-03-2016.
  */
 public class Lesson {
 
-    String title,lesson,category,server_id;
+    String title,lesson,category;
+
+    @SerializedName("_id")
+    String server_id;
     long id,created_at;
     int is_public;
 
