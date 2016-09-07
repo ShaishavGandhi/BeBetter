@@ -45,26 +45,6 @@ public class IntroThird extends Fragment {
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                int min = Integer.parseInt(editable.toString());
-                preferenceSource.setGoal(min*1000*60);
-
-
-            }
-        });
-
         return rootView;
     }
 

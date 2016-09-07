@@ -36,9 +36,15 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import shaishav.com.bebetter.Data.PreferenceSource;
+import shaishav.com.bebetter.Data.User;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Utils.ApiEndPoint;
 import shaishav.com.bebetter.Utils.Constants;
+import shaishav.com.bebetter.Utils.NetworkRequests;
+import shaishav.com.bebetter.Utils.RetrofitLayer;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -146,53 +152,31 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             if(acct.getPhotoUrl() != null)
                 display_pic = acct.getPhotoUrl().toString();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.HOST + Constants.USER, new Response.Listener<String>() {
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPhoto(display_pic);
+            user.setGcm_id(gcm_token);
+
+            ApiEndPoint client = RetrofitLayer.createService(ApiEndPoint.class);
+
+            Call<User> call = client.loginUser(user);
+            call.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        if(jsonObject.has("code")){
-                            if(jsonObject.getInt("code")==11000){
-                                Toast.makeText(getApplicationContext(),"Welcome back!",Toast.LENGTH_SHORT).show();
-
-                            }
-                            else
-                                return;
-                        }
-
-                        storeLocally(name,email,display_pic);
-
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                        progressDialog.hide();
-                        startActivity(intent);
-                        finish();
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-
+                public void onResponse(Call<User> call, retrofit2.Response<User> response) {
+                    User obj = response.body();
+                    storeLocally(obj.getName(), obj.getEmail(), obj.getPhoto());
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
-            }, new Response.ErrorListener() {
+
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    progressDialog.hide();
-                    Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Oops! Couldn't log you in", Toast.LENGTH_SHORT).show();
                 }
-            }){
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put(Constants.POST_USER_NAME,name);
-                    params.put(Constants.POST_USER_EMAIL,email);
-                    params.put(Constants.POST_USER_PHOTO,display_pic);
-                    params.put(Constants.GCM_TOKEN,gcm_token);
-                    return params;
+            });
 
-                }
-            };
-
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
         } else {
             // Signed out, show unauthenticated UI.
             progressDialog.hide();

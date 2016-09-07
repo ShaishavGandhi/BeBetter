@@ -51,6 +51,10 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.2.1'
     compile 'com.yarolegovich:lovely-dialog:1.0.4'
     compile 'com.github.qiugang:EditTag:v1.2.3'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

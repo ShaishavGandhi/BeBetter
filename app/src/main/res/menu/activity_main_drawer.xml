@@ -12,10 +12,6 @@
             android:title="Lessons"
             />
         <item
-            android:id="@+id/nav_ideas"
-            android:icon="@drawable/ic_lightbulb_outline_black_24dp"
-            android:title="Ideas" />
-        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="Settings" />
