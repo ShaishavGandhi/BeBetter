@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Utils;
+package shaishav.com.bebetter.Network;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Shaishav on 9/6/2016.
  */
-public class RetrofitLayer {
+public class ApiServiceLayer {
 
     public static final String BASE_URL = "https://bebetterserver.herokuapp.com/api/";
 

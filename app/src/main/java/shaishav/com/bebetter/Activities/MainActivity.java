@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
         lessonSource.close();
 
         // Initialize preferences
-        preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
+        preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
 
     }
 
@@ -218,10 +218,10 @@ public class MainActivity extends AppCompatActivity
 
     private void introduceApp(){
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(Constants.FIRST_TIME,true);
+        editor.putBoolean(Constants.FIRST_TIME, true);
         editor.commit();
 
-        Intent intent = new Intent(this,IntroActivity.class);
+        Intent intent = new Intent(this, Intro.class);
         startActivity(intent);
     }
 

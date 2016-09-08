@@ -4,19 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.heinrichreimersoftware.materialintro.app.IntroActivity;
-import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
-import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
-import com.heinrichreimersoftware.materialintro.slide.Slide;
+import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import java.util.Date;
 
+import shaishav.com.bebetter.Data.GoalSource;
+import shaishav.com.bebetter.Data.PreferenceSource;
+import shaishav.com.bebetter.Fragments.IntroFirst;
 import shaishav.com.bebetter.Fragments.IntroSecond;
 import shaishav.com.bebetter.Fragments.IntroThird;
 import shaishav.com.bebetter.R;
@@ -26,7 +28,10 @@ import shaishav.com.bebetter.Utils.Constants;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class Intro extends IntroActivity {
+/**
+ * Created by Shaishav on 9/7/2016.
+ */
+public class Intro extends AppIntro {
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -42,58 +47,67 @@ public class Intro extends IntroActivity {
                 .build()
         );
 
-        addSlide(new FragmentSlide.Builder()
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
-                .fragment(R.layout.intro_first, R.style.AppTheme)
-                .build());
+        addSlide(new IntroFirst());
+        addSlide(new IntroSecond());
+        addSlide(new IntroThird());
 
-        FragmentSlide second = new FragmentSlide.Builder()
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
-                .fragment(new IntroSecond())
-                .build();
-
-        addSlide(second);
-
-        addSlide(new FragmentSlide.Builder()
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
-                .fragment(new IntroThird())
-                .build());
-
-        addSlide(new SimpleSlide.Builder()
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
-                .title("And you're done!")
-                .description("Enjoying using BeBetter!")
-                .build());
-
-        addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if(position==3){
-                    App app = new App();
-                    app.setBackupSchedule(getApplicationContext());
-                    app.setReminder(getApplicationContext());
-                    startService(new Intent(getApplicationContext(), BackgroundService.class));
-                    SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putLong(Constants.UNLOCKED,new Date().getTime());
-                    editor.commit();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        showSkipButton(false);
 
     }
+
+    @Override
+    public void onSkipPressed(Fragment currentFragment) {
+        super.onSkipPressed(currentFragment);
+        // Do something when users tap on Skip button.
+    }
+
+    @Override
+    public void onDonePressed(Fragment currentFragment) {
+        super.onDonePressed(currentFragment);
+        // Do something when users tap on Done button.
+        if(currentFragment instanceof IntroThird){
+            View view = currentFragment.getView();
+            EditText editText = (EditText)view.findViewById(R.id.goal);
+            int goal = Integer.parseInt(editText.getText().toString());
+
+            GoalSource goalSource = new GoalSource(getApplicationContext());
+            goalSource.open();
+            goalSource.createGoal(new Date().getTime(), goal*1000*60);
+            goalSource.close();
+
+            App app = new App();
+            app.setBackupSchedule(getApplicationContext());
+            app.setReminder(getApplicationContext());
+
+            startService(new Intent(getApplicationContext(), BackgroundService.class));
+            SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong(Constants.UNLOCKED,new Date().getTime());
+            editor.commit();
+        }
+
+        finish();
+    }
+
+    @Override
+    public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
+        super.onSlideChanged(oldFragment, newFragment);
+        PreferenceSource preferenceSource = PreferenceSource.getInstance(getApplicationContext());
+
+        if(newFragment instanceof IntroThird){
+            View view = oldFragment.getView();
+            TextView time_tv = (TextView)view.findViewById(R.id.time);
+            saveReminderTime(time_tv.getText().toString(), preferenceSource);
+
+        }
+        // Do something when the slide changes.
+    }
+
+    private void saveReminderTime(String time, PreferenceSource preferenceSource){
+        int hour = Integer.parseInt(time.substring(0, time.indexOf(":")));
+        int minute = Integer.parseInt(time.substring(time.indexOf(":")+1, time.indexOf(":")+3));
+
+        preferenceSource.saveReminderTime(hour, minute);
+    }
+
 }

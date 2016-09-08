@@ -30,6 +30,10 @@
             android:name=".Activities.AddLesson"
             android:label="@string/title_activity_add_lesson"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".Activities.Intro"
+            android:label="App Intro" />
+
         <activity
             android:name=".Activities.Login"
             android:label="@string/title_activity_login"
@@ -57,9 +61,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.Intro"
-            android:theme="@style/Theme.Intro" />
 
         <receiver android:name=".Utils.TimeWidget">
             <intent-filter>
@@ -87,10 +88,6 @@
             android:name=".Activities.Quote"
             android:label="@string/title_activity_quote"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activities.IntroActivity"
-            android:label="@string/title_activity_intro"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

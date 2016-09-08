@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Utils;
+package shaishav.com.bebetter.Network;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
