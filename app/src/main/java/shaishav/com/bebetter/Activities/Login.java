@@ -3,24 +3,13 @@ package shaishav.com.bebetter.Activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -31,20 +20,13 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.Data.User;
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.Utils.ApiEndPoint;
-import shaishav.com.bebetter.Utils.Constants;
-import shaishav.com.bebetter.Utils.NetworkRequests;
-import shaishav.com.bebetter.Utils.RetrofitLayer;
+import shaishav.com.bebetter.Network.ApiEndPoint;
+import shaishav.com.bebetter.Network.ApiServiceLayer;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -152,20 +134,19 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             if(acct.getPhotoUrl() != null)
                 display_pic = acct.getPhotoUrl().toString();
 
-            User user = new User();
+            final User user = new User();
             user.setName(name);
             user.setEmail(email);
             user.setPhoto(display_pic);
             user.setGcm_id(gcm_token);
 
-            ApiEndPoint client = RetrofitLayer.createService(ApiEndPoint.class);
+            ApiEndPoint client = ApiServiceLayer.createService(ApiEndPoint.class);
 
             Call<User> call = client.loginUser(user);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, retrofit2.Response<User> response) {
-                    User obj = response.body();
-                    storeLocally(obj.getName(), obj.getEmail(), obj.getPhoto());
+                    storeLocally(user.getName(), user.getEmail(), user.getPhoto());
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
                     finish();

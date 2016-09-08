@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -33,9 +34,10 @@ public class App extends Application {
         super.onCreate();
         instance = this;
 
-        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
-        if(preferences.getBoolean(Constants.FIRST_TIME,false)) {
+        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+        if(preferences.getBoolean(Constants.FIRST_TIME, false)) {
             // Set daily reminder
+            Toast.makeText(App.this, "Went in", Toast.LENGTH_SHORT).show();
             setReminder(this);
             setBackupSchedule(this);
             startService(new Intent(getApplicationContext(), BackgroundService.class));
