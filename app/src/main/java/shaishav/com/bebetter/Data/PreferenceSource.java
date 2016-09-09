@@ -184,12 +184,33 @@ public class PreferenceSource {
     }
 
     public long getGoal(){
-        return preferences.getLong(Constants.GOAL,200*1000*60);
+        GoalSource goalSource = new GoalSource(context);
+        goalSource.open();
+        Goal goal = goalSource.getCurrentGoal();
+        if(goal!=null) {
+            return goal.getGoal();
+        }
+        return 200*1000*60;
     }
 
     public void setGoal(long goal){
+        Date date = new Date();
+        saveGoalInDb(goal, date.getTime());
         editor.putLong(Constants.GOAL,goal);
         editor.commit();
+    }
+
+    public void setGoal(long date, long goal){
+        saveGoalInDb(goal, date);
+    }
+
+    private void saveGoalInDb(long goal, long date){
+        GoalSource goalSource = new GoalSource(context);
+        goalSource.open();
+        if(!goalSource.goalAlreadyExists(date)){
+            goalSource.createGoal(date, goal);
+        }
+        goalSource.close();
     }
 
     public void setIsForegroundServiceRunning(boolean isRunning){
@@ -208,8 +229,22 @@ public class PreferenceSource {
         Date lock_date = new Date(lock_time);
         Date unlock_date = new Date(unlock_time);
 
+        setGoal(getPreviousDayGoal());
+
         return lock_date.getDate()!=unlock_date.getDate();
 
+    }
+
+    private long getPreviousDayGoal(){
+        GoalSource goalSource = new GoalSource(context);
+        goalSource.open();
+        Goal goal = goalSource.getPreviousDayGoal();
+        goalSource.close();
+        if(goal != null){
+            return goal.getGoal();
+        }
+
+        return 200*1000*60;
     }
 
     public void storeSessionInDb(Context context, long date, long session_time){
