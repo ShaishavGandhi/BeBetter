@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +56,77 @@ public class GoalSource {
         return goalObj;
     }
 
+    public Goal getCurrentGoal(){
+
+        Date date = new Date();
+        date.setHours(23);
+        date.setMinutes(59);
+        long high = date.getTime();
+
+        date.setHours(0);
+        date.setMinutes(0);
+        long low = date.getTime();
+
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
+                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
+
+        cursor.moveToFirst();
+
+        if(cursor.getCount() > 0) {
+            Goal goal = cursorToPost(cursor);
+            cursor.close();
+            return goal;
+        }
+        return null;
+
+    }
+
+    public Goal getPreviousDayGoal(){
+
+        Date date = new Date();
+        date.setDate(date.getDate() - 1);
+        date.setHours(23);
+        date.setMinutes(59);
+        long high = date.getTime();
+
+        date.setHours(0);
+        date.setMinutes(0);
+        long low = date.getTime();
+
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
+                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
+
+        cursor.moveToFirst();
+
+        if(cursor.getCount() > 0) {
+            Goal goal = cursorToPost(cursor);
+            cursor.close();
+            return goal;
+        }
+        return null;
+
+    }
+
+    public boolean goalAlreadyExists(long date){
+        Date dt = new Date(date);
+        dt.setHours(23);
+        dt.setMinutes(59);
+        long high = dt.getTime();
+
+        dt.setHours(0);
+        dt.setMinutes(0);
+        long low = dt.getTime();
+
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
+                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
+
+        cursor.moveToFirst();
+
+        return (cursor.getCount() > 0);
+    }
 
     public List<Goal> getAllUsages(){
         List<Goal> goals = new ArrayList<Goal>();

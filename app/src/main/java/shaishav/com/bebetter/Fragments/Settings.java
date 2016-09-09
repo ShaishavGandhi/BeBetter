@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.Data.UsageSource;
@@ -143,7 +144,9 @@ public class Settings extends PreferenceFragment {
                                 if(!text.equals("")) {
                                     int min = Integer.parseInt(text);
                                     goal.setSummary(text + " "+usageUnitText);
-                                    preferenceSource.setGoal(min*preferenceSource.getUsageUnit());
+                                    Date date = new Date();
+                                    date.setDate(date.getDate() + 1);
+                                    preferenceSource.setGoal(date.getTime(), min*preferenceSource.getUsageUnit());
                                     Toast.makeText(getActivity(), "Goal changed to " + text + " "+usageUnitText+"!", Toast.LENGTH_SHORT).show();
                                 }
                                 else{

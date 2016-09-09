@@ -70,10 +70,8 @@ public class Intro extends AppIntro {
             EditText editText = (EditText)view.findViewById(R.id.goal);
             int goal = Integer.parseInt(editText.getText().toString());
 
-            GoalSource goalSource = new GoalSource(getApplicationContext());
-            goalSource.open();
-            goalSource.createGoal(new Date().getTime(), goal*1000*60);
-            goalSource.close();
+            PreferenceSource preferenceSource = PreferenceSource.getInstance(getApplicationContext());
+            preferenceSource.setGoal(goal*1000*60);
 
             App app = new App();
             app.setBackupSchedule(getApplicationContext());
