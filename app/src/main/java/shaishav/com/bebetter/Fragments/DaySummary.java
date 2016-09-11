@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import im.dacer.androidcharts.LineView;
+import shaishav.com.bebetter.Data.Goal;
+import shaishav.com.bebetter.Data.GoalSource;
 import shaishav.com.bebetter.Data.PreferenceSource;
 import shaishav.com.bebetter.Data.Usage;
 import shaishav.com.bebetter.Data.UsageSource;
@@ -43,6 +45,7 @@ public class DaySummary extends Fragment {
 
     PreferenceSource preferenceSource;
     private UsageSource usageSource;
+    private GoalSource goalSource;
     private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv;
     private View rootView;
     private String daily_session,current_session,average_daily_usage,daily_goal,total_usage;
@@ -105,6 +108,8 @@ public class DaySummary extends Fragment {
             }
         });
 
+        goalSource = new GoalSource(getActivity());
+
     }
 
     private void getData(){
@@ -139,13 +144,13 @@ public class DaySummary extends Fragment {
         ArrayList<Integer> threshold = new ArrayList<>();
 
         List<Usage> weeklyData = getWeeklyData();
-
+        List<Goal> weeklyGoal = getWeeklyGoal();
 
 
         for(int i=0;i<weeklyData.size();i++){
             Date date = new Date(weeklyData.get(i).getDate());
             xAxes.add(Constants.getFormattedDate(date));
-            threshold.add((int)(preferenceSource.getGoal()/(preferenceSource.getUsageUnit())));
+            threshold.add((int)weeklyGoal.get(i).getGoal()/(1000*60));
             yAxes.add((int)(weeklyData.get(i).getUsage()/(preferenceSource.getUsageUnit())));
         }
 
@@ -220,6 +225,20 @@ public class DaySummary extends Fragment {
         usageSource.close();
 
         return usages;
+    }
+
+    private List<Goal> getWeeklyGoal(){
+        Date date = new Date();
+        date.setDate(date.getDate()-70);
+        long lower_threshold = date.getTime();
+        date.setDate(date.getDate()+140);
+        long higher_threshold = date.getTime();
+
+        goalSource.open();
+        List<Goal> goals = goalSource.getData(lower_threshold,higher_threshold);
+        goalSource.close();
+
+        return goals;
     }
 
     @Override
