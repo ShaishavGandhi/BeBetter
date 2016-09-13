@@ -1,22 +1,15 @@
 package shaishav.com.bebetter.Service;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
-import shaishav.com.bebetter.Activities.MainActivity;
-import shaishav.com.bebetter.Data.PreferenceSource;
-import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Receiver.PhoneUnlockedReceiver;
-import shaishav.com.bebetter.Utils.Constants;
 
 /**
  * Created by Shaishav on 26-06-2016.

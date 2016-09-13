@@ -2,40 +2,25 @@ package shaishav.com.bebetter.Fragments;
 
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.sax.TextElementListener;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-
-import org.w3c.dom.Text;
-
-import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import im.dacer.androidcharts.LineView;
-import shaishav.com.bebetter.Data.Goal;
-import shaishav.com.bebetter.Data.GoalSource;
-import shaishav.com.bebetter.Data.PreferenceSource;
-import shaishav.com.bebetter.Data.Usage;
-import shaishav.com.bebetter.Data.UsageSource;
+import shaishav.com.bebetter.Data.Models.Goal;
+import shaishav.com.bebetter.Data.Source.GoalSource;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
+import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.Source.UsageSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.Notification;

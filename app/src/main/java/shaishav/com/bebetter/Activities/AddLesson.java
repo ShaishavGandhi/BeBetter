@@ -22,8 +22,8 @@ import java.util.List;
 
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 import me.originqiu.library.EditTag;
-import shaishav.com.bebetter.Data.Lesson;
-import shaishav.com.bebetter.Data.LessonSource;
+import shaishav.com.bebetter.Data.Models.Lesson;
+import shaishav.com.bebetter.Data.Source.LessonSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.NetworkRequests;

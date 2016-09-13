@@ -3,14 +3,12 @@ package shaishav.com.bebetter.Utils;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import java.util.Date;
 
-import shaishav.com.bebetter.Data.PreferenceSource;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.R;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Implementation of App Widget functionality.

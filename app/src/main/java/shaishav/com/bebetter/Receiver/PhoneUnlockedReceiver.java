@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import shaishav.com.bebetter.Data.PreferenceSource;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Notification;
 import shaishav.com.bebetter.Utils.TimeWidget;

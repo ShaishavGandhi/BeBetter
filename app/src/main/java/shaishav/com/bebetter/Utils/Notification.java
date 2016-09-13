@@ -9,15 +9,12 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.view.View;
 import android.widget.RemoteViews;
-
-import java.util.Map;
 
 import shaishav.com.bebetter.Activities.AddLesson;
 import shaishav.com.bebetter.Activities.MainActivity;
 import shaishav.com.bebetter.Activities.Quote;
-import shaishav.com.bebetter.Data.PreferenceSource;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.R;
 
 /**

@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Data;
+package shaishav.com.bebetter.Data.Models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -9,9 +9,14 @@ public class Lesson {
 
     String title,lesson,category;
 
+    @SerializedName("categories")
+    String[] category_array;
+
     @SerializedName("_id")
     String server_id;
     long id,created_at;
+    @SerializedName("public")
+    boolean isPublicBool;
     int is_public;
 
     public String getTitle(){
