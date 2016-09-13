@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Data;
+package shaishav.com.bebetter.Data.Source;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.MySQLiteHelper;
 
 /**
  * Created by Shaishav on 26-06-2016.

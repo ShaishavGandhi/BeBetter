@@ -9,15 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.paolorotolo.appintro.AppIntro;
-import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import java.util.Date;
 
-import shaishav.com.bebetter.Data.GoalSource;
-import shaishav.com.bebetter.Data.PreferenceSource;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Fragments.IntroFirst;
 import shaishav.com.bebetter.Fragments.IntroSecond;
 import shaishav.com.bebetter.Fragments.IntroThird;

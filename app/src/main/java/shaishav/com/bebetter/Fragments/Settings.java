@@ -2,26 +2,15 @@ package shaishav.com.bebetter.Fragments;
 
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,11 +19,8 @@ import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 import java.util.Calendar;
 import java.util.Date;
 
-import shaishav.com.bebetter.Data.PreferenceSource;
-import shaishav.com.bebetter.Data.UsageSource;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.Service.BackgroundService;
-import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
 
 /**

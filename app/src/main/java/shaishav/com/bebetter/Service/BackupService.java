@@ -5,10 +5,10 @@ import android.content.Intent;
 
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Lesson;
-import shaishav.com.bebetter.Data.LessonSource;
-import shaishav.com.bebetter.Data.Usage;
-import shaishav.com.bebetter.Data.UsageSource;
+import shaishav.com.bebetter.Data.Models.Lesson;
+import shaishav.com.bebetter.Data.Source.LessonSource;
+import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.Source.UsageSource;
 import shaishav.com.bebetter.Utils.NetworkRequests;
 
 /**

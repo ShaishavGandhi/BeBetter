@@ -4,9 +4,7 @@ package shaishav.com.bebetter.Fragments;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
@@ -20,9 +18,8 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-import shaishav.com.bebetter.Data.PreferenceSource;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.Utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.

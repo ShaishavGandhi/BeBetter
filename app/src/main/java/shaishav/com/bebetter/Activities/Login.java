@@ -22,8 +22,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import shaishav.com.bebetter.Data.PreferenceSource;
-import shaishav.com.bebetter.Data.User;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
+import shaishav.com.bebetter.Data.Models.User;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Network.ApiEndPoint;
 import shaishav.com.bebetter.Network.ApiServiceLayer;

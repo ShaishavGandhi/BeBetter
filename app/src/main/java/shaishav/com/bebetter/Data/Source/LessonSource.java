@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Data;
+package shaishav.com.bebetter.Data.Source;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import shaishav.com.bebetter.Utils.Constants;
+import shaishav.com.bebetter.Data.Models.Lesson;
+import shaishav.com.bebetter.Data.MySQLiteHelper;
 
 /**
  * Created by Shaishav on 01-03-2016.
@@ -35,7 +36,7 @@ public class LessonSource {
         dbHelper.close();
     }
 
-    public Lesson createLesson(String title, String lesson, String category, long created_at,boolean is_public){
+    public Lesson createLesson(String title, String lesson, String category, long created_at, boolean is_public){
         ContentValues contentValues = new ContentValues();
         contentValues.put(MySQLiteHelper.COLUMN_LESSON,lesson);
         contentValues.put(MySQLiteHelper.COLUMN_TITLE, title);

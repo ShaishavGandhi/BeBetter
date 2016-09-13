@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,18 +19,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import shaishav.com.bebetter.Fragments.DaySummary;
 import shaishav.com.bebetter.Fragments.LogOut;
 import shaishav.com.bebetter.Fragments.Settings;
-import shaishav.com.bebetter.Data.Lesson;
-import shaishav.com.bebetter.Data.LessonSource;
+import shaishav.com.bebetter.Data.Models.Lesson;
+import shaishav.com.bebetter.Data.Source.LessonSource;
 import shaishav.com.bebetter.Fragments.LessonList;
+import shaishav.com.bebetter.Network.ApiEndPoint;
+import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.NetworkRequests;
@@ -77,6 +84,26 @@ public class MainActivity extends AppCompatActivity
             introduceApp();
 
         NetworkRequests requests = NetworkRequests.getInstance(getApplicationContext());
+
+        ApiEndPoint apiEndPoint = ApiServiceLayer.createService(ApiEndPoint.class);
+        Call<List<Lesson>> call = apiEndPoint.getLessons();
+        call.enqueue(new Callback<List<Lesson>>() {
+            @Override
+            public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
+                List<Lesson> list = response.body();
+
+                Toast.makeText(getApplicationContext(), list.size()+" size", Toast.LENGTH_SHORT).show();
+
+                for(Lesson lesson : list){
+                    Toast.makeText(getApplicationContext(), lesson.getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Lesson>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Failed because of "+t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
 //        if(requests.isNetworkAvailable()) {
 //            requests.getSyncedLessons();
 //            requests.getSyncedUsages();

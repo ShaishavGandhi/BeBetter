@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import shaishav.com.bebetter.Data.Lesson;
-import shaishav.com.bebetter.Data.LessonSource;
+import shaishav.com.bebetter.Data.Models.Lesson;
+import shaishav.com.bebetter.Data.Source.LessonSource;
 import shaishav.com.bebetter.Adapters.LessonRecyclerViewAdapter;
 import shaishav.com.bebetter.R;
 
