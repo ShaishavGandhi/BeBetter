@@ -1,14 +1,15 @@
 package shaishav.com.bebetter.Activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,25 +20,23 @@ import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
-
-import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 import me.originqiu.library.EditTag;
-import shaishav.com.bebetter.Data.Models.Lesson;
-import shaishav.com.bebetter.Data.Source.LessonSource;
+import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
-import shaishav.com.bebetter.Utils.NetworkRequests;
+import shaishav.com.bebetter.Network.NetworkRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class AddLesson extends AppCompatActivity {
+public class AddExperience extends AppCompatActivity {
 
     EditText title,lesson;
     EditTag category;
     Switch isPublic;
     ImageButton tooltip;
     Button saveButton;
-    LessonSource lessonSource;
+    ExperienceSource experienceSource;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -55,7 +54,7 @@ public class AddLesson extends AppCompatActivity {
         );
         setContentView(R.layout.activity_add_lesson);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Add a lesson");
+        toolbar.setTitle("Add an experience");
         setSupportActionBar(toolbar);
 
         // Add back button
@@ -80,21 +79,24 @@ public class AddLesson extends AppCompatActivity {
         tooltip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Set tooltip
-                new SimpleTooltip.Builder(getApplicationContext())
-                        .anchorView(tooltip)
-                        .text("At Be Better, we feel that everyone in the community will benefit if we all share our experiences. Some of our lessons can be personal and specific to our personality. You typically would want to share experiences that can be extrapolated and beneficial to everyone. Please keep in mind that the quality of your feed is dependent on you")
-                        .gravity(Gravity.TOP)
-                        .animated(true)
-                        .transparentOverlay(false)
-                        .textColor(Color.WHITE)
-                        .build()
-                        .show();
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddExperience.this);
+                alertDialogBuilder.setTitle("Share Your Experience.");
+                alertDialogBuilder.setMessage("At BeBetter, we feel that everyone in the community will benefit if we all share " +
+                        "our experiences. If your experience can benefit someone, consider making it public!");
+                alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                alertDialogBuilder.show();
+
             }
         });
 
         //Database connection
-        lessonSource = new LessonSource(this);
+        experienceSource = new ExperienceSource(this);
 
         title.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         lesson.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
@@ -115,11 +117,11 @@ public class AddLesson extends AppCompatActivity {
                 String categoryText = Constants.convertListToString(catList);
 
                 if(titleText.length()>0 && lessonText.length()>0 && catList.size()>0) {
-                    lessonSource.open();
-                    Lesson lesson = lessonSource.createLesson(titleText,lessonText,categoryText,new Date().getTime(),is_public);
-                    lessonSource.close();
+                    experienceSource.open();
+                    Experience experience = experienceSource.createLesson(titleText,lessonText,categoryText,new Date().getTime(),is_public);
+                    experienceSource.close();
                     NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
-                    networkRequests.syncLesson(lesson);
+                    networkRequests.syncLesson(experience);
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();

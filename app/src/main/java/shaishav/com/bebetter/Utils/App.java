@@ -13,6 +13,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import java.io.File;
 import java.util.Calendar;
 
+import shaishav.com.bebetter.Network.NetworkRequests;
 import shaishav.com.bebetter.Receiver.Backup;
 import shaishav.com.bebetter.Receiver.Reminder;
 import shaishav.com.bebetter.Service.BackgroundService;
@@ -37,7 +38,6 @@ public class App extends Application {
         SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
         if(preferences.getBoolean(Constants.FIRST_TIME, false)) {
             // Set daily reminder
-            Toast.makeText(App.this, "Went in", Toast.LENGTH_SHORT).show();
             setReminder(this);
             setBackupSchedule(this);
             startService(new Intent(getApplicationContext(), BackgroundService.class));

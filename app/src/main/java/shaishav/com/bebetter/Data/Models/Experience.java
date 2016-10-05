@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Shaishav on 15-03-2016.
  */
-public class Lesson {
+public class Experience {
 
     String title,lesson,category;
 

@@ -2,12 +2,13 @@ package shaishav.com.bebetter.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +26,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,23 +34,26 @@ import retrofit2.Response;
 import shaishav.com.bebetter.Fragments.DaySummary;
 import shaishav.com.bebetter.Fragments.LogOut;
 import shaishav.com.bebetter.Fragments.Settings;
-import shaishav.com.bebetter.Data.Models.Lesson;
-import shaishav.com.bebetter.Data.Source.LessonSource;
+import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Fragments.LessonList;
-import shaishav.com.bebetter.Network.ApiEndPoint;
+import shaishav.com.bebetter.Network.ApiCallback;
+import shaishav.com.bebetter.Network.apis.UserApiEndPoint;
 import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Receiver.ApiResponseReceiver;
 import shaishav.com.bebetter.Utils.Constants;
-import shaishav.com.bebetter.Utils.NetworkRequests;
+import shaishav.com.bebetter.Network.NetworkRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ApiCallback {
 
     SharedPreferences preferences;
-    LessonSource lessonSource;
-    List<Lesson> lessonList;
+    ExperienceSource experienceSource;
+    List<Experience> experienceList;
+    ApiResponseReceiver apiResponseReceiver;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AddLesson.class);
+                Intent intent = new Intent(getApplicationContext(),AddExperience.class);
                 startActivity(intent);
             }
         });
@@ -83,31 +88,7 @@ public class MainActivity extends AppCompatActivity
         if(isFirstTime())
             introduceApp();
 
-        NetworkRequests requests = NetworkRequests.getInstance(getApplicationContext());
-
-        ApiEndPoint apiEndPoint = ApiServiceLayer.createService(ApiEndPoint.class);
-        Call<List<Lesson>> call = apiEndPoint.getLessons();
-        call.enqueue(new Callback<List<Lesson>>() {
-            @Override
-            public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
-                List<Lesson> list = response.body();
-
-                Toast.makeText(getApplicationContext(), list.size()+" size", Toast.LENGTH_SHORT).show();
-
-                for(Lesson lesson : list){
-                    Toast.makeText(getApplicationContext(), lesson.getTitle(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Lesson>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Failed because of "+t.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-//        if(requests.isNetworkAvailable()) {
-//            requests.getSyncedLessons();
-//            requests.getSyncedUsages();
-//        }
+        ApiServiceLayer.getBackedUpUsages(MainActivity.this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -141,6 +122,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void saveToken(String token){
         SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -166,14 +152,25 @@ public class MainActivity extends AppCompatActivity
     public void initialize(){
 
         // Open connection to Db and get all lessons
-        lessonSource = new LessonSource(this);
-        lessonSource.open();
-        lessonList = lessonSource.getAllLessons();
-        lessonSource.close();
+        experienceSource = new ExperienceSource(this);
+        experienceSource.open();
+        experienceList = experienceSource.getAllLessons();
+        experienceSource.close();
 
         // Initialize preferences
         preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
 
+        apiResponseReceiver = new ApiResponseReceiver(MainActivity.this, this);
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(apiResponseReceiver, new IntentFilter("getExperiences"));
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(apiResponseReceiver != null) {
+            LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(apiResponseReceiver);
+        }
     }
 
     @Override
@@ -219,7 +216,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
 
-        if (id == R.id.nav_daily_lessons)
+        if (id == R.id.nav_daily_experiences)
             fragment = new LessonList();
         else if (id == R.id.nav_summary)
             fragment = new DaySummary();
@@ -231,7 +228,6 @@ public class MainActivity extends AppCompatActivity
             return true;
         else if(id == R.id.log_out)
             fragment = new LogOut();
-
 
         fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -254,6 +250,16 @@ public class MainActivity extends AppCompatActivity
 
     public String getGcmId(){
         return FirebaseInstanceId.getInstance().getToken();
+
+    }
+
+    @Override
+    public void onApiComplete(String action, Map<String, Object> args) {
+
+    }
+
+    @Override
+    public void onApiError(String action, int responseCode) {
 
     }
 }

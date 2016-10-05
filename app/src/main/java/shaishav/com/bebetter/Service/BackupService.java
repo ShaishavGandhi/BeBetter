@@ -5,20 +5,20 @@ import android.content.Intent;
 
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Lesson;
-import shaishav.com.bebetter.Data.Source.LessonSource;
+import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Data.Models.Usage;
 import shaishav.com.bebetter.Data.Source.UsageSource;
-import shaishav.com.bebetter.Utils.NetworkRequests;
+import shaishav.com.bebetter.Network.NetworkRequests;
 
 /**
  * Created by Shaishav on 25-07-2016.
  */
 public class BackupService extends IntentService {
 
-    LessonSource lessonSource;
+    ExperienceSource experienceSource;
     UsageSource usageSource;
-    List<Lesson> lessons;
+    List<Experience> experiences;
     List<Usage> usages;
 
     public BackupService(){
@@ -28,10 +28,10 @@ public class BackupService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        lessonSource = new LessonSource(getApplicationContext());
-        lessonSource.open();
-        lessons = lessonSource.getLessonsForBackup();
-        lessonSource.close();
+        experienceSource = new ExperienceSource(getApplicationContext());
+        experienceSource.open();
+        experiences = experienceSource.getLessonsForBackup();
+        experienceSource.close();
 
         usageSource = new UsageSource(getApplicationContext());
         usageSource.open();
@@ -41,7 +41,7 @@ public class BackupService extends IntentService {
         NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
 
         if(networkRequests.isNetworkAvailable()) {
-            networkRequests.syncLesson(lessons);
+            networkRequests.syncLesson(experiences);
             networkRequests.syncUsage(usages);
         }
 

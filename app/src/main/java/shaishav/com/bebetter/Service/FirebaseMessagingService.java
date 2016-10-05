@@ -5,8 +5,7 @@ import android.util.Log;
 import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
-import shaishav.com.bebetter.Utils.NetworkRequests;
-import shaishav.com.bebetter.Utils.Notification;
+import shaishav.com.bebetter.Network.NetworkRequests;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 

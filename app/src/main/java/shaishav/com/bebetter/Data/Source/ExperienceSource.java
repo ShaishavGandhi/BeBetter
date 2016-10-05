@@ -9,13 +9,13 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Lesson;
+import shaishav.com.bebetter.Data.Models.Experience;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 
 /**
  * Created by Shaishav on 01-03-2016.
  */
-public class LessonSource {
+public class ExperienceSource {
 
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
@@ -23,7 +23,7 @@ public class LessonSource {
 
 
 
-    public LessonSource(Context context) {
+    public ExperienceSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
         this.context = context;
     }
@@ -36,7 +36,7 @@ public class LessonSource {
         dbHelper.close();
     }
 
-    public Lesson createLesson(String title, String lesson, String category, long created_at, boolean is_public){
+    public Experience createLesson(String title, String lesson, String category, long created_at, boolean is_public){
         ContentValues contentValues = new ContentValues();
         contentValues.put(MySQLiteHelper.COLUMN_LESSON,lesson);
         contentValues.put(MySQLiteHelper.COLUMN_TITLE, title);
@@ -58,7 +58,7 @@ public class LessonSource {
 
 
 
-        Lesson post = cursorToPost(cursor);
+        Experience post = cursorToPost(cursor);
         cursor.close();
 
         return post;
@@ -72,15 +72,15 @@ public class LessonSource {
     }
 
 
-    public List<Lesson> getAllLessons(){
-        List<Lesson> posts = new ArrayList<Lesson>();
+    public List<Experience> getAllLessons(){
+        List<Experience> posts = new ArrayList<Experience>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,
                 null, null, null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Lesson post = cursorToPost(cursor);
+            Experience post = cursorToPost(cursor);
             posts.add(post);
             cursor.moveToNext();
         }
@@ -89,15 +89,15 @@ public class LessonSource {
         return posts;
     }
 
-    public List<Lesson> getLessonsForBackup(){
-        List<Lesson> posts = new ArrayList<Lesson>();
+    public List<Experience> getLessonsForBackup(){
+        List<Experience> posts = new ArrayList<Experience>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,
                 null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Lesson post = cursorToPost(cursor);
+            Experience post = cursorToPost(cursor);
             posts.add(post);
             cursor.moveToNext();
         }
@@ -120,8 +120,8 @@ public class LessonSource {
 
     }
 
-    private Lesson cursorToPost(Cursor cursor){
-        Lesson post = new Lesson();
+    private Experience cursorToPost(Cursor cursor){
+        Experience post = new Experience();
         post.setId(cursor.getLong(0));
         post.setLesson(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_LESSON)));
         post.setCreated_at(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CREATED_AT)));

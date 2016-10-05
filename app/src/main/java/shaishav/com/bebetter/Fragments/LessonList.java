@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import shaishav.com.bebetter.Data.Models.Lesson;
-import shaishav.com.bebetter.Data.Source.LessonSource;
-import shaishav.com.bebetter.Adapters.LessonRecyclerViewAdapter;
+import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.Source.ExperienceSource;
+import shaishav.com.bebetter.Adapters.ExperienceRecyclerViewAdapter;
 import shaishav.com.bebetter.R;
 
 import java.util.List;
@@ -24,8 +24,8 @@ public class LessonList extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    LessonSource lessonSource;
-    public List<Lesson> lessonList;
+    ExperienceSource experienceSource;
+    public List<Experience> experienceList;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -46,12 +46,12 @@ public class LessonList extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lesson_list, container, false);
 
         //Get the lesson source
-        lessonSource = new LessonSource(getActivity().getApplicationContext());
+        experienceSource = new ExperienceSource(getActivity().getApplicationContext());
 
         //Get all lessons
-        lessonSource.open();
-        lessonList = lessonSource.getAllLessons();
-        lessonSource.close();
+        experienceSource.open();
+        experienceList = experienceSource.getAllLessons();
+        experienceSource.close();
 
 
 
@@ -60,7 +60,7 @@ public class LessonList extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
             LinearLayout emptyView = (LinearLayout)view.findViewById(R.id.emptyView);
-            if(lessonList.size()==0){
+            if(experienceList.size()==0){
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
 
@@ -70,7 +70,7 @@ public class LessonList extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new LessonRecyclerViewAdapter(lessonList));
+            recyclerView.setAdapter(new ExperienceRecyclerViewAdapter(experienceList));
         }
         return view;
     }

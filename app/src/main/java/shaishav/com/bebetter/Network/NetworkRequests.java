@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Utils;
+package shaishav.com.bebetter.Network;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -26,12 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import shaishav.com.bebetter.Data.Models.Lesson;
-import shaishav.com.bebetter.Data.Source.LessonSource;
+import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Data.Models.Usage;
 import shaishav.com.bebetter.Data.Source.UsageSource;
+import shaishav.com.bebetter.Utils.Constants;
+import shaishav.com.bebetter.Utils.Notification;
 
 /**
  * Created by Shaishav on 05-07-2016.
@@ -113,8 +115,8 @@ public class NetworkRequests {
 
     }
 
-    public void syncLesson(Lesson lesson){
-        final Lesson tempLesson = lesson;
+    public void syncLesson(Experience experience){
+        final Experience tempExperience = experience;
         if(!checkIfSignedIn())
             return;
 
@@ -128,10 +130,10 @@ public class NetworkRequests {
                     resp = resp.getJSONObject("lesson");
                     String server_id = resp.getString("_id");
                     String local_id = resp.getString("localId");
-                    LessonSource lessonSource = new LessonSource(context);
-                    lessonSource.open();
-                    lessonSource.setServerId(server_id,Integer.parseInt(local_id));
-                    lessonSource.close();
+                    ExperienceSource experienceSource = new ExperienceSource(context);
+                    experienceSource.open();
+                    experienceSource.setServerId(server_id,Integer.parseInt(local_id));
+                    experienceSource.close();
                     preferenceSource.setLastBackedUpTime(resp.getLong("createdAt"));
                 }
                 catch (Exception e){
@@ -147,12 +149,12 @@ public class NetworkRequests {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                params.put(MySQLiteHelper.COLUMN_TITLE,tempLesson.getTitle());
-                params.put(MySQLiteHelper.COLUMN_LESSON,tempLesson.getLesson());
-                params.put(MySQLiteHelper.COLUMN_CATEGORY,tempLesson.getCategory());
-                params.put(MySQLiteHelper.COLUMN_CREATED_AT,String.valueOf(tempLesson.getCreated_at()));
-                params.put(MySQLiteHelper.COLUMN_IS_PUBLIC,String.valueOf(tempLesson.getIs_public()==1));
-                params.put(Constants.LOCAL_ID,String.valueOf(tempLesson.getId()));
+                params.put(MySQLiteHelper.COLUMN_TITLE, tempExperience.getTitle());
+                params.put(MySQLiteHelper.COLUMN_LESSON, tempExperience.getLesson());
+                params.put(MySQLiteHelper.COLUMN_CATEGORY, tempExperience.getCategory());
+                params.put(MySQLiteHelper.COLUMN_CREATED_AT,String.valueOf(tempExperience.getCreated_at()));
+                params.put(MySQLiteHelper.COLUMN_IS_PUBLIC,String.valueOf(tempExperience.getIs_public()==1));
+                params.put(Constants.LOCAL_ID,String.valueOf(tempExperience.getId()));
                 params.put(Constants.POST_USER_EMAIL,temp_user_email);
                 return params;
             }
@@ -162,9 +164,9 @@ public class NetworkRequests {
         queue.add(request);
     }
 
-    public void syncLesson(List<Lesson> lessons){
-        for(Lesson lesson : lessons){
-            syncLesson(lesson);
+    public void syncLesson(List<Experience> experiences){
+        for(Experience experience : experiences){
+            syncLesson(experience);
         }
     }
 
@@ -241,17 +243,17 @@ public class NetworkRequests {
                         }
                         String cat_string = Constants.convertListToString(cat_list);
 
-                        LessonSource lessonSource = new LessonSource(context);
-                        lessonSource.open();
-                        if(!lessonSource.isExisting(json.getString("_id")))
+                        ExperienceSource experienceSource = new ExperienceSource(context);
+                        experienceSource.open();
+                        if(!experienceSource.isExisting(json.getString("_id")))
                         {
-                            Lesson lesson = lessonSource.createLesson(json.getString("title"), json.getString("lesson"), cat_string,
+                            Experience experience = experienceSource.createLesson(json.getString("title"), json.getString("lesson"), cat_string,
                                     json.getLong("createdAt"), json.getBoolean("public"));
-                            lessonSource.setServerId(json.getString("_id"),(int)lesson.getId());
+                            experienceSource.setServerId(json.getString("_id"),(int) experience.getId());
 
                             preferenceSource.setLastBackedUpTime(json.getLong("createdAt"));
                         }
-                        lessonSource.close();
+                        experienceSource.close();
                     }
                 }
                 catch (Exception e){

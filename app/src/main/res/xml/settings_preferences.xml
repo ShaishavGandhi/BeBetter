@@ -18,7 +18,7 @@
         <SwitchPreference
             android:key="backup"
             android:title="Sync data to cloud"
-            android:summary="All your ideas, lessons and usages are safe in the cloud.">
+            android:summary="All your ideas, experiences and usages are safe in the cloud.">
 
         </SwitchPreference>
 
