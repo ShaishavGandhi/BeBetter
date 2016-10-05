@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 <LinearLayout
@@ -18,7 +17,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="shaishav.com.bebetter.Activities.AddLesson"
+    tools:context=".Activities.AddExperience"
     android:orientation="vertical"
     tools:showIn="@layout/activity_add_lesson">
 
@@ -29,8 +28,8 @@
         android:layout_width="match_parent"
         android:imeOptions="actionNext"
         android:textCursorDrawable="@null"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary"
         android:layout_height="wrap_content"
         android:hint="Title"
         android:capitalize="sentences" />
@@ -47,9 +46,9 @@
         android:maxLines="14"
         android:scrollbars="vertical"
         android:gravity="top|left"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:hint="What did you learn?"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary"
+        android:hint="What did you learn today?"
         android:capitalize="sentences" />
 
     <me.originqiu.library.EditTag
@@ -73,9 +72,9 @@
 
 
         <TextView
-            android:text="Share your lesson?"
+            android:text="Share your experience?"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:padding="8dp"
 
@@ -87,8 +86,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_wb_sunny_black_24dp"
             android:title="Summary" />
         <item
-            android:id="@+id/nav_daily_lessons"
+            android:id="@+id/nav_daily_experiences"
             android:icon="@drawable/ic_view_list_black_24dp"
-            android:title="Lessons"
+            android:title="Experiences"
             />
         <item
             android:id="@+id/nav_settings"

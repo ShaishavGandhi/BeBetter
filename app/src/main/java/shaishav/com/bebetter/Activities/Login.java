@@ -3,8 +3,10 @@ package shaishav.com.bebetter.Activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,24 +22,26 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import retrofit2.Call;
-import retrofit2.Callback;
+import java.util.Map;
+
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Data.Models.User;
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.Network.ApiEndPoint;
 import shaishav.com.bebetter.Network.ApiServiceLayer;
+import shaishav.com.bebetter.Receiver.ApiResponseReceiver;
+import shaishav.com.bebetter.Network.ApiCallback;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener{
+        View.OnClickListener, ApiCallback{
 
     final int RC_SIGN_IN = 0;
     PreferenceSource preferenceSource;
     GoogleApiClient mGoogleApiClient;
     ProgressDialog progressDialog;
     String display_pic;
+    ApiResponseReceiver apiResponseReceiver;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -55,6 +59,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        apiResponseReceiver = new ApiResponseReceiver(getApplicationContext(), this);
 
         //Initialize all variables
         initialize();
@@ -78,6 +84,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     public void initialize(){
+        IntentFilter intentFilter = new IntentFilter("loginUser");
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(apiResponseReceiver, intentFilter);
         preferenceSource = PreferenceSource.getInstance(getApplicationContext());
         progressDialog = new ProgressDialog(Login.this);
         progressDialog.setIndeterminate(true);
@@ -140,23 +148,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             user.setPhoto(display_pic);
             user.setGcm_id(gcm_token);
 
-            ApiEndPoint client = ApiServiceLayer.createService(ApiEndPoint.class);
-
-            Call<User> call = client.loginUser(user);
-            call.enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, retrofit2.Response<User> response) {
-                    storeLocally(user.getName(), user.getEmail(), user.getPhoto());
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Oops! Couldn't log you in", Toast.LENGTH_SHORT).show();
-                }
-            });
+            ApiServiceLayer.loginUser(getApplicationContext(), user);
 
         } else {
             // Signed out, show unauthenticated UI.
@@ -176,9 +168,33 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 });
     }
 
+    @Override
+    public void onApiComplete(String action, Map<String, Object> args) {
+        progressDialog.dismiss();
+        if(action.equals("loginUser")){
+            Intent intent = new Intent(Login.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
-    public void storeLocally(String name,String email,String display_pic){
-        preferenceSource.saveUserData(name,email,display_pic);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        initialize();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(apiResponseReceiver != null) {
+            LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(apiResponseReceiver);
+        }
+    }
+
+    @Override
+    public void onApiError(String action, int responseCode) {
 
     }
 }

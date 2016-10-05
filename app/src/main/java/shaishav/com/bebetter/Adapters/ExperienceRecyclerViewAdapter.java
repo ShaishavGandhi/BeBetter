@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import shaishav.com.bebetter.Activities.Details;
-import shaishav.com.bebetter.Data.Models.Lesson;
+import shaishav.com.bebetter.Data.Models.Experience;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 
@@ -17,13 +17,13 @@ import java.util.Date;
 import java.util.List;
 
 
-public class LessonRecyclerViewAdapter extends RecyclerView.Adapter<LessonRecyclerViewAdapter.ViewHolder> {
+public class ExperienceRecyclerViewAdapter extends RecyclerView.Adapter<ExperienceRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Lesson> mValues;
+    private final List<Experience> mValues;
     private View view;
     private Context context;
 
-    public LessonRecyclerViewAdapter(List<Lesson> items) {
+    public ExperienceRecyclerViewAdapter(List<Experience> items) {
         mValues = items;
     }
 
@@ -46,7 +46,7 @@ public class LessonRecyclerViewAdapter extends RecyclerView.Adapter<LessonRecycl
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,Details.class);
-                Lesson temp = mValues.get(position);
+                Experience temp = mValues.get(position);
                 intent.putExtra("id",temp.getId());
                 intent.putExtra("title",temp.getTitle());
                 intent.putExtra("category",temp.getCategory());
@@ -66,7 +66,7 @@ public class LessonRecyclerViewAdapter extends RecyclerView.Adapter<LessonRecycl
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Lesson mItem;
+        public Experience mItem;
 
         public ViewHolder(View view) {
             super(view);

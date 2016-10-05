@@ -32,7 +32,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + TABLE_LESSON + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_TITLE
             + " text not null,"+COLUMN_LESSON+" text not null, "+COLUMN_CREATED_AT+" long not null, "
-            +COLUMN_CATEGORY+" text not null, "+COLUMN_SERVER_ID+" text default 'NA', "+COLUMN_IS_PUBLIC+" int default 0);";
+            +COLUMN_CATEGORY+" text, "+COLUMN_SERVER_ID+" text default 'NA', "+COLUMN_IS_PUBLIC+" int default 0);";
 
     private static final String CREATE_USAGE_STATS = "create table "
             + TABLE_USAGE + "(" + COLUMN_ID

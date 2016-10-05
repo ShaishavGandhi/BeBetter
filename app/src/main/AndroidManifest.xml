@@ -27,7 +27,7 @@
         </receiver>
 
         <activity
-            android:name=".Activities.AddLesson"
+            android:name=".Activities.AddExperience"
             android:label="@string/title_activity_add_lesson"
             android:theme="@style/AppTheme.NoActionBar" />
 
