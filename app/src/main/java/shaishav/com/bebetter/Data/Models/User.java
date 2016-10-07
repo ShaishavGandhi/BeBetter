@@ -1,9 +1,14 @@
 package shaishav.com.bebetter.Data.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Shaishav on 9/6/2016.
  */
 public class User {
+
+    @SerializedName("_id")
+    String server_id;
 
     String name, email, gcm_id, photo;
 

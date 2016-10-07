@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.Models.Response;
 import shaishav.com.bebetter.Data.Models.User;
 
 /**
@@ -16,5 +17,5 @@ import shaishav.com.bebetter.Data.Models.User;
 public interface UserApiEndPoint {
 
     @POST("users/")
-    Call<User> loginUser(@Body User user);
+    Call<Object> loginUser(@Body User user);
 }
