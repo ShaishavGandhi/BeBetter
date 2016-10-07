@@ -14,7 +14,8 @@ import shaishav.com.bebetter.Network.api_layer.UserApiLayer;
  */
 public class ApiServiceLayer {
 
-    public static final String BASE_URL = "https://bebetterserver.herokuapp.com/api/";
+//    public static final String BASE_URL = "https://bebetterserver.herokuapp.com/api/";
+    public static final String BASE_URL = "http://10.0.1.17:8080/api/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
