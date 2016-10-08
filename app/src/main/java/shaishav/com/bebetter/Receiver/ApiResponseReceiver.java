@@ -24,5 +24,8 @@ public class ApiResponseReceiver extends BroadcastReceiver {
         if(intent.getAction().equals("loginUser")){
             mApiCallback.onApiComplete(intent.getAction(), null);
         }
+        if(intent.getAction().equals("getBackedUpUsages")){
+            mApiCallback.onApiComplete(intent.getAction(), null);
+        }
     }
 }
