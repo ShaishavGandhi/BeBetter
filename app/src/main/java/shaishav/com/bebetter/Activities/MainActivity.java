@@ -25,12 +25,14 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Fragments.DaySummary;
 import shaishav.com.bebetter.Fragments.LogOut;
 import shaishav.com.bebetter.Fragments.Settings;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     ExperienceSource experienceSource;
     List<Experience> experienceList;
     ApiResponseReceiver apiResponseReceiver;
+    PreferenceSource preferenceSource;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -88,7 +91,8 @@ public class MainActivity extends AppCompatActivity
         if(isFirstTime())
             introduceApp();
 
-        ApiServiceLayer.getBackedUpUsages(MainActivity.this);
+        final String temp_user_email = preferenceSource.getEmail();
+        ApiServiceLayer.getBackedUpUsages(MainActivity.this, temp_user_email, new Date().getTime());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -158,6 +162,7 @@ public class MainActivity extends AppCompatActivity
         experienceSource.close();
 
         // Initialize preferences
+        preferenceSource = PreferenceSource.getInstance(MainActivity.this);
         preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
 
         apiResponseReceiver = new ApiResponseReceiver(MainActivity.this, this);
@@ -255,7 +260,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onApiComplete(String action, Map<String, Object> args) {
-
+        if(action.equals("getBackedUpUsages")){
+            Toast.makeText(getApplicationContext(), "Got back usages", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
