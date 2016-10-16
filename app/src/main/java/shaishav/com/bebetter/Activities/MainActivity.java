@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
             introduceApp();
 
         final String temp_user_email = preferenceSource.getEmail();
-        ApiServiceLayer.getBackedUpUsages(MainActivity.this, temp_user_email, new Date().getTime());
+        / /ApiServiceLayer.getBackedUpUsages(MainActivity.this, temp_user_email, new Date().getTime());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

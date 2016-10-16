@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import shaishav.com.bebetter.Data.Models.Time;
+
 /**
  * Created by Shaishav on 19-06-2016.
  */
@@ -36,6 +38,13 @@ public class Constants {
     public static final String POST_USER_EMAIL = "email";
     public static final String POST_USER_PHOTO ="photo";
     public static final String LAST_BACKED_UP="last_backed_up";
+
+    public static final String SECONDS = "seconds";
+    public static final String MINUTES = "minutes";
+    public static final String HOURS   = "hours";
+    public static final String DAYS    = "days";
+    public static final String MONTHS  = "months";
+    public static final String YEARS   = "years";
 
 
     public static final String LOCAL_ID="localId";
@@ -84,5 +93,22 @@ public class Constants {
         return time;
     }
 
+    public static Time getTimeUnit(long usage){
+        long second = 1000;
+
+        if(usage < second*60){
+            return new Time((int) (usage/second), SECONDS);
+        } else if(usage < second*60*60){
+            return new Time((int)(usage/(second*60)), MINUTES);
+        } else if(usage < second*60*60*24){
+            return new Time((int)(usage/(second*60*60)), HOURS);
+        } else if(usage < second*60*60*24*30){
+            return new Time((int)(usage/(second*60*60*24)), DAYS);
+        } else if(usage < second*60*60*24*30*12){
+            return new Time((int)(usage/(second*60*60*24*30)), MONTHS);
+        } else{
+            return new Time((int)(usage/(second*60*60*24*30*12)), YEARS);
+        }
+    }
 
 }

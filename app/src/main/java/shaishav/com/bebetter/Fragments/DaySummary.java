@@ -17,6 +17,7 @@ import java.util.List;
 
 import im.dacer.androidcharts.LineView;
 import shaishav.com.bebetter.Data.Models.Goal;
+import shaishav.com.bebetter.Data.Models.Time;
 import shaishav.com.bebetter.Data.Source.GoalSource;
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Data.Models.Usage;
@@ -31,9 +32,9 @@ public class DaySummary extends Fragment {
     PreferenceSource preferenceSource;
     private UsageSource usageSource;
     private GoalSource goalSource;
-    private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv;
+    private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv, timeUnit;
     private View rootView;
-    private String daily_session,current_session,average_daily_usage,daily_goal,total_usage;
+    private long daily_session,current_session,average_daily_usage,daily_goal,total_usage;
     LineView lineView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -72,6 +73,8 @@ public class DaySummary extends Fragment {
         daily_session_tv = (TextView)rootView.findViewById(R.id.daily_usage);
         average_daily_usage_tv = (TextView)rootView.findViewById(R.id.average_daily_usage);
         total_usage_tv = (TextView)rootView.findViewById(R.id.total_usage);
+        timeUnit = (TextView) rootView.findViewById(R.id.timeUnit);
+
         lineView = (LineView)rootView.findViewById(R.id.usage_chart_2);
         lineView.setDrawDotLine(true); //optional
         lineView.setColorArray(new String[]{"#674172","#F25268","#F25268"});
@@ -100,28 +103,28 @@ public class DaySummary extends Fragment {
     private void getData(){
 
         if(preferenceSource.getLastUnlockedTime()!=0) {
-            current_session = String.valueOf((new Date().getTime() - preferenceSource.getLastUnlockedTime()) / (1000 * 60));
-            daily_session = String.valueOf((preferenceSource.getSessionTime()) / (preferenceSource.getUsageUnit()));
+            current_session = (new Date().getTime() - preferenceSource.getLastUnlockedTime()) / (1000 * 60);
+            daily_session = (preferenceSource.getSessionTime()) / (preferenceSource.getUsageUnit());
             if(preferenceSource.getUsageUnit()==1000*60)
-                daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session));
+                daily_session = daily_session + current_session;
             else
-                daily_session = String.valueOf(Long.parseLong(daily_session) + Long.parseLong(current_session)/60);
-            average_daily_usage = String.valueOf(getAverageUsage()/(preferenceSource.getUsageUnit()));
-            daily_goal = String.valueOf(preferenceSource.getGoal()/preferenceSource.getUsageUnit());
+                daily_session = daily_session + current_session/60;
+            average_daily_usage = getAverageUsage()/(preferenceSource.getUsageUnit());
+            daily_goal = preferenceSource.getGoal()/preferenceSource.getUsageUnit();
 
         }
         else{
-            current_session = String.valueOf(0);
-            daily_session = String.valueOf(0);
-            average_daily_usage = String.valueOf(0);
-            daily_goal = String.valueOf(200);
+            current_session = 0;
+            daily_session = 0;
+            average_daily_usage = 0;
+            daily_goal = 200;
         }
 
         usageSource.open();
-        total_usage = String.valueOf(usageSource.getTotalUsage()/(1000*60*60));
+        total_usage = usageSource.getTotalUsage();
         usageSource.close();
 
-        total_usage = String.valueOf((Long.valueOf(daily_session) + Long.valueOf(total_usage)*60)/60);
+        total_usage = (daily_session + total_usage);
 
 
         ArrayList<String> xAxes = new ArrayList<>();
@@ -140,7 +143,7 @@ public class DaySummary extends Fragment {
         }
 
 
-        yAxes.add((int)Long.parseLong(daily_session));
+        yAxes.add((int)daily_session);
         threshold.add((int)(preferenceSource.getGoal()/(preferenceSource.getUsageUnit())));
         xAxes.add(Constants.getFormattedDate(new Date()));
         ArrayList<ArrayList<Integer>> data = new ArrayList<ArrayList<Integer>>();
@@ -168,17 +171,23 @@ public class DaySummary extends Fragment {
     }
 
     private void setData(){
-        animateCounter(current_session_tv,(int)Long.parseLong(current_session));
-        if(Long.parseLong(daily_session) > Long.parseLong(daily_goal)){
+        animateCounter(current_session_tv,(int)current_session);
+        if(daily_session > daily_goal){
             daily_session_tv.setTextColor(Color.RED);
         }
-        animateCounter(daily_session_tv, (int)Long.parseLong(daily_session));
-        animateCounter(average_daily_usage_tv, (int)Long.parseLong(average_daily_usage));
-        animateCounter(total_usage_tv, Integer.parseInt(total_usage));
+
+        Time time = Constants.getTimeUnit(total_usage);
+
+        animateCounter(daily_session_tv, (int)daily_session);
+        animateCounter(average_daily_usage_tv, (int)average_daily_usage);
+        animateCounter(total_usage_tv, time.getValue());
+
+        timeUnit.setText(time.getUnit());
 
         Notification notif = new Notification();
         notif.updateNotification(getActivity().getApplicationContext(),
-                notif.createNotification(getActivity().getApplicationContext(),daily_session,daily_goal));
+                notif.createNotification(getActivity().getApplicationContext(), String.valueOf(daily_session),
+                        String.valueOf(daily_goal)));
     }
 
     private void animateCounter(final TextView view,int count){
