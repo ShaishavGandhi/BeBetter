@@ -6,7 +6,7 @@ android {
         prod {
             keyAlias 'shaishav gandhi'
             keyPassword 'PinkFloyd786'
-            storeFile file('C:/Users/Shaishav/Documents/androidkeystore.jks')
+            storeFile file('/home/shaishavgandhi05/Downloads/androidkeystore.jks')
             storePassword 'PinkFloyd786'
         }
     }
