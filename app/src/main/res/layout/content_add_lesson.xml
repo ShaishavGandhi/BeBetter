@@ -82,7 +82,8 @@
 
         <ImageButton
             android:id="@+id/tooltip"
-            android:src="@drawable/ic_info_outline_white_24dp"
+            android:src="@drawable/ic_info_outline_black_24dp"
+            android:background="@android:color/transparent"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:layout_gravity="center"
