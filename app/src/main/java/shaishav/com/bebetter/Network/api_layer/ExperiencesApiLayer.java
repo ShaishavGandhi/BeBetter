@@ -9,7 +9,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.Network.apis.ExperiencesApiEndPoint;

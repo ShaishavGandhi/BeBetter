@@ -7,13 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Time;
+import shaishav.com.bebetter.Data.models.Time;
 
 /**
  * Created by Shaishav on 19-06-2016.
  */
 public class Constants {
 
+    public static final String PACKAGE = "shaishav.com.bebetter";
     public static final String PREFERENCES = "com.bebetter.com";
     public static final String FULL_NAME = "first_name";
     public static final String LOCKED = "locked";

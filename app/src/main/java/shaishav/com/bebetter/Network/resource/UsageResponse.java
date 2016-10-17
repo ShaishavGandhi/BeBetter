@@ -4,9 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Response;
-import shaishav.com.bebetter.Data.Models.Usage;
-import shaishav.com.bebetter.Data.Models.User;
+import shaishav.com.bebetter.Data.models.Response;
+import shaishav.com.bebetter.Data.models.Usage;
 
 /**
  * Created by Shaishav on 10/7/2016.

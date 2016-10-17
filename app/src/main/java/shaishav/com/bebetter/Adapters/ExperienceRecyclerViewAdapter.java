@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import shaishav.com.bebetter.Activities.Details;
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 

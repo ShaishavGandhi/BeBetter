@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Data.Models;
+package shaishav.com.bebetter.Data.models;
 
 import com.google.gson.annotations.SerializedName;
 

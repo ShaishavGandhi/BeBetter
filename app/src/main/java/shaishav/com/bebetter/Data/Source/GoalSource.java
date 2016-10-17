@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Goal;
+import shaishav.com.bebetter.Data.models.Goal;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 
 /**

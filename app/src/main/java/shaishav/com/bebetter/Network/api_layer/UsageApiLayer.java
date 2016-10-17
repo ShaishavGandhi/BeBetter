@@ -4,19 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import shaishav.com.bebetter.Data.Models.Response;
-import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.models.Usage;
 import shaishav.com.bebetter.Data.Source.UsageSource;
 import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.Network.apis.UsageApiEndPoint;

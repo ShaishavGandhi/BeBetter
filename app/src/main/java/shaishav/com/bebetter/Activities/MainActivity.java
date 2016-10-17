@@ -29,18 +29,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Fragments.DaySummary;
 import shaishav.com.bebetter.Fragments.LogOut;
 import shaishav.com.bebetter.Fragments.Settings;
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Fragments.LessonList;
 import shaishav.com.bebetter.Network.ApiCallback;
-import shaishav.com.bebetter.Network.apis.UserApiEndPoint;
 import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Receiver.ApiResponseReceiver;
@@ -92,7 +88,7 @@ public class MainActivity extends AppCompatActivity
             introduceApp();
 
         final String temp_user_email = preferenceSource.getEmail();
-        / /ApiServiceLayer.getBackedUpUsages(MainActivity.this, temp_user_email, new Date().getTime());
+        //ApiServiceLayer.getBackedUpUsages(MainActivity.this, temp_user_email, new Date().getTime());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

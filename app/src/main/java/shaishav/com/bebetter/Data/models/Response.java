@@ -1,9 +1,6 @@
-package shaishav.com.bebetter.Data.Models;
+package shaishav.com.bebetter.Data.models;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Shaishav on 10/6/2016.

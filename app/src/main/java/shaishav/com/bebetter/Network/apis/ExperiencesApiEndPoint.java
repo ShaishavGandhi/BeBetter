@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.models.Experience;
 
 /**
  * Created by Shaishav on 10/4/2016.

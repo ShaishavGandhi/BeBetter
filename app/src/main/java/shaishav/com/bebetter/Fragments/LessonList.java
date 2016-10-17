@@ -1,6 +1,7 @@
 package shaishav.com.bebetter.Fragments;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,9 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Adapters.ExperienceRecyclerViewAdapter;
+import shaishav.com.bebetter.Data.providers.LessonsProvider;
 import shaishav.com.bebetter.R;
 
 import java.util.List;
@@ -49,12 +51,11 @@ public class LessonList extends Fragment {
         experienceSource = new ExperienceSource(getActivity().getApplicationContext());
 
         //Get all lessons
-        experienceSource.open();
-        experienceList = experienceSource.getAllLessons();
-        experienceSource.close();
 
-
-
+        Cursor cursor = getActivity().getContentResolver().query(LessonsProvider.CONTENT_URI, null, null, null, null);
+        experienceList = LessonsProvider.cursorToExperienceList(cursor);
+        cursor.close();
+        
         // Set the adapter
         if (view instanceof LinearLayout) {
             Context context = view.getContext();

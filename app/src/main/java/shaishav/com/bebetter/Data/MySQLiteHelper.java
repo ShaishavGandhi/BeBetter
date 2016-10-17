@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import shaishav.com.bebetter.Data.contracts.LessonContract;
+
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_LESSON = "lessons";
+
     public static final String TABLE_IDEAS = "ideas";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TITLE = "title";
@@ -27,12 +29,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // TODO: Set db version to 1
     private static final int DATABASE_VERSION = 1;
 
-    // Database creation sql statement
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_LESSON + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_TITLE
-            + " text not null,"+COLUMN_LESSON+" text not null, "+COLUMN_CREATED_AT+" long not null, "
-            +COLUMN_CATEGORY+" text, "+COLUMN_SERVER_ID+" text default 'NA', "+COLUMN_IS_PUBLIC+" int default 0);";
 
     private static final String CREATE_USAGE_STATS = "create table "
             + TABLE_USAGE + "(" + COLUMN_ID
@@ -52,7 +48,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(DATABASE_CREATE);
+        database.execSQL(LessonContract.LESSON_CREATE_TABLE);
         database.execSQL(CREATE_USAGE_STATS);
         database.execSQL(CREATE_GOAL);
 

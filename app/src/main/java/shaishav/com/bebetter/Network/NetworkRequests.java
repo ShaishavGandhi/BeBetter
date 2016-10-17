@@ -26,11 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
-import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.models.Usage;
 import shaishav.com.bebetter.Data.Source.UsageSource;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.Notification;

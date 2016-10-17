@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.contracts.LessonContract;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 
 /**
@@ -47,11 +48,11 @@ public class ExperienceSource {
         else
             contentValues.put(MySQLiteHelper.COLUMN_IS_PUBLIC,0);
 
-        long insertId = database.insert(MySQLiteHelper.TABLE_LESSON, null, contentValues);
+        long insertId = database.insert(LessonContract.TABLE_LESSON, null, contentValues);
 
 
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,null,MySQLiteHelper.COLUMN_ID+"="+insertId,null,null,null
+        Cursor cursor = database.query(LessonContract.TABLE_LESSON,null,MySQLiteHelper.COLUMN_ID+"="+insertId,null,null,null
                 ,MySQLiteHelper.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
@@ -68,14 +69,14 @@ public class ExperienceSource {
         ContentValues cv = new ContentValues();
         cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);
 
-        database.update(MySQLiteHelper.TABLE_LESSON,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
+        database.update(LessonContract.TABLE_LESSON,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
     }
 
 
     public List<Experience> getAllLessons(){
         List<Experience> posts = new ArrayList<Experience>();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,
+        Cursor cursor = database.query(LessonContract.TABLE_LESSON,
                 null, null, null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
@@ -92,7 +93,7 @@ public class ExperienceSource {
     public List<Experience> getLessonsForBackup(){
         List<Experience> posts = new ArrayList<Experience>();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,
+        Cursor cursor = database.query(LessonContract.TABLE_LESSON,
                 null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
@@ -108,7 +109,7 @@ public class ExperienceSource {
 
     public boolean isExisting(String server_id){
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON,
+        Cursor cursor = database.query(LessonContract.TABLE_LESSON,
                 null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
@@ -120,7 +121,7 @@ public class ExperienceSource {
 
     }
 
-    private Experience cursorToPost(Cursor cursor){
+    public static Experience cursorToPost(Cursor cursor){
         Experience post = new Experience();
         post.setId(cursor.getLong(0));
         post.setLesson(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_LESSON)));

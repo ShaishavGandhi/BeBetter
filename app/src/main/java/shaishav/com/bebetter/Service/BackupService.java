@@ -5,9 +5,9 @@ import android.content.Intent;
 
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
-import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.models.Usage;
 import shaishav.com.bebetter.Data.Source.UsageSource;
 import shaishav.com.bebetter.Network.NetworkRequests;
 
