@@ -5,11 +5,10 @@ import android.content.Context;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import shaishav.com.bebetter.Data.Models.User;
+import shaishav.com.bebetter.Data.models.User;
 import shaishav.com.bebetter.Network.api_layer.ExperiencesApiLayer;
 import shaishav.com.bebetter.Network.api_layer.UsageApiLayer;
 import shaishav.com.bebetter.Network.api_layer.UserApiLayer;
-import shaishav.com.bebetter.Network.apis.UsageApiEndPoint;
 
 /**
  * Created by Shaishav on 9/6/2016.

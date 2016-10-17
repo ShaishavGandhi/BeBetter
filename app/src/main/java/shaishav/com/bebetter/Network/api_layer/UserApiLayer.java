@@ -3,18 +3,16 @@ package shaishav.com.bebetter.Network.api_layer;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import shaishav.com.bebetter.Data.Models.User;
+import shaishav.com.bebetter.Data.models.User;
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.Network.apis.UserApiEndPoint;

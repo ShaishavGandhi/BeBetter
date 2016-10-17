@@ -25,7 +25,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import java.util.Map;
 
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
-import shaishav.com.bebetter.Data.Models.User;
+import shaishav.com.bebetter.Data.models.User;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.Receiver.ApiResponseReceiver;

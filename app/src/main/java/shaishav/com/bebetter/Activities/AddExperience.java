@@ -1,5 +1,6 @@
 package shaishav.com.bebetter.Activities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,8 +22,11 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 import me.originqiu.library.EditTag;
-import shaishav.com.bebetter.Data.Models.Experience;
+import shaishav.com.bebetter.Data.MySQLiteHelper;
+import shaishav.com.bebetter.Data.contracts.LessonContract;
+import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
+import shaishav.com.bebetter.Data.providers.LessonsProvider;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Network.NetworkRequests;
@@ -116,12 +120,16 @@ public class AddExperience extends AppCompatActivity {
                 boolean is_public = isPublic.isChecked();
                 String categoryText = Constants.convertListToString(catList);
 
-                if(titleText.length()>0 && lessonText.length()>0 && catList.size()>0) {
-                    experienceSource.open();
-                    Experience experience = experienceSource.createLesson(titleText,lessonText,categoryText,new Date().getTime(),is_public);
-                    experienceSource.close();
-                    NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
-                    networkRequests.syncLesson(experience);
+                if(titleText.length()>0 && lessonText.length()>0) {
+//                    NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
+//                    networkRequests.syncLesson(experience);
+                    ContentValues values = new ContentValues();
+                    values.put(LessonContract.COLUMN_TITLE, titleText);
+                    values.put(LessonContract.COLUMN_IS_PUBLIC, is_public);
+                    values.put(LessonContract.COLUMN_LESSON, lessonText);
+                    values.put(LessonContract.COLUMN_CREATED_AT, new Date().getTime());
+
+                    getContentResolver().insert(LessonsProvider.CONTENT_URI, values);
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();

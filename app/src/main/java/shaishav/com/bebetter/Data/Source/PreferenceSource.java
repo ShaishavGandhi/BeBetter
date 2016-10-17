@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import java.util.Date;
 
-import shaishav.com.bebetter.Data.Models.Goal;
+import shaishav.com.bebetter.Data.models.Goal;
 import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
 

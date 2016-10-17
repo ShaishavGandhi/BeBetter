@@ -16,11 +16,11 @@ import java.util.Date;
 import java.util.List;
 
 import im.dacer.androidcharts.LineView;
-import shaishav.com.bebetter.Data.Models.Goal;
-import shaishav.com.bebetter.Data.Models.Time;
+import shaishav.com.bebetter.Data.models.Goal;
+import shaishav.com.bebetter.Data.models.Time;
 import shaishav.com.bebetter.Data.Source.GoalSource;
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
-import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.models.Usage;
 import shaishav.com.bebetter.Data.Source.UsageSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;

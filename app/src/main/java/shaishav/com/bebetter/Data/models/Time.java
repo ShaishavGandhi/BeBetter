@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.Data.Models;
+package shaishav.com.bebetter.Data.models;
 
 /**
  * Created by Shaishav on 10/8/2016.

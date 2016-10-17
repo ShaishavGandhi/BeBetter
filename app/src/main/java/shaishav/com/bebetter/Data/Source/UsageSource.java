@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import shaishav.com.bebetter.Data.Models.Usage;
+import shaishav.com.bebetter.Data.models.Usage;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 
 /**
