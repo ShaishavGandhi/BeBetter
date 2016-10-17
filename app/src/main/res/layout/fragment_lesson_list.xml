@@ -20,7 +20,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".Fragments.LessonList"
+        tools:context=".Fragments.ExperienceList"
         tools:listitem="@layout/fragment_lesson" />
 
     <LinearLayout

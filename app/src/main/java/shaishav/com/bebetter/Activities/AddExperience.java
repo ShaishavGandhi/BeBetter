@@ -22,14 +22,11 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 import me.originqiu.library.EditTag;
-import shaishav.com.bebetter.Data.MySQLiteHelper;
-import shaishav.com.bebetter.Data.contracts.LessonContract;
-import shaishav.com.bebetter.Data.models.Experience;
+import shaishav.com.bebetter.Data.contracts.ExperienceContract;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
-import shaishav.com.bebetter.Data.providers.LessonsProvider;
+import shaishav.com.bebetter.Data.providers.ExperienceProvider;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
-import shaishav.com.bebetter.Network.NetworkRequests;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -124,12 +121,12 @@ public class AddExperience extends AppCompatActivity {
 //                    NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
 //                    networkRequests.syncLesson(experience);
                     ContentValues values = new ContentValues();
-                    values.put(LessonContract.COLUMN_TITLE, titleText);
-                    values.put(LessonContract.COLUMN_IS_PUBLIC, is_public);
-                    values.put(LessonContract.COLUMN_LESSON, lessonText);
-                    values.put(LessonContract.COLUMN_CREATED_AT, new Date().getTime());
+                    values.put(ExperienceContract.COLUMN_TITLE, titleText);
+                    values.put(ExperienceContract.COLUMN_IS_PUBLIC, is_public);
+                    values.put(ExperienceContract.COLUMN_LESSON, lessonText);
+                    values.put(ExperienceContract.COLUMN_CREATED_AT, new Date().getTime());
 
-                    getContentResolver().insert(LessonsProvider.CONTENT_URI, values);
+                    getContentResolver().insert(ExperienceProvider.CONTENT_URI, values);
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();

@@ -1,11 +1,14 @@
 package shaishav.com.bebetter.Data.Source;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.Date;
 
+import shaishav.com.bebetter.Data.contracts.GoalContract;
 import shaishav.com.bebetter.Data.models.Goal;
+import shaishav.com.bebetter.Data.providers.GoalProvider;
 import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
 
@@ -208,7 +211,11 @@ public class PreferenceSource {
         GoalSource goalSource = new GoalSource(context);
         goalSource.open();
         if(!goalSource.goalAlreadyExists(date)){
-            goalSource.createGoal(date, goal);
+            //goalSource.createGoal(date, goal);
+            ContentValues values = new ContentValues();
+            values.put(GoalContract.COLUMN_DATE, date);
+            values.put(GoalContract.COLUMN_GOAL, goal);
+            context.getContentResolver().insert(GoalProvider.CONTENT_URI, values);
         }
         goalSource.close();
     }
