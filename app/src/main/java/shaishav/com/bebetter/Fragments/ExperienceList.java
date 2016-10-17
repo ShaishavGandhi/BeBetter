@@ -15,13 +15,13 @@ import android.widget.LinearLayout;
 import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Adapters.ExperienceRecyclerViewAdapter;
-import shaishav.com.bebetter.Data.providers.LessonsProvider;
+import shaishav.com.bebetter.Data.providers.ExperienceProvider;
 import shaishav.com.bebetter.R;
 
 import java.util.List;
 
 
-public class LessonList extends Fragment {
+public class ExperienceList extends Fragment {
 
     // TODO: Customize parameters
     private int mColumnCount = 1;
@@ -33,7 +33,7 @@ public class LessonList extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public LessonList() {
+    public ExperienceList() {
     }
 
     @Override
@@ -52,10 +52,10 @@ public class LessonList extends Fragment {
 
         //Get all lessons
 
-        Cursor cursor = getActivity().getContentResolver().query(LessonsProvider.CONTENT_URI, null, null, null, null);
-        experienceList = LessonsProvider.cursorToExperienceList(cursor);
+        Cursor cursor = getActivity().getContentResolver().query(ExperienceProvider.CONTENT_URI, null, null, null, null);
+        experienceList = ExperienceProvider.cursorToExperienceList(cursor);
         cursor.close();
-        
+
         // Set the adapter
         if (view instanceof LinearLayout) {
             Context context = view.getContext();

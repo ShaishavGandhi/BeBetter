@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import shaishav.com.bebetter.Data.contracts.GoalContract;
 import shaishav.com.bebetter.Data.models.Goal;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
 
@@ -42,11 +43,11 @@ public class GoalSource {
         contentValues.put(MySQLiteHelper.COLUMN_DATE,date);
         contentValues.put(MySQLiteHelper.COLUMN_GOAL, goal);
 
-        long insertId = database.insert(MySQLiteHelper.TABLE_GOAL, null, contentValues);
+        long insertId = database.insert(GoalContract.TABLE_GOAL, null, contentValues);
 
 
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,null,MySQLiteHelper.COLUMN_ID+"="+insertId,null,null,null
+        Cursor cursor = database.query(GoalContract.TABLE_GOAL,null,MySQLiteHelper.COLUMN_ID+"="+insertId,null,null,null
                 ,MySQLiteHelper.COLUMN_ID+" desc");
 
         cursor.moveToFirst();
@@ -70,7 +71,7 @@ public class GoalSource {
         date.setMinutes(0);
         long low = date.getTime();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
                 null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
                 null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
 
@@ -97,7 +98,7 @@ public class GoalSource {
         date.setMinutes(0);
         long low = date.getTime();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
                 null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
                 null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
 
@@ -122,7 +123,7 @@ public class GoalSource {
         dt.setMinutes(0);
         long low = dt.getTime();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
                 null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
                 null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
 
@@ -152,7 +153,7 @@ public class GoalSource {
 
         List<Goal> goals = new ArrayList<Goal>();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
                 null, MySQLiteHelper.COLUMN_DATE + " > "+lower_threshold+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+higher_threshold,
                 null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
 
@@ -172,7 +173,7 @@ public class GoalSource {
     public List<Goal> getGoalsForBackup(){
         List<Goal> goals = new ArrayList<Goal>();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
                 null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_DATE+" asc");
 
         cursor.moveToFirst();
@@ -190,13 +191,13 @@ public class GoalSource {
         ContentValues cv = new ContentValues();
         cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);
 
-        database.update(MySQLiteHelper.TABLE_GOAL,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
+        database.update(GoalContract.TABLE_GOAL,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
     }
 
 
     public boolean isExisting(String server_id){
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_GOAL,
+        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
                 null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_DATE+" desc");
 
         cursor.moveToFirst();

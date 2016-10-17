@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +34,8 @@ import shaishav.com.bebetter.Fragments.LogOut;
 import shaishav.com.bebetter.Fragments.Settings;
 import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
-import shaishav.com.bebetter.Fragments.LessonList;
+import shaishav.com.bebetter.Fragments.ExperienceList;
 import shaishav.com.bebetter.Network.ApiCallback;
-import shaishav.com.bebetter.Network.ApiServiceLayer;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Receiver.ApiResponseReceiver;
 import shaishav.com.bebetter.Utils.Constants;
@@ -218,7 +216,7 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_daily_experiences)
-            fragment = new LessonList();
+            fragment = new ExperienceList();
         else if (id == R.id.nav_summary)
             fragment = new DaySummary();
         else if (id == R.id.nav_settings)

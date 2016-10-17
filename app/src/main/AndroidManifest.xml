@@ -90,8 +90,13 @@
             android:label="@string/title_activity_quote"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <provider android:name=".Data.providers.LessonsProvider"
-            android:authorities="shaishav.com.bebetter"/>
+        <provider android:name=".Data.providers.ExperienceProvider"
+            android:authorities="shaishav.com.bebetter"
+            android:exported="false"/>
+
+        <provider android:name=".Data.providers.GoalProvider"
+            android:authorities="shaishav.com.bebetter"
+            android:exported="false"/>
 
     </application>
 

@@ -4,7 +4,7 @@ package shaishav.com.bebetter.Data.contracts;
  * Created by shaishavgandhi05 on 10/16/16.
  */
 
-public class LessonContract {
+public class ExperienceContract {
 
     public static final String TABLE_LESSON = "lessons";
     public static final String COLUMN_ID = "_id";

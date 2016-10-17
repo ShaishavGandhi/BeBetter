@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import shaishav.com.bebetter.Data.MySQLiteHelper;
-import shaishav.com.bebetter.Data.contracts.LessonContract;
+import shaishav.com.bebetter.Data.contracts.ExperienceContract;
 import shaishav.com.bebetter.Data.models.Experience;
 import shaishav.com.bebetter.Utils.Constants;
 
@@ -26,10 +26,10 @@ import shaishav.com.bebetter.Utils.Constants;
  * Created by shaishavgandhi05 on 10/16/16.
  */
 
-public class LessonsProvider extends ContentProvider {
+public class ExperienceProvider extends ContentProvider {
 
     static final String PROVIDER_NAME = Constants.PACKAGE;
-    static final String URL = "content://" + PROVIDER_NAME + "/" + LessonContract.TABLE_LESSON;
+    static final String URL = "content://" + PROVIDER_NAME + "/" + ExperienceContract.TABLE_LESSON;
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     static final int LESSONS = 1;
@@ -41,8 +41,8 @@ public class LessonsProvider extends ContentProvider {
     static final UriMatcher uriMatcher;
     static{
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, LessonContract.TABLE_LESSON, LESSONS);
-        uriMatcher.addURI(PROVIDER_NAME, LessonContract.TABLE_LESSON + "/#", LESSON_ID);
+        uriMatcher.addURI(PROVIDER_NAME, ExperienceContract.TABLE_LESSON, LESSONS);
+        uriMatcher.addURI(PROVIDER_NAME, ExperienceContract.TABLE_LESSON + "/#", LESSON_ID);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class LessonsProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(LessonContract.TABLE_LESSON);
+        qb.setTables(ExperienceContract.TABLE_LESSON);
 
         switch (uriMatcher.match(uri)) {
             case LESSONS:
@@ -65,7 +65,7 @@ public class LessonsProvider extends ContentProvider {
                 break;
 
             case LESSON_ID:
-                qb.appendWhere( MySQLiteHelper.COLUMN_ID + "=" + uri.getPathSegments().get(1));
+                qb.appendWhere( ExperienceContract.COLUMN_ID + "=" + uri.getPathSegments().get(1));
                 break;
 
             default:
@@ -73,7 +73,7 @@ public class LessonsProvider extends ContentProvider {
         }
 
         if (sortOrder == null || sortOrder == ""){
-            sortOrder = MySQLiteHelper.COLUMN_ID;
+            sortOrder = ExperienceContract.COLUMN_ID;
         }
 
         Cursor c = qb.query(db,	projection,	selection, selectionArgs,null, null, sortOrder);
@@ -90,10 +90,10 @@ public class LessonsProvider extends ContentProvider {
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)){
             case LESSONS:
-                return "vnd.android.cursor.dir/vnd." + PROVIDER_NAME + "." + LessonContract.TABLE_LESSON;
+                return "vnd.android.cursor.dir/vnd." + PROVIDER_NAME + "." + ExperienceContract.TABLE_LESSON;
 
             case LESSON_ID:
-                return "vnd.android.cursor.item/vnd." + PROVIDER_NAME + "." + LessonContract.TABLE_LESSON;
+                return "vnd.android.cursor.item/vnd." + PROVIDER_NAME + "." + ExperienceContract.TABLE_LESSON;
 
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -103,7 +103,7 @@ public class LessonsProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        long rowID = db.insert(LessonContract.TABLE_LESSON, "", contentValues);
+        long rowID = db.insert(ExperienceContract.TABLE_LESSON, "", contentValues);
 
         if (rowID > 0)
         {
@@ -120,12 +120,12 @@ public class LessonsProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)){
             case LESSONS:
-                count = db.delete(LessonContract.TABLE_LESSON, selection, selectionArgs);
+                count = db.delete(ExperienceContract.TABLE_LESSON, selection, selectionArgs);
                 break;
 
             case LESSON_ID:
                 String id = uri.getPathSegments().get(1);
-                count = db.delete( LessonContract.TABLE_LESSON, MySQLiteHelper.COLUMN_ID +  " = " + id +
+                count = db.delete( ExperienceContract.TABLE_LESSON, ExperienceContract.COLUMN_ID +  " = " + id +
                         (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
                 break;
 
@@ -143,11 +143,11 @@ public class LessonsProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)){
             case LESSONS:
-                count = db.update(LessonContract.TABLE_LESSON, contentValues, selection, selectionArgs);
+                count = db.update(ExperienceContract.TABLE_LESSON, contentValues, selection, selectionArgs);
                 break;
 
             case LESSON_ID:
-                count = db.update(LessonContract.TABLE_LESSON, contentValues, MySQLiteHelper.COLUMN_ID +
+                count = db.update(ExperienceContract.TABLE_LESSON, contentValues, ExperienceContract.COLUMN_ID +
                         " = " + uri.getPathSegments().get(1) +
                         (!TextUtils.isEmpty(selection) ? " AND (" +selection + ')' : ""), selectionArgs);
                 break;
@@ -162,12 +162,12 @@ public class LessonsProvider extends ContentProvider {
     public static Experience cursorToExperience(Cursor cursor){
         Experience post = new Experience();
         post.setId(cursor.getLong(0));
-        post.setLesson(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_LESSON)));
-        post.setCreated_at(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CREATED_AT)));
-        post.setTitle(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_TITLE)));
-        post.setCategory(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CATEGORY)));
-        post.setServer_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_SERVER_ID)));
-        post.setIs_public(cursor.getInt(cursor.getColumnIndex(MySQLiteHelper.COLUMN_IS_PUBLIC)));
+        post.setLesson(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_LESSON)));
+        post.setCreated_at(cursor.getLong(cursor.getColumnIndex(ExperienceContract.COLUMN_CREATED_AT)));
+        post.setTitle(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_TITLE)));
+        post.setCategory(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_CATEGORY)));
+        post.setServer_id(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_SERVER_ID)));
+        post.setIs_public(cursor.getInt(cursor.getColumnIndex(ExperienceContract.COLUMN_IS_PUBLIC)));
         return post;
     }
 
