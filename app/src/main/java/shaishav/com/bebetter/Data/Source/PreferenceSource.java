@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import java.util.Date;
 
 import shaishav.com.bebetter.Data.contracts.GoalContract;
+import shaishav.com.bebetter.Data.contracts.UsageContract;
 import shaishav.com.bebetter.Data.models.Goal;
 import shaishav.com.bebetter.Data.providers.GoalProvider;
+import shaishav.com.bebetter.Data.providers.UsageProvider;
 import shaishav.com.bebetter.Utils.App;
 import shaishav.com.bebetter.Utils.Constants;
 
@@ -247,10 +249,10 @@ public class PreferenceSource {
     }
 
     public void storeSessionInDb(Context context, long date, long session_time){
-        UsageSource usageSource = new UsageSource(context);
-        usageSource.open();
-        usageSource.createUsage(date,session_time);
-        usageSource.close();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(UsageContract.COLUMN_DATE, date);
+        contentValues.put(UsageContract.COLUMN_USAGE, session_time);
+        context.getContentResolver().insert(UsageProvider.CONTENT_URI, contentValues);
     }
 
     // Helper functions end

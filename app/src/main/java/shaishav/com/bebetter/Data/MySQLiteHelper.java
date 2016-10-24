@@ -6,11 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import shaishav.com.bebetter.Data.contracts.ExperienceContract;
 import shaishav.com.bebetter.Data.contracts.GoalContract;
+import shaishav.com.bebetter.Data.contracts.UsageContract;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
 
-    public static final String TABLE_IDEAS = "ideas";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_LESSON = "lesson";
@@ -19,7 +19,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SERVER_ID = "server_id";
     public static final String COLUMN_IS_PUBLIC="public";
 
-    public static final String TABLE_USAGE = "usage";
+
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_USAGE="usage";
 
@@ -30,10 +30,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
 
-    private static final String CREATE_USAGE_STATS = "create table "
-            + TABLE_USAGE + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_DATE
-            + " long not null,"+COLUMN_USAGE+" long not null, "+COLUMN_SERVER_ID+" text default 'NA');";
+
 
 
     public MySQLiteHelper(Context context) {
@@ -43,7 +40,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(ExperienceContract.LESSON_CREATE_TABLE);
-        database.execSQL(CREATE_USAGE_STATS);
+        database.execSQL(UsageContract.CREATE_USAGE_TABLE);
         database.execSQL(GoalContract.CREATE_GOAL);
     }
 

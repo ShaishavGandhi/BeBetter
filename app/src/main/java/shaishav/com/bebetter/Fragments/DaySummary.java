@@ -2,6 +2,7 @@ package shaishav.com.bebetter.Fragments;
 
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -22,6 +23,7 @@ import shaishav.com.bebetter.Data.Source.GoalSource;
 import shaishav.com.bebetter.Data.Source.PreferenceSource;
 import shaishav.com.bebetter.Data.models.Usage;
 import shaishav.com.bebetter.Data.Source.UsageSource;
+import shaishav.com.bebetter.Data.providers.UsageProvider;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
 import shaishav.com.bebetter.Utils.Notification;
@@ -30,7 +32,6 @@ import shaishav.com.bebetter.Utils.Notification;
 public class DaySummary extends Fragment {
 
     PreferenceSource preferenceSource;
-    private UsageSource usageSource;
     private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv, timeUnit;
     private View rootView;
     private long daily_session,current_session,average_daily_usage,daily_goal,total_usage;
@@ -81,8 +82,6 @@ public class DaySummary extends Fragment {
 
 
 
-        usageSource = new UsageSource(getActivity().getApplicationContext());
-
 
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefresh);
 
@@ -117,9 +116,8 @@ public class DaySummary extends Fragment {
             daily_goal = 200;
         }
 
-        usageSource.open();
-        total_usage = usageSource.getTotalUsage();
-        usageSource.close();
+        total_usage = UsageSource.getTotalUsage(getActivity());
+
 
         total_usage = (daily_session + total_usage);
 
@@ -152,8 +150,11 @@ public class DaySummary extends Fragment {
     }
 
     private long getAverageUsage(){
-        usageSource.open();
-        List<Usage> usages = usageSource.getAllUsages();
+
+        Cursor cursor = getActivity().getContentResolver().query(UsageProvider.CONTENT_URI, null, null, null,
+                UsageProvider.QUERY_SORT_ORDER);
+
+        List<Usage> usages = UsageProvider.cursorToListUsage(cursor);
         long sum = 0;
 
         if(usages.size()==0)
@@ -211,9 +212,9 @@ public class DaySummary extends Fragment {
         date.setDate(date.getDate()+140);
         long higher_threshold = date.getTime();
 
-        usageSource.open();
-        List<Usage> usages = usageSource.getData(lower_threshold,higher_threshold);
-        usageSource.close();
+
+        List<Usage> usages = UsageSource.getData(getActivity(), lower_threshold, higher_threshold);
+
 
         return usages;
     }

@@ -18,31 +18,36 @@ import java.util.List;
 import java.util.Map;
 
 import shaishav.com.bebetter.Data.MySQLiteHelper;
-import shaishav.com.bebetter.Data.contracts.ExperienceContract;
-import shaishav.com.bebetter.Data.models.Experience;
+import shaishav.com.bebetter.Data.contracts.GoalContract;
+import shaishav.com.bebetter.Data.contracts.UsageContract;
+import shaishav.com.bebetter.Data.models.Usage;
 import shaishav.com.bebetter.Utils.Constants;
 
 /**
- * Created by shaishavgandhi05 on 10/16/16.
+ * Created by shaishavgandhi05 on 10/23/16.
  */
 
-public class ExperienceProvider extends ContentProvider {
+public class UsageProvider extends ContentProvider{
 
-    static final String PROVIDER_NAME = Constants.PACKAGE + "." + ExperienceContract.TABLE_LESSON;
-    static final String URL = "content://" + PROVIDER_NAME + "/" + ExperienceContract.TABLE_LESSON;
+    static final String PROVIDER_NAME = Constants.PACKAGE + "." + UsageContract.TABLE_USAGE;
+    static final String URL = "content://" + PROVIDER_NAME + "/" + UsageContract.TABLE_USAGE;
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
-    static final int LESSONS = 1;
-    static final int LESSON_ID = 2;
+    static final int USAGES = 1;
+    static final int USAGE_ID = 2;
 
     private SQLiteDatabase db;
-    private Map<String, String> LESSONS_PROJECTION_MAP;
+    private Map<String, String> USAGE_PROJECTION_MAP;
+
+    public static final String QUERY_SORT_ORDER = UsageContract.COLUMN_ID + " DESC";
+    public static String QUERY_SELECTION_ARGS_USAGE_RANGE = GoalContract.COLUMN_DATE + " > ? AND " + GoalContract.COLUMN_DATE +
+            " < ?";
 
     static final UriMatcher uriMatcher;
     static{
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, ExperienceContract.TABLE_LESSON, LESSONS);
-        uriMatcher.addURI(PROVIDER_NAME, ExperienceContract.TABLE_LESSON + "/#", LESSON_ID);
+        uriMatcher.addURI(PROVIDER_NAME, UsageContract.TABLE_USAGE, USAGES);
+        uriMatcher.addURI(PROVIDER_NAME, UsageContract.TABLE_USAGE + "/#", USAGE_ID);
     }
 
     @Override
@@ -57,15 +62,15 @@ public class ExperienceProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(ExperienceContract.TABLE_LESSON);
+        qb.setTables(UsageContract.TABLE_USAGE);
 
         switch (uriMatcher.match(uri)) {
-            case LESSONS:
-                qb.setProjectionMap(LESSONS_PROJECTION_MAP);
+            case USAGES:
+                qb.setProjectionMap(USAGE_PROJECTION_MAP);
                 break;
 
-            case LESSON_ID:
-                qb.appendWhere( ExperienceContract.COLUMN_ID + "=" + uri.getPathSegments().get(1));
+            case USAGE_ID:
+                qb.appendWhere( UsageContract.COLUMN_ID + "=" + uri.getPathSegments().get(1));
                 break;
 
             default:
@@ -73,7 +78,7 @@ public class ExperienceProvider extends ContentProvider {
         }
 
         if (sortOrder == null || sortOrder == ""){
-            sortOrder = ExperienceContract.COLUMN_ID;
+            sortOrder = UsageContract.COLUMN_ID;
         }
 
         Cursor c = qb.query(db,	projection,	selection, selectionArgs,null, null, sortOrder);
@@ -89,11 +94,11 @@ public class ExperienceProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)){
-            case LESSONS:
-                return "vnd.android.cursor.dir/vnd." + PROVIDER_NAME + "." + ExperienceContract.TABLE_LESSON;
+            case USAGES:
+                return "vnd.android.cursor.dir/vnd." + PROVIDER_NAME + "." + UsageContract.TABLE_USAGE;
 
-            case LESSON_ID:
-                return "vnd.android.cursor.item/vnd." + PROVIDER_NAME + "." + ExperienceContract.TABLE_LESSON;
+            case USAGE_ID:
+                return "vnd.android.cursor.item/vnd." + PROVIDER_NAME + "." + UsageContract.TABLE_USAGE;
 
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -102,8 +107,8 @@ public class ExperienceProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        long rowID = db.insert(ExperienceContract.TABLE_LESSON, "", contentValues);
+    public Uri insert(Uri uri, ContentValues values) {
+        long rowID = db.insert(UsageContract.TABLE_USAGE, "", values);
 
         if (rowID > 0)
         {
@@ -119,13 +124,13 @@ public class ExperienceProvider extends ContentProvider {
         int count = 0;
 
         switch (uriMatcher.match(uri)){
-            case LESSONS:
-                count = db.delete(ExperienceContract.TABLE_LESSON, selection, selectionArgs);
+            case USAGES:
+                count = db.delete(UsageContract.TABLE_USAGE, selection, selectionArgs);
                 break;
 
-            case LESSON_ID:
+            case USAGE_ID:
                 String id = uri.getPathSegments().get(1);
-                count = db.delete( ExperienceContract.TABLE_LESSON, ExperienceContract.COLUMN_ID +  " = " + id +
+                count = db.delete( UsageContract.TABLE_USAGE, UsageContract.COLUMN_ID +  " = " + id +
                         (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
                 break;
 
@@ -138,16 +143,16 @@ public class ExperienceProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int count = 0;
 
         switch (uriMatcher.match(uri)){
-            case LESSONS:
-                count = db.update(ExperienceContract.TABLE_LESSON, contentValues, selection, selectionArgs);
+            case USAGES:
+                count = db.update(UsageContract.TABLE_USAGE, values, selection, selectionArgs);
                 break;
 
-            case LESSON_ID:
-                count = db.update(ExperienceContract.TABLE_LESSON, contentValues, ExperienceContract.COLUMN_ID +
+            case USAGE_ID:
+                count = db.update(UsageContract.TABLE_USAGE, values, UsageContract.COLUMN_ID +
                         " = " + uri.getPathSegments().get(1) +
                         (!TextUtils.isEmpty(selection) ? " AND (" +selection + ')' : ""), selectionArgs);
                 break;
@@ -159,28 +164,26 @@ public class ExperienceProvider extends ContentProvider {
         return count;
     }
 
-    public static Experience cursorToExperience(Cursor cursor){
-        Experience experience = new Experience();
-        experience.setId(cursor.getLong(0));
-        experience.setLesson(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_LESSON)));
-        experience.setCreated_at(cursor.getLong(cursor.getColumnIndex(ExperienceContract.COLUMN_CREATED_AT)));
-        experience.setTitle(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_TITLE)));
-        experience.setCategory(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_CATEGORY)));
-        experience.setServer_id(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_SERVER_ID)));
-        experience.setIs_public(cursor.getInt(cursor.getColumnIndex(ExperienceContract.COLUMN_IS_PUBLIC)));
-        return experience;
+    public static Usage cursorToUsage(Cursor cursor){
+        Usage post = new Usage();
+        post.setId(cursor.getLong(0));
+        post.setDate(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_DATE)));
+        post.setUsage(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_USAGE)));
+        post.setServer_id(cursor.getString(cursor.getColumnIndex(UsageContract.COLUMN_SERVER_ID)));
+
+        return post;
     }
 
-    public static List<Experience> cursorToExperienceList(Cursor cursor){
-        List<Experience> experiences = new ArrayList<>();
+    public static List<Usage> cursorToListUsage(Cursor cursor){
+        List<Usage> usages = new ArrayList<>();
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Experience experience = cursorToExperience(cursor);
-            experiences.add(experience);
+
+        while(!cursor.isAfterLast()){
+            Usage usage = cursorToUsage(cursor);
+            usages.add(usage);
             cursor.moveToNext();
         }
-        // make sure to close the cursor
-        cursor.close();
-        return experiences;
+
+        return usages;
     }
 }

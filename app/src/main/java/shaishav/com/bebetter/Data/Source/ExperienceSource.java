@@ -39,20 +39,20 @@ public class ExperienceSource {
 
     public Experience createLesson(String title, String lesson, String category, long created_at, boolean is_public){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MySQLiteHelper.COLUMN_LESSON,lesson);
-        contentValues.put(MySQLiteHelper.COLUMN_TITLE, title);
-        contentValues.put(MySQLiteHelper.COLUMN_CATEGORY, category);
-        contentValues.put(MySQLiteHelper.COLUMN_CREATED_AT, created_at);
+        contentValues.put(ExperienceContract.COLUMN_LESSON,lesson);
+        contentValues.put(ExperienceContract.COLUMN_TITLE, title);
+        contentValues.put(ExperienceContract.COLUMN_CATEGORY, category);
+        contentValues.put(ExperienceContract.COLUMN_CREATED_AT, created_at);
         if(is_public)
-            contentValues.put(MySQLiteHelper.COLUMN_IS_PUBLIC,1);
+            contentValues.put(ExperienceContract.COLUMN_IS_PUBLIC,1);
         else
-            contentValues.put(MySQLiteHelper.COLUMN_IS_PUBLIC,0);
+            contentValues.put(ExperienceContract.COLUMN_IS_PUBLIC,0);
 
         long insertId = database.insert(ExperienceContract.TABLE_LESSON, null, contentValues);
 
         Cursor cursor = database.query(ExperienceContract.TABLE_LESSON, null,
-                MySQLiteHelper.COLUMN_ID+"="+insertId, null, null, null
-                , MySQLiteHelper.COLUMN_CREATED_AT+" desc");
+                ExperienceContract.COLUMN_ID+"="+insertId, null, null, null
+                , ExperienceContract.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
 
@@ -66,9 +66,9 @@ public class ExperienceSource {
 
     public void setServerId(String server_id,int id){
         ContentValues cv = new ContentValues();
-        cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);
+        cv.put(ExperienceContract.COLUMN_SERVER_ID,server_id);
 
-        database.update(ExperienceContract.TABLE_LESSON,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
+        database.update(ExperienceContract.TABLE_LESSON,cv,ExperienceContract.COLUMN_ID+" = "+id,null);
     }
 
 
@@ -76,7 +76,7 @@ public class ExperienceSource {
         List<Experience> posts = new ArrayList<Experience>();
 
         Cursor cursor = database.query(ExperienceContract.TABLE_LESSON,
-                null, null, null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
+                null, null, null, null, null, ExperienceContract.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -93,7 +93,7 @@ public class ExperienceSource {
         List<Experience> posts = new ArrayList<Experience>();
 
         Cursor cursor = database.query(ExperienceContract.TABLE_LESSON,
-                null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
+                null, ExperienceContract.COLUMN_SERVER_ID+" = 'NA'", null, null, null, ExperienceContract.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -109,7 +109,7 @@ public class ExperienceSource {
     public boolean isExisting(String server_id){
 
         Cursor cursor = database.query(ExperienceContract.TABLE_LESSON,
-                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_CREATED_AT+" desc");
+                null, ExperienceContract.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, ExperienceContract.COLUMN_CREATED_AT+" desc");
 
         cursor.moveToFirst();
 
@@ -123,12 +123,12 @@ public class ExperienceSource {
     public static Experience cursorToPost(Cursor cursor){
         Experience post = new Experience();
         post.setId(cursor.getLong(0));
-        post.setLesson(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_LESSON)));
-        post.setCreated_at(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CREATED_AT)));
-        post.setTitle(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_TITLE)));
-        post.setCategory(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CATEGORY)));
-        post.setServer_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_SERVER_ID)));
-        post.setIs_public(cursor.getInt(cursor.getColumnIndex(MySQLiteHelper.COLUMN_IS_PUBLIC)));
+        post.setLesson(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_LESSON)));
+        post.setCreated_at(cursor.getLong(cursor.getColumnIndex(ExperienceContract.COLUMN_CREATED_AT)));
+        post.setTitle(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_TITLE)));
+        post.setCategory(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_CATEGORY)));
+        post.setServer_id(cursor.getString(cursor.getColumnIndex(ExperienceContract.COLUMN_SERVER_ID)));
+        post.setIs_public(cursor.getInt(cursor.getColumnIndex(ExperienceContract.COLUMN_IS_PUBLIC)));
         return post;
     }
 
