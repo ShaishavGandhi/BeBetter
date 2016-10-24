@@ -13,54 +13,14 @@ import java.util.List;
 import shaishav.com.bebetter.Data.contracts.GoalContract;
 import shaishav.com.bebetter.Data.models.Goal;
 import shaishav.com.bebetter.Data.MySQLiteHelper;
+import shaishav.com.bebetter.Data.providers.GoalProvider;
 
 /**
  * Created by Shaishav on 9/5/2016.
  */
 public class GoalSource {
 
-    private SQLiteDatabase database;
-    private MySQLiteHelper dbHelper;
-    private Context context;
-
-
-
-    public GoalSource(Context context) {
-        dbHelper = new MySQLiteHelper(context);
-        this.context = context;
-    }
-
-    public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        dbHelper.close();
-    }
-
-    public Goal createGoal(long date, long goal){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MySQLiteHelper.COLUMN_DATE,date);
-        contentValues.put(MySQLiteHelper.COLUMN_GOAL, goal);
-
-        long insertId = database.insert(GoalContract.TABLE_GOAL, null, contentValues);
-
-
-
-        Cursor cursor = database.query(GoalContract.TABLE_GOAL,null,MySQLiteHelper.COLUMN_ID+"="+insertId,null,null,null
-                ,MySQLiteHelper.COLUMN_ID+" desc");
-
-        cursor.moveToFirst();
-
-
-
-        Goal goalObj = cursorToPost(cursor);
-        cursor.close();
-
-        return goalObj;
-    }
-
-    public Goal getCurrentGoal(){
+    public static Goal getCurrentGoal(Context context){
 
         Date date = new Date();
         date.setHours(23);
@@ -71,9 +31,10 @@ public class GoalSource {
         date.setMinutes(0);
         long low = date.getTime();
 
-        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
-                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
+        String[] whereClause = new String[]{String.valueOf(low), String.valueOf(high)};
+
+        Cursor cursor = context.getContentResolver().query(GoalProvider.CONTENT_URI, null, GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
+                whereClause, GoalProvider.QUERY_SORT_ORDER);
 
         cursor.moveToFirst();
 
@@ -86,7 +47,7 @@ public class GoalSource {
 
     }
 
-    public Goal getPreviousDayGoal(){
+    public static Goal getPreviousDayGoal(Context context){
 
         Date date = new Date();
         date.setDate(date.getDate() - 1);
@@ -98,9 +59,14 @@ public class GoalSource {
         date.setMinutes(0);
         long low = date.getTime();
 
-        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
-                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
+        String[] whereClause = new String[]{String.valueOf(low), String.valueOf(high)};
+
+        Cursor cursor = context.getContentResolver().query(GoalProvider.CONTENT_URI, null, GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
+                whereClause, GoalProvider.QUERY_SORT_ORDER);
+
+//        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
+//                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
+//                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
 
         cursor.moveToFirst();
 
@@ -113,7 +79,7 @@ public class GoalSource {
 
     }
 
-    public boolean goalAlreadyExists(long date){
+    public static boolean goalAlreadyExists(Context context, long date){
         Date dt = new Date(date);
         dt.setHours(23);
         dt.setMinutes(59);
@@ -123,39 +89,24 @@ public class GoalSource {
         dt.setMinutes(0);
         long low = dt.getTime();
 
-        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
-                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
+        String[] whereClause = new String[]{String.valueOf(low), String.valueOf(high)};
+
+        Cursor cursor = context.getContentResolver().query(GoalProvider.CONTENT_URI, null, GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
+                whereClause, GoalProvider.QUERY_SORT_ORDER);
 
         cursor.moveToFirst();
 
         return (cursor.getCount() > 0);
     }
 
-    public List<Goal> getAllUsages(){
-        List<Goal> goals = new ArrayList<Goal>();
-
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_USAGE,
-                null, null, null, null, null, MySQLiteHelper.COLUMN_ID+" desc");
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Goal goal = cursorToPost(cursor);
-            goals.add(goal);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return goals;
-    }
-
-    public List<Goal> getData(long lower_threshold,long higher_threshold){
+    public static List<Goal> getData(Context context, long lower_threshold, long higher_threshold){
 
         List<Goal> goals = new ArrayList<Goal>();
 
-        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-                null, MySQLiteHelper.COLUMN_DATE + " > "+lower_threshold+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+higher_threshold,
-                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
+        String[] whereClause = new String[]{String.valueOf(lower_threshold), String.valueOf(higher_threshold)};
+
+        Cursor cursor = context.getContentResolver().query(GoalProvider.CONTENT_URI, null, GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
+                whereClause, GoalProvider.QUERY_SORT_ORDER);
 
         cursor.moveToFirst();
 
@@ -170,53 +121,52 @@ public class GoalSource {
 
     }
 
-    public List<Goal> getGoalsForBackup(){
-        List<Goal> goals = new ArrayList<Goal>();
+//    public List<Goal> getGoalsForBackup(){
+//        List<Goal> goals = new ArrayList<Goal>();
+//
+//        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
+//                null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_DATE+" asc");
+//
+//        cursor.moveToFirst();
+//        while (!cursor.isAfterLast()) {
+//            Goal goal = cursorToPost(cursor);
+//            goals.add(goal);
+//            cursor.moveToNext();
+//        }
+//        // make sure to close the cursor
+//        cursor.close();
+//        return goals;
+//    }
+//
+//    public void setServerId(String server_id, int id){
+//        ContentValues cv = new ContentValues();
+//        cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);
+//
+//        database.update(GoalContract.TABLE_GOAL,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
+//    }
+//
+//
+//    public boolean isExisting(String server_id){
+//
+//        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
+//                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_DATE+" desc");
+//
+//        cursor.moveToFirst();
+//
+//        if(cursor.getCount()>0)
+//            return true;
+//        else
+//            return false;
+//
+//    }
 
-        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-                null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_DATE+" asc");
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Goal goal = cursorToPost(cursor);
-            goals.add(goal);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return goals;
-    }
-
-    public void setServerId(String server_id, int id){
-        ContentValues cv = new ContentValues();
-        cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);
-
-        database.update(GoalContract.TABLE_GOAL,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
-    }
-
-
-    public boolean isExisting(String server_id){
-
-        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_DATE+" desc");
-
-        cursor.moveToFirst();
-
-        if(cursor.getCount()>0)
-            return true;
-        else
-            return false;
-
-    }
-
-
-    private Goal cursorToPost(Cursor cursor){
+    private static Goal cursorToPost(Cursor cursor){
         Goal goal = new Goal();
         goal.setId(cursor.getLong(0));
         goal.setDate(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_DATE)));
         goal.setGoal(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_GOAL)));
         goal.setServer_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_SERVER_ID)));
-
         return goal;
     }
 

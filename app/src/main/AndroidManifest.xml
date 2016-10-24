@@ -21,11 +21,6 @@
 
         <receiver android:name=".Receiver.Reminder" />
         <receiver android:name=".Receiver.Backup" />
-        <receiver android:name=".Receiver.NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".Activities.AddExperience"
@@ -91,11 +86,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider android:name=".Data.providers.ExperienceProvider"
-            android:authorities="shaishav.com.bebetter"
+            android:authorities="shaishav.com.bebetter.lessons"
             android:exported="false"/>
 
         <provider android:name=".Data.providers.GoalProvider"
-            android:authorities="shaishav.com.bebetter"
+            android:authorities="shaishav.com.bebetter.goal"
             android:exported="false"/>
 
     </application>

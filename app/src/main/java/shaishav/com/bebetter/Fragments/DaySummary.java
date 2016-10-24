@@ -31,7 +31,6 @@ public class DaySummary extends Fragment {
 
     PreferenceSource preferenceSource;
     private UsageSource usageSource;
-    private GoalSource goalSource;
     private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv, timeUnit;
     private View rootView;
     private long daily_session,current_session,average_daily_usage,daily_goal,total_usage;
@@ -95,8 +94,6 @@ public class DaySummary extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-        goalSource = new GoalSource(getActivity());
 
     }
 
@@ -228,9 +225,7 @@ public class DaySummary extends Fragment {
         date.setDate(date.getDate()+140);
         long higher_threshold = date.getTime();
 
-        goalSource.open();
-        List<Goal> goals = goalSource.getData(lower_threshold,higher_threshold);
-        goalSource.close();
+        List<Goal> goals = GoalSource.getData(getActivity(), lower_threshold, higher_threshold);
 
         return goals;
     }
