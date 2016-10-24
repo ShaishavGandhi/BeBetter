@@ -28,7 +28,7 @@ import shaishav.com.bebetter.Utils.Constants;
 
 public class ExperienceProvider extends ContentProvider {
 
-    static final String PROVIDER_NAME = Constants.PACKAGE;
+    static final String PROVIDER_NAME = Constants.PACKAGE + "." + ExperienceContract.TABLE_LESSON;
     static final String URL = "content://" + PROVIDER_NAME + "/" + ExperienceContract.TABLE_LESSON;
     public static final Uri CONTENT_URI = Uri.parse(URL);
 

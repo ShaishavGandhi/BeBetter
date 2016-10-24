@@ -26,9 +26,13 @@ import shaishav.com.bebetter.Utils.Constants;
 
 public class GoalProvider extends ContentProvider {
 
-    static final String PROVIDER_NAME = Constants.PACKAGE;
+    static final String PROVIDER_NAME = Constants.PACKAGE + "." + GoalContract.TABLE_GOAL;
     static final String URL = "content://" + PROVIDER_NAME + "/" + GoalContract.TABLE_GOAL;
     public static final Uri CONTENT_URI = Uri.parse(URL);
+
+    public static String QUERY_SORT_ORDER = GoalContract.COLUMN_DATE + " ASC";
+    public static String QUERY_SELECTION_ARGS_GOAL_RANGE = GoalContract.COLUMN_DATE + " > ? AND " + GoalContract.COLUMN_GOAL +
+            " < ?";
 
     static final int GOALS = 1;
     static final int GOAL_ID = 2;

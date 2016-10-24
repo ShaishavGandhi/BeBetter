@@ -187,9 +187,8 @@ public class PreferenceSource {
     }
 
     public long getGoal(){
-        GoalSource goalSource = new GoalSource(context);
-        goalSource.open();
-        Goal goal = goalSource.getCurrentGoal();
+
+        Goal goal = GoalSource.getCurrentGoal(context);
         if(goal!=null) {
             return goal.getGoal();
         }
@@ -208,16 +207,13 @@ public class PreferenceSource {
     }
 
     private void saveGoalInDb(long goal, long date){
-        GoalSource goalSource = new GoalSource(context);
-        goalSource.open();
-        if(!goalSource.goalAlreadyExists(date)){
+        if(!GoalSource.goalAlreadyExists(context, date)){
             //goalSource.createGoal(date, goal);
             ContentValues values = new ContentValues();
             values.put(GoalContract.COLUMN_DATE, date);
             values.put(GoalContract.COLUMN_GOAL, goal);
             context.getContentResolver().insert(GoalProvider.CONTENT_URI, values);
         }
-        goalSource.close();
     }
 
     public void setIsForegroundServiceRunning(boolean isRunning){
@@ -242,10 +238,7 @@ public class PreferenceSource {
     }
 
     private long getPreviousDayGoal(){
-        GoalSource goalSource = new GoalSource(context);
-        goalSource.open();
-        Goal goal = goalSource.getPreviousDayGoal();
-        goalSource.close();
+        Goal goal = GoalSource.getPreviousDayGoal(context);
         if(goal != null){
             return goal.getGoal();
         }
