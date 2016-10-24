@@ -93,6 +93,10 @@
             android:authorities="shaishav.com.bebetter.goal"
             android:exported="false"/>
 
+        <provider android:name=".Data.providers.UsageProvider"
+            android:authorities="shaishav.com.bebetter.usage"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
