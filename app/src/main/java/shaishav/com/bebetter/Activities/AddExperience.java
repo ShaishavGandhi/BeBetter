@@ -21,23 +21,26 @@ import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
+
+import io.github.mthli.knife.KnifeText;
 import me.originqiu.library.EditTag;
 import shaishav.com.bebetter.Data.contracts.ExperienceContract;
 import shaishav.com.bebetter.Data.Source.ExperienceSource;
 import shaishav.com.bebetter.Data.providers.ExperienceProvider;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.Constants;
+import shaishav.com.bebetter.Utils.IntentExtras;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class AddExperience extends AppCompatActivity {
 
-    EditText title,lesson;
+    EditText title;
+    KnifeText lesson;
     EditTag category;
     Switch isPublic;
     ImageButton tooltip;
     Button saveButton;
-    ExperienceSource experienceSource;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -72,7 +75,7 @@ public class AddExperience extends AppCompatActivity {
 
         //Initialize UI components
         title = (EditText)findViewById(R.id.title);
-        lesson = (EditText)findViewById(R.id.lesson);
+        lesson = (KnifeText)findViewById(R.id.lesson);
         category = (EditTag)findViewById(R.id.category);
         saveButton = (Button)findViewById(R.id.save);
         isPublic = (Switch)findViewById(R.id.make_public);
@@ -96,9 +99,6 @@ public class AddExperience extends AppCompatActivity {
             }
         });
 
-        //Database connection
-        experienceSource = new ExperienceSource(this);
-
         title.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         lesson.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
@@ -118,8 +118,6 @@ public class AddExperience extends AppCompatActivity {
                 String categoryText = Constants.convertListToString(catList);
 
                 if(titleText.length()>0 && lessonText.length()>0) {
-//                    NetworkRequests networkRequests = NetworkRequests.getInstance(getApplicationContext());
-//                    networkRequests.syncLesson(experience);
                     ContentValues values = new ContentValues();
                     values.put(ExperienceContract.COLUMN_TITLE, titleText);
                     values.put(ExperienceContract.COLUMN_IS_PUBLIC, is_public);
@@ -134,6 +132,17 @@ public class AddExperience extends AppCompatActivity {
                 }
                 else {
                     Snackbar.make(view,"Please check your input",Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        lesson.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    Intent intent = new Intent(AddExperience.this, ExperienceEditor.class);
+                    intent.putExtra(IntentExtras.EXPERIENCE_STRING, lesson.getText().toString());
+                    startActivity(intent);
                 }
             }
         });
