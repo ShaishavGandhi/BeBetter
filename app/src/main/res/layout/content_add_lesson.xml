@@ -34,22 +34,13 @@
         android:hint="Title"
         android:capitalize="sentences" />
 
-    <EditText
+    <io.github.mthli.knife.KnifeText
         android:id="@+id/lesson"
-        android:layout_marginTop="8dp"
-        android:textCursorDrawable="@null"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionNext"
-        android:inputType="textMultiLine|textCapSentences"
-        android:lines="12"
-        android:maxLines="14"
-        android:scrollbars="vertical"
-        android:gravity="top|left"
-        android:textColor="@color/colorPrimary"
-        android:textColorHint="@color/colorPrimary"
-        android:hint="What did you learn today?"
-        android:capitalize="sentences" />
+        android:hint="Share your experience"
+        android:maxHeight="300dp"
+        android:layout_height="wrap_content" />
+
 
     <me.originqiu.library.EditTag
         android:id="@+id/category"

@@ -17,4 +17,5 @@
     <string name="title_activity_quote">Quote</string>
     <string name="title_activity_intro">IntroActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_experience_editor">Add Experience</string>
 </resources>

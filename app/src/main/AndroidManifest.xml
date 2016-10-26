@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
-
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
@@ -26,10 +25,9 @@
             android:name=".Activities.AddExperience"
             android:label="@string/title_activity_add_lesson"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".Activities.Intro"
+        <activity
+            android:name=".Activities.Intro"
             android:label="App Intro" />
-
         <activity
             android:name=".Activities.Login"
             android:label="@string/title_activity_login"
@@ -85,18 +83,23 @@
             android:label="@string/title_activity_quote"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <provider android:name=".Data.providers.ExperienceProvider"
+        <provider
+            android:name=".Data.providers.ExperienceProvider"
             android:authorities="shaishav.com.bebetter.lessons"
-            android:exported="false"/>
-
-        <provider android:name=".Data.providers.GoalProvider"
+            android:exported="false" />
+        <provider
+            android:name=".Data.providers.GoalProvider"
             android:authorities="shaishav.com.bebetter.goal"
-            android:exported="false"/>
-
-        <provider android:name=".Data.providers.UsageProvider"
+            android:exported="false" />
+        <provider
+            android:name=".Data.providers.UsageProvider"
             android:authorities="shaishav.com.bebetter.usage"
-            android:exported="false"/>
+            android:exported="false" />
 
+        <activity
+            android:name=".Activities.ExperienceEditor"
+            android:label="@string/title_activity_experience_editor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
