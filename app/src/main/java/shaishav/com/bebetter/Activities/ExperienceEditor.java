@@ -1,6 +1,8 @@
 package shaishav.com.bebetter.Activities;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,10 +14,9 @@ import android.widget.ImageButton;
 
 import io.github.mthli.knife.KnifeText;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.Utils.IntentExtras;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static shaishav.com.bebetter.R.id.knife;
 
 public class ExperienceEditor extends AppCompatActivity {
 
@@ -44,6 +45,14 @@ public class ExperienceEditor extends AppCompatActivity {
         editor = (KnifeText)findViewById(R.id.editor);
 
         setupListeners();
+
+        Intent intent = getIntent();
+
+        if(intent != null){
+            String experienceString = intent.getStringExtra(IntentExtras.EXPERIENCE_STRING);
+            editor.fromHtml(experienceString);
+
+        }
     }
 
     private void setupListeners() {
@@ -128,7 +137,10 @@ public class ExperienceEditor extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home:
-                onBackPressed();
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(IntentExtras.EXPERIENCE_STRING, editor.toHtml());
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

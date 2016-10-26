@@ -1,5 +1,6 @@
 package shaishav.com.bebetter.Activities;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +12,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -136,16 +139,24 @@ public class AddExperience extends AppCompatActivity {
             }
         });
 
-        lesson.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        lesson.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    Intent intent = new Intent(AddExperience.this, ExperienceEditor.class);
-                    intent.putExtra(IntentExtras.EXPERIENCE_STRING, lesson.getText().toString());
-                    startActivity(intent);
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent(AddExperience.this, ExperienceEditor.class);
+                intent.putExtra(IntentExtras.EXPERIENCE_STRING, lesson.toHtml());
+                startActivityForResult(intent, 1);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1){
+            if(resultCode == Activity.RESULT_OK){
+                String result = data.getStringExtra(IntentExtras.EXPERIENCE_STRING);
+                lesson.setText(Html.fromHtml(result));
+            }
+        }
     }
 
     @Override
