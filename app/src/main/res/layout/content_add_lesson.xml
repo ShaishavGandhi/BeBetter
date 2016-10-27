@@ -27,18 +27,22 @@
         android:inputType="textCapSentences"
         android:layout_width="match_parent"
         android:imeOptions="actionNext"
+        android:background="@null"
         android:textCursorDrawable="@null"
         android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="40dp"
         android:textColorHint="@color/colorPrimary"
         android:layout_height="wrap_content"
-        android:hint="Title"
-        android:capitalize="sentences" />
+        android:hint="Title" />
 
     <io.github.mthli.knife.KnifeText
         android:id="@+id/lesson"
+        android:background="@null"
         android:layout_width="match_parent"
         android:hint="Share your experience"
         android:maxHeight="300dp"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary"
         android:focusable="false"
         android:layout_height="wrap_content" />
 
