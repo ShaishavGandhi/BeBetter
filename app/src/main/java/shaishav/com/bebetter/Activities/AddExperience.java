@@ -101,10 +101,6 @@ public class AddExperience extends AppCompatActivity {
 
             }
         });
-
-        title.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        lesson.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-
     }
 
 

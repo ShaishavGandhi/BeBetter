@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -80,10 +81,10 @@ public class Details extends AppCompatActivity {
     public void bindData(){
         title_et.setText(title);
         category_et.setEditable(false);
-        category_et.setTagList(category);
+        //category_et.setTagList(category);
         String dateString = Constants.getFormattedDate(created_at);
         date_et.setText(dateString);
-        content_et.setText(content);
+        content_et.setText(Html.fromHtml(content));
     }
 
 
@@ -91,7 +92,7 @@ public class Details extends AppCompatActivity {
     private void getIntentData(Intent intent){
         title = intent.getStringExtra("title");
         String cats = intent.getStringExtra("category");
-        category = Arrays.asList(cats.split(","));
+        //category = Arrays.asList(cats.split(","));
         content = intent.getStringExtra("content");
 
         created_at = new Date(intent.getLongExtra("created_at",0));
