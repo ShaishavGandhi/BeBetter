@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:hint="Share your experience"
         android:maxHeight="300dp"
+        android:focusable="false"
         android:layout_height="wrap_content" />
 
 

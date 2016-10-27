@@ -122,7 +122,7 @@ public class UsageSource {
 
     public static int getTotalUsage(Context context){
         Cursor cursor = context.getContentResolver().query(UsageProvider.CONTENT_URI,
-                new String[]{"MAX(" + UsageContract.COLUMN_USAGE + ") "}, null, null, null);
+                new String[]{"SUM(" + UsageContract.COLUMN_USAGE + ") "}, null, null, null);
 
         if(cursor.moveToFirst())
         {
