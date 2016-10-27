@@ -115,7 +115,7 @@ public class AddExperience extends AppCompatActivity {
             public void onClick(View view) {
                 saveButton.setEnabled(false);
                 String titleText = title.getText().toString().trim();
-                String lessonText = lesson.getText().toString().trim();
+                String lessonText = lesson.toHtml().trim();
                 List<String> catList = category.getTagList();
                 boolean is_public = isPublic.isChecked();
                 String categoryText = Constants.convertListToString(catList);
