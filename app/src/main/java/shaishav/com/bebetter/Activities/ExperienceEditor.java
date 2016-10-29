@@ -3,6 +3,8 @@ package shaishav.com.bebetter.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +23,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class ExperienceEditor extends AppCompatActivity {
 
     KnifeText editor;
+    ImageButton bold;
+    ImageButton italic;
+    ImageButton underline;
+    ImageButton strikethrough;
+    ImageButton bullet;
+    ImageButton quote;
+    ImageButton link;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -42,7 +51,7 @@ public class ExperienceEditor extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        editor = (KnifeText)findViewById(R.id.editor);
+        initialize();
 
         setupListeners();
 
@@ -55,8 +64,17 @@ public class ExperienceEditor extends AppCompatActivity {
         }
     }
 
+    private void initialize() {
+        bold = (ImageButton) findViewById(R.id.bold);
+        italic = (ImageButton) findViewById(R.id.italic);
+        editor = (KnifeText)findViewById(R.id.editor);
+        underline = (ImageButton) findViewById(R.id.underline);
+        strikethrough = (ImageButton) findViewById(R.id.strikethrough);
+        bullet = (ImageButton) findViewById(R.id.bullet);
+        quote = (ImageButton) findViewById(R.id.quote);
+    }
+
     private void setupListeners() {
-        ImageButton bold = (ImageButton) findViewById(R.id.bold);
 
         bold.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,16 +83,12 @@ public class ExperienceEditor extends AppCompatActivity {
             }
         });
 
-        ImageButton italic = (ImageButton) findViewById(R.id.italic);
-
         italic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editor.italic(!editor.contains(KnifeText.FORMAT_ITALIC));
             }
         });
-
-        ImageButton underline = (ImageButton) findViewById(R.id.underline);
 
         underline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,17 +97,12 @@ public class ExperienceEditor extends AppCompatActivity {
             }
         });
 
-
-        ImageButton strikethrough = (ImageButton) findViewById(R.id.strikethrough);
-
         strikethrough.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editor.strikethrough(!editor.contains(KnifeText.FORMAT_STRIKETHROUGH));
             }
         });
-
-        ImageButton bullet = (ImageButton) findViewById(R.id.bullet);
 
         bullet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,8 +111,6 @@ public class ExperienceEditor extends AppCompatActivity {
             }
         });
 
-        ImageButton quote = (ImageButton) findViewById(R.id.quote);
-
         quote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,26 +118,14 @@ public class ExperienceEditor extends AppCompatActivity {
             }
         });
 
-        ImageButton link = (ImageButton) findViewById(R.id.link);
+    }
 
-//        link.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showLinkDialog();
-//            }
-//        });
-
-        ImageButton clear = (ImageButton) findViewById(R.id.clear);
-
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.clearFormats();
-            }
-        });
-
-
-
+    private void setCheckedUncheckedState(boolean isChecked, ImageButton button) {
+        if (isChecked) {
+            button.setColorFilter(Color.BLUE, PorterDuff.Mode.LIGHTEN);
+        } else {
+            button.setColorFilter(Color.BLACK, PorterDuff.Mode.LIGHTEN);
+        }
     }
 
     @Override
