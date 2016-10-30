@@ -5,15 +5,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -44,13 +42,16 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ApiCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener,
+        ApiCallback {
 
     SharedPreferences preferences;
     ExperienceSource experienceSource;
     List<Experience> experienceList;
     ApiResponseReceiver apiResponseReceiver;
     PreferenceSource preferenceSource;
+    BottomNavigationView mBottomNavigationView;
+    FloatingActionButton fab;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,28 +89,26 @@ public class MainActivity extends AppCompatActivity
         final String temp_user_email = preferenceSource.getEmail();
         //ApiServiceLayer.getBackedUpUsages(MainActivity.this, temp_user_email, new Date().getTime());
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         String name = preferences.getString(Constants.FULL_NAME,"");
         String email = preferences.getString(Constants.EMAIL,"");
         String photo = preferences.getString(Constants.DISPLAY_PIC,"");
 
+        mBottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
 
-        TextView name_tv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.name);
-        TextView email_tv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        name_tv.setText(name);
-        email_tv.setText(email);
 
-        if(!photo.equals(""))
-        Picasso.with(getApplicationContext()).load(photo).into((ImageView)navigationView.getHeaderView(0).findViewById(R.id.imageView));
+//        TextView name_tv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.name);
+//        TextView email_tv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email);
+//
+//        name_tv.setText(name);
+//        email_tv.setText(email);
+//
+//        if(!photo.equals(""))
+//        Picasso.with(getApplicationContext()).load(photo).into((ImageView)navigationView.getHeaderView(0).findViewById(R.id.imageView));
 
 
         //Set first screen
@@ -174,12 +173,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     @Override
@@ -204,6 +198,16 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void hideBottomNavigation(){
+        mBottomNavigationView.animate().translationY(mBottomNavigationView.getHeight()).setDuration(100);
+        fab.animate().translationY(fab.getHeight() + mBottomNavigationView.getHeight() + 100).setDuration(100);
+    }
+
+    public void showBottomNavigation(){
+        mBottomNavigationView.animate().translationY(0).setDuration(100);
+        fab.animate().translationY(0).setDuration(100);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -221,16 +225,14 @@ public class MainActivity extends AppCompatActivity
             fragment = new DaySummary();
         else if (id == R.id.nav_settings)
             fragment = new Settings();
-        else if (id == R.id.nav_share)
-            return true;
-        else if (id == R.id.nav_send)
-            return true;
-        else if(id == R.id.log_out)
-            fragment = new LogOut();
+//        else if (id == R.id.nav_share)
+//            return true;
+//        else if (id == R.id.nav_send)
+//            return true;
+//        else if(id == R.id.log_out)
+//            fragment = new LogOut();
 
         fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
