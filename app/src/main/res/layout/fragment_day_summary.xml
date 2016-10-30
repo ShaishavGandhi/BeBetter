@@ -17,7 +17,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:context="shaishav.com.bebetter.Fragments.DaySummary"
+    tools:context="shaishav.com.bebetter.fragments.DaySummary"
     android:orientation="vertical">
 
 

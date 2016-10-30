@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorPrimaryDark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="shaishav.com.bebetter.Activities.Quote"
+    tools:context="shaishav.com.bebetter.activities.Quote"
     tools:showIn="@layout/activity_quote">
 
     <de.hdodenhof.circleimageview.CircleImageView

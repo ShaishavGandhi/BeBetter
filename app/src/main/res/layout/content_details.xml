@@ -15,7 +15,7 @@
     android:paddingRight="8dp"
     android:paddingTop="8dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="shaishav.com.bebetter.Activities.Details"
+    tools:context="shaishav.com.bebetter.activities.Details"
     tools:showIn="@layout/activity_details">
 
     <TextView
