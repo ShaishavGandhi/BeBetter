@@ -24,77 +24,77 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ImageButton android:id="@+id/bold"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/bold"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_bold_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
-            <ImageButton android:id="@+id/italic"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/italic"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_italic_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
-            <ImageButton android:id="@+id/underline"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/underline"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_underlined_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
-            <ImageButton android:id="@+id/strikethrough"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/strikethrough"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_strikethrough_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
-            <ImageButton android:id="@+id/bullet"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/bullet"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_list_bulleted_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
-            <ImageButton android:id="@+id/quote"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/quote"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_quote_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
-            <ImageButton android:id="@+id/link"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/link"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_insert_link_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
-            <ImageButton android:id="@+id/clear"
+            <shaishav.com.bebetter.custom.ImageSwitch android:id="@+id/clear"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_clear_black_24dp"
                 android:scaleType="center"
                 android:background="?android:selectableItemBackground">
-            </ImageButton>
+            </shaishav.com.bebetter.custom.ImageSwitch>
 
         </LinearLayout>
 

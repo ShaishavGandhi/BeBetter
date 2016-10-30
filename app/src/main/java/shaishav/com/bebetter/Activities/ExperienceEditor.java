@@ -17,19 +17,20 @@ import android.widget.ImageButton;
 import io.github.mthli.knife.KnifeText;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.Utils.IntentExtras;
+import shaishav.com.bebetter.custom.ImageSwitch;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ExperienceEditor extends AppCompatActivity {
 
     KnifeText editor;
-    ImageButton bold;
-    ImageButton italic;
-    ImageButton underline;
-    ImageButton strikethrough;
-    ImageButton bullet;
-    ImageButton quote;
-    ImageButton link;
+    ImageSwitch bold;
+    ImageSwitch italic;
+    ImageSwitch underline;
+    ImageSwitch strikethrough;
+    ImageSwitch bullet;
+    ImageSwitch quote;
+    ImageSwitch link;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,13 +66,13 @@ public class ExperienceEditor extends AppCompatActivity {
     }
 
     private void initialize() {
-        bold = (ImageButton) findViewById(R.id.bold);
-        italic = (ImageButton) findViewById(R.id.italic);
+        bold = (ImageSwitch) findViewById(R.id.bold);
+        italic = (ImageSwitch) findViewById(R.id.italic);
         editor = (KnifeText)findViewById(R.id.editor);
-        underline = (ImageButton) findViewById(R.id.underline);
-        strikethrough = (ImageButton) findViewById(R.id.strikethrough);
-        bullet = (ImageButton) findViewById(R.id.bullet);
-        quote = (ImageButton) findViewById(R.id.quote);
+        underline = (ImageSwitch) findViewById(R.id.underline);
+        strikethrough = (ImageSwitch) findViewById(R.id.strikethrough);
+        bullet = (ImageSwitch) findViewById(R.id.bullet);
+        quote = (ImageSwitch) findViewById(R.id.quote);
     }
 
     private void setupListeners() {
@@ -80,6 +81,7 @@ public class ExperienceEditor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.bold(!editor.contains(KnifeText.FORMAT_BOLD));
+                bold.toggleCheck();
             }
         });
 
@@ -87,6 +89,7 @@ public class ExperienceEditor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.italic(!editor.contains(KnifeText.FORMAT_ITALIC));
+                italic.toggleCheck();
             }
         });
 
@@ -94,6 +97,7 @@ public class ExperienceEditor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.underline(!editor.contains(KnifeText.FORMAT_UNDERLINED));
+                underline.toggleCheck();
             }
         });
 
@@ -101,6 +105,7 @@ public class ExperienceEditor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.strikethrough(!editor.contains(KnifeText.FORMAT_STRIKETHROUGH));
+                strikethrough.toggleCheck();
             }
         });
 
@@ -108,6 +113,7 @@ public class ExperienceEditor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.bullet(!editor.contains(KnifeText.FORMAT_BULLET));
+                bullet.toggleCheck();
             }
         });
 
@@ -115,6 +121,7 @@ public class ExperienceEditor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor.quote(!editor.contains(KnifeText.FORMAT_QUOTE));
+                quote.toggleCheck();
             }
         });
 
