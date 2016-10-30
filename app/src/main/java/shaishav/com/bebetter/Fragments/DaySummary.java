@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import im.dacer.androidcharts.LineView;
+import shaishav.com.bebetter.Activities.MainActivity;
 import shaishav.com.bebetter.Data.models.Goal;
 import shaishav.com.bebetter.Data.models.Time;
 import shaishav.com.bebetter.Data.Source.GoalSource;
@@ -80,7 +82,17 @@ public class DaySummary extends Fragment {
         lineView.setColorArray(new String[]{"#674172","#F25268","#F25268"});
         lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
 
-
+        NestedScrollView scrollView = (NestedScrollView) rootView.findViewById(R.id.scrollView);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if(scrollY > oldScrollY){
+                    ((MainActivity)getActivity()).hideBottomNavigation();
+                } else{
+                    ((MainActivity)getActivity()).showBottomNavigation();
+                }
+            }
+        });
 
 
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefresh);
