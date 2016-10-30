@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="shaishav.com.bebetter.Activities.Login"
+    tools:context="shaishav.com.bebetter.activities.Login"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/colorPrimary"

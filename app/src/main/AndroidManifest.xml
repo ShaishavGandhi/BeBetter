@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".Utils.App"
+        android:name=".utils.App"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -14,31 +14,31 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".Receiver.Reminder" />
-        <receiver android:name=".Receiver.Backup" />
+        <receiver android:name=".receiver.Reminder" />
+        <receiver android:name=".receiver.Backup" />
 
         <activity
-            android:name=".Activities.AddExperience"
+            android:name=".activities.AddExperience"
             android:label="@string/title_activity_add_lesson"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.Intro"
+            android:name=".activities.Intro"
             android:label="App Intro" />
         <activity
-            android:name=".Activities.Login"
+            android:name=".activities.Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.Details"
+            android:name=".activities.Details"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".Service.BackgroundService"
+            android:name=".service.BackgroundService"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -46,7 +46,7 @@
         </service>
 
         <activity
-            android:name=".Activities.SplashScreen"
+            android:name=".activities.SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -56,7 +56,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Utils.TimeWidget">
+        <receiver android:name=".utils.TimeWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -66,38 +66,38 @@
                 android:resource="@xml/time_widget_info" />
         </receiver>
 
-        <service android:name=".Service.BackupService" />
-        <service android:name=".Service.FirebaseMessagingService">
+        <service android:name=".service.BackupService" />
+        <service android:name=".service.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".Service.FirebaseInstanceIdService">
+        <service android:name=".service.FirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".Activities.Quote"
+            android:name=".activities.Quote"
             android:label="@string/title_activity_quote"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
-            android:name=".Data.providers.ExperienceProvider"
+            android:name=".data.providers.ExperienceProvider"
             android:authorities="shaishav.com.bebetter.lessons"
             android:exported="false" />
         <provider
-            android:name=".Data.providers.GoalProvider"
+            android:name=".data.providers.GoalProvider"
             android:authorities="shaishav.com.bebetter.goal"
             android:exported="false" />
         <provider
-            android:name=".Data.providers.UsageProvider"
+            android:name=".data.providers.UsageProvider"
             android:authorities="shaishav.com.bebetter.usage"
             android:exported="false" />
 
         <activity
-            android:name=".Activities.ExperienceEditor"
+            android:name=".activities.ExperienceEditor"
             android:label="@string/title_activity_experience_editor"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
