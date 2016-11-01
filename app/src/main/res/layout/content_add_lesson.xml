@@ -46,16 +46,6 @@
         android:focusable="false"
         android:layout_height="wrap_content" />
 
-
-    <me.originqiu.library.EditTag
-        android:id="@+id/category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tag_layout="@layout/view_sample_tag"
-        app:input_layout="@layout/view_sample_input_tag"
-        />
-
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

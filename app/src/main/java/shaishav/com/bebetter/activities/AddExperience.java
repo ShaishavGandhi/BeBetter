@@ -1,6 +1,7 @@
 package shaishav.com.bebetter.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -23,10 +25,10 @@ import java.util.Date;
 import java.util.List;
 
 import io.github.mthli.knife.KnifeText;
-import me.originqiu.library.EditTag;
 import shaishav.com.bebetter.data.contracts.ExperienceContract;
 import shaishav.com.bebetter.data.providers.ExperienceProvider;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.dialog.TagDialog;
 import shaishav.com.bebetter.utils.Constants;
 import shaishav.com.bebetter.utils.IntentExtras;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -36,7 +38,6 @@ public class AddExperience extends AppCompatActivity {
 
     EditText title;
     KnifeText lesson;
-    EditTag category;
     Switch isPublic;
     ImageButton tooltip;
     Button saveButton;
@@ -75,7 +76,6 @@ public class AddExperience extends AppCompatActivity {
         //Initialize UI components
         title = (EditText)findViewById(R.id.title);
         lesson = (KnifeText)findViewById(R.id.lesson);
-        category = (EditTag)findViewById(R.id.category);
         saveButton = (Button)findViewById(R.id.save);
         isPublic = (Switch)findViewById(R.id.make_public);
         tooltip = (ImageButton)findViewById(R.id.tooltip);
@@ -97,9 +97,21 @@ public class AddExperience extends AppCompatActivity {
 
             }
         });
+
+        isPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    showTagDialog();
+                }
+            }
+        });
     }
 
-
+    private void showTagDialog() {
+        TagDialog dialog = new TagDialog(AddExperience.this);
+        dialog.show();
+    }
 
     public void setEventListeners(){
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -108,9 +120,7 @@ public class AddExperience extends AppCompatActivity {
                 saveButton.setEnabled(false);
                 String titleText = title.getText().toString().trim();
                 String lessonText = lesson.toHtml().trim();
-                List<String> catList = category.getTagList();
                 boolean is_public = isPublic.isChecked();
-                String categoryText = Constants.convertListToString(catList);
 
                 if(titleText.length()>0 && lessonText.length()>0) {
                     ContentValues values = new ContentValues();
