@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "625165464182",
-    "project_id": "be-better-1c855"
+    "firebase_url": "https://be-better-1c855.firebaseio.com",
+    "project_id": "be-better-1c855",
+    "storage_bucket": "be-better-1c855.appspot.com"
   },
   "client": [
     {
@@ -21,6 +23,10 @@
           }
         },
         {
+          "client_id": "625165464182-p0mhdhjfsc8b290j7sh76ik761n89e2g.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "625165464182-97rk3kag402p38vli3g31a6u0gtvrnep.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625165464182-p0mhdhjfsc8b290j7sh76ik761n89e2g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

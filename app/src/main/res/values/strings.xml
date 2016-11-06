@@ -18,4 +18,5 @@
     <string name="title_activity_intro">IntroActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_experience_editor">Add Experience</string>
+    <string name="web_client_id">625165464182-p0mhdhjfsc8b290j7sh76ik761n89e2g.apps.googleusercontent.com</string>
 </resources>

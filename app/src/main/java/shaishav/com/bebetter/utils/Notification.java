@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
-import shaishav.com.bebetter.activities.AddExperience;
 import shaishav.com.bebetter.activities.MainActivity;
 import shaishav.com.bebetter.activities.Quote;
 import shaishav.com.bebetter.data.source.PreferenceSource;
@@ -54,7 +53,7 @@ public class Notification {
 
     public void createReminderNotification(Context context,String name){
         //Create intent for the activity where you enter the lesson
-        Intent resultIntent = new Intent(context, AddExperience.class);
+        Intent resultIntent = new Intent(context, MainActivity.class);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         context,

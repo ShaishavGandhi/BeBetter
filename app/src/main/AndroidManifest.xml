@@ -4,6 +4,7 @@
     package="shaishav.com.bebetter">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".utils.App"
@@ -20,21 +21,20 @@
 
         <receiver android:name=".receiver.Reminder" />
         <receiver android:name=".receiver.Backup" />
+        <receiver
+            android:enabled="true"
+            android:name=".receiver.BootupReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
-        <activity
-            android:name=".activities.AddExperience"
-            android:label="@string/title_activity_add_lesson"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.Intro"
             android:label="App Intro" />
         <activity
             android:name=".activities.Login"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.Details"
-            android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
@@ -96,10 +96,6 @@
             android:authorities="shaishav.com.bebetter.usage"
             android:exported="false" />
 
-        <activity
-            android:name=".activities.ExperienceEditor"
-            android:label="@string/title_activity_experience_editor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
