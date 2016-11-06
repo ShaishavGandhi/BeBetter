@@ -139,9 +139,6 @@ public class PreferenceSource {
         editor.putInt(Constants.REMINDER_HOUR,hourOfDay);
         editor.putInt(Constants.REMINDER_MINUTE,minute);
         editor.commit();
-
-        App app = new App();
-        app.setReminder(context);
     }
 
     public String getReminderTime(){
