@@ -19,8 +19,6 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".receiver.Reminder" />
-        <receiver android:name=".receiver.Backup" />
         <receiver
             android:enabled="true"
             android:name=".receiver.BootupReceiver">
@@ -66,7 +64,6 @@
                 android:resource="@xml/time_widget_info" />
         </receiver>
 
-        <service android:name=".service.BackupService" />
         <service android:name=".service.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

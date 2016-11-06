@@ -37,7 +37,6 @@ import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.data.models.User;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.network.ApiServiceLayer;
-import shaishav.com.bebetter.receiver.ApiResponseReceiver;
 import shaishav.com.bebetter.network.ApiCallback;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;

@@ -71,8 +71,6 @@ public class Intro extends AppIntro {
             preferenceSource.setGoal(goal*1000*60);
 
             App app = new App();
-            app.setBackupSchedule(getApplicationContext());
-            app.setReminder(getApplicationContext());
 
             startService(new Intent(getApplicationContext(), BackgroundService.class));
             SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
