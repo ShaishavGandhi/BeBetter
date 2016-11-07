@@ -75,15 +75,6 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".activities.Quote"
-            android:label="@string/title_activity_quote"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <provider
-            android:name=".data.providers.ExperienceProvider"
-            android:authorities="shaishav.com.bebetter.lessons"
-            android:exported="false" />
         <provider
             android:name=".data.providers.GoalProvider"
             android:authorities="shaishav.com.bebetter.goal"
@@ -91,6 +82,11 @@
         <provider
             android:name=".data.providers.UsageProvider"
             android:authorities="shaishav.com.bebetter.usage"
+            android:exported="false" />
+
+        <provider
+            android:name=".data.providers.PointsProvider"
+            android:authorities="shaishav.com.bebetter.points"
             android:exported="false" />
 
     </application>

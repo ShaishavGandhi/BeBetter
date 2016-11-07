@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import shaishav.com.bebetter.activities.MainActivity;
-import shaishav.com.bebetter.activities.Quote;
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.R;
 
@@ -86,68 +85,6 @@ public class Notification {
 
         //Notify
         notificationManager.notify(1,builder.build());
-
-    }
-
-    public void createQuoteNotification(Context context, String quote, String author){
-
-        Intent intent = new Intent(context, Quote.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("author",author);
-        intent.putExtra("quote",quote);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.notif)
-                .setContentTitle("Quote of the Day")
-                .setContentText(quote+" \n-"+author)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(quote+" \n"+author))
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-
-    }
-
-    public void createQuoteNotification(Context context, String quote, String author,Bitmap bitmap){
-
-        Intent intent = new Intent(context, Quote.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("author",author);
-        intent.putExtra("quote",quote);
-        intent.putExtra("image",bitmap);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        RemoteViews mContentView = new RemoteViews(context.getPackageName(), R.layout.image_notification);
-        mContentView.setTextColor(R.id.notiftext,Color.WHITE);
-        mContentView.setTextViewText(R.id.notiftext,quote+"\n"+author);
-        mContentView.setImageViewBitmap(R.id.notifbigimage, bitmap);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.notif)
-                .setContentTitle("Quote of the Day")
-                .setContentText(quote+" \n-"+author)
-                .setCustomBigContentView(mContentView)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
     }
 

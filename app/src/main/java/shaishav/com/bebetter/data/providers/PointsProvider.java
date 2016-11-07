@@ -19,35 +19,37 @@ import java.util.Map;
 
 import shaishav.com.bebetter.data.MySQLiteHelper;
 import shaishav.com.bebetter.data.contracts.GoalContract;
-import shaishav.com.bebetter.data.models.Goal;
+import shaishav.com.bebetter.data.contracts.PointContract;
+import shaishav.com.bebetter.data.contracts.UsageContract;
+import shaishav.com.bebetter.data.models.Point;
 import shaishav.com.bebetter.data.models.Usage;
 import shaishav.com.bebetter.utils.Constants;
 
 /**
- * Created by shaishavgandhi05 on 10/16/16.
+ * Created by shaishavgandhi05 on 11/6/16.
  */
 
-public class GoalProvider extends ContentProvider {
+public class PointsProvider extends ContentProvider {
 
-    static final String PROVIDER_NAME = Constants.PACKAGE + "." + GoalContract.TABLE_GOAL;
-    static final String URL = "content://" + PROVIDER_NAME + "/" + GoalContract.TABLE_GOAL;
+    static final String PROVIDER_NAME = Constants.PACKAGE + "." + PointContract.TABLE_POINTS;
+    static final String URL = "content://" + PROVIDER_NAME + "/" + PointContract.TABLE_POINTS;
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
-    public static String QUERY_SORT_ORDER = GoalContract.COLUMN_DATE + " ASC";
-    public static String QUERY_SELECTION_ARGS_GOAL_RANGE = GoalContract.COLUMN_DATE + " > ? AND " + GoalContract.COLUMN_GOAL +
-            " < ?";
-
-    static final int GOALS = 1;
-    static final int GOAL_ID = 2;
+    static final int POINTS = 1;
+    static final int POINT_ID = 2;
 
     private SQLiteDatabase db;
-    private Map<String, String> GOALS_PROJECTION_MAP;
+    private Map<String, String> POINTS_PROJECTION_MAP;
+
+    public static final String QUERY_SORT_ORDER = PointContract.COLUMN_ID + " DESC";
+    public static String QUERY_SELECTION_ARGS_USAGE_RANGE = PointContract.COLUMN_DATE + " > ? AND " + PointContract.COLUMN_DATE +
+            " < ?";
 
     static final UriMatcher uriMatcher;
     static{
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, GoalContract.TABLE_GOAL, GOALS);
-        uriMatcher.addURI(PROVIDER_NAME, GoalContract.TABLE_GOAL + "/#", GOAL_ID);
+        uriMatcher.addURI(PROVIDER_NAME, PointContract.TABLE_POINTS, POINTS);
+        uriMatcher.addURI(PROVIDER_NAME, PointContract.TABLE_POINTS + "/#", POINT_ID);
     }
 
 
@@ -63,15 +65,15 @@ public class GoalProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(GoalContract.TABLE_GOAL);
+        qb.setTables(PointContract.TABLE_POINTS);
 
         switch (uriMatcher.match(uri)) {
-            case GOALS:
-                qb.setProjectionMap(GOALS_PROJECTION_MAP);
+            case POINTS:
+                qb.setProjectionMap(POINTS_PROJECTION_MAP);
                 break;
 
-            case GOAL_ID:
-                qb.appendWhere( GoalContract.COLUMN_ID + "=" + uri.getPathSegments().get(1));
+            case POINT_ID:
+                qb.appendWhere( PointContract.COLUMN_ID + "=" + uri.getPathSegments().get(1));
                 break;
 
             default:
@@ -79,27 +81,27 @@ public class GoalProvider extends ContentProvider {
         }
 
         if (sortOrder == null || sortOrder == ""){
-            sortOrder = GoalContract.COLUMN_ID;
+            sortOrder = PointContract.COLUMN_ID;
         }
 
-        Cursor c = qb.query(db,	projection,	selection, selectionArgs,null, null, sortOrder);
+        Cursor cursor = qb.query(db,	projection,	selection, selectionArgs,null, null, sortOrder);
 
         /**
          * register to watch a content URI for changes
          */
-        c.setNotificationUri(getContext().getContentResolver(), uri);
-        return c;
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
     }
 
     @Nullable
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)){
-            case GOALS:
-                return "vnd.android.cursor.dir/vnd." + PROVIDER_NAME + "." + GoalContract.TABLE_GOAL;
+            case POINTS:
+                return "vnd.android.cursor.dir/vnd." + PROVIDER_NAME + "." + PointContract.TABLE_POINTS;
 
-            case GOAL_ID:
-                return "vnd.android.cursor.item/vnd." + PROVIDER_NAME + "." + GoalContract.TABLE_GOAL;
+            case POINT_ID:
+                return "vnd.android.cursor.item/vnd." + PROVIDER_NAME + "." + PointContract.TABLE_POINTS;
 
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -109,7 +111,7 @@ public class GoalProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        long rowID = db.insert(GoalContract.TABLE_GOAL, "", values);
+        long rowID = db.insert(PointContract.TABLE_POINTS, "", values);
 
         if (rowID > 0)
         {
@@ -125,13 +127,13 @@ public class GoalProvider extends ContentProvider {
         int count = 0;
 
         switch (uriMatcher.match(uri)){
-            case GOALS:
-                count = db.delete(GoalContract.TABLE_GOAL, selection, selectionArgs);
+            case POINTS:
+                count = db.delete(PointContract.TABLE_POINTS, selection, selectionArgs);
                 break;
 
-            case GOAL_ID:
+            case POINT_ID:
                 String id = uri.getPathSegments().get(1);
-                count = db.delete( GoalContract.TABLE_GOAL, GoalContract.COLUMN_ID +  " = " + id +
+                count = db.delete( PointContract.TABLE_POINTS, PointContract.COLUMN_ID +  " = " + id +
                         (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
                 break;
 
@@ -148,12 +150,12 @@ public class GoalProvider extends ContentProvider {
         int count = 0;
 
         switch (uriMatcher.match(uri)){
-            case GOALS:
-                count = db.update(GoalContract.TABLE_GOAL, values, selection, selectionArgs);
+            case POINTS:
+                count = db.update(PointContract.TABLE_POINTS, values, selection, selectionArgs);
                 break;
 
-            case GOAL_ID:
-                count = db.update(GoalContract.TABLE_GOAL, values, GoalContract.COLUMN_ID +
+            case POINT_ID:
+                count = db.update(PointContract.TABLE_POINTS, values, PointContract.COLUMN_ID +
                         " = " + uri.getPathSegments().get(1) +
                         (!TextUtils.isEmpty(selection) ? " AND (" +selection + ')' : ""), selectionArgs);
                 break;
@@ -165,27 +167,25 @@ public class GoalProvider extends ContentProvider {
         return count;
     }
 
-    public static Goal cursorToGoal(Cursor cursor){
-        Goal goal = new Goal();
-        goal.setId(cursor.getLong(0));
-        goal.setDate(cursor.getLong(cursor.getColumnIndex(GoalContract.COLUMN_DATE)));
-        goal.setGoal(cursor.getLong(cursor.getColumnIndex(GoalContract.COLUMN_GOAL)));
-        goal.setServer_id(cursor.getString(cursor.getColumnIndex(GoalContract.COLUMN_SERVER_ID)));
+    public static Point cursorToPoints(Cursor cursor){
+        Point point = new Point();
+        point.setId(cursor.getLong(0));
+        point.setDate(cursor.getLong(cursor.getColumnIndex(PointContract.COLUMN_DATE)));
+        point.setPoints(cursor.getInt(cursor.getColumnIndex(PointContract.COLUMN_POINTS)));
 
-        return goal;
+        return point;
     }
 
-    public static List<Goal> cursorToListGoals(Cursor cursor){
-        List<Goal> goals = new ArrayList<>();
+    public static List<Point> cursorToListPoints(Cursor cursor){
+        List<Point> points = new ArrayList<>();
         cursor.moveToFirst();
 
         while(!cursor.isAfterLast()){
-            Goal goal = cursorToGoal(cursor);
-            goals.add(goal);
+            Point point = cursorToPoints(cursor);
+            points.add(point);
             cursor.moveToNext();
         }
 
-        cursor.close();
-        return goals;
+        return points;
     }
 }

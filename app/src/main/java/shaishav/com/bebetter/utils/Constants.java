@@ -49,6 +49,7 @@ public class Constants {
 
 
     public static final String LOCAL_ID="localId";
+    public static final int MEET_GOAL = 50;
 
     public static String getFormattedDate(Date date){
         DateFormat dateFormat = new SimpleDateFormat("MMM dd");

@@ -62,21 +62,14 @@ public class UsageSource {
     }
 
 
-    public List<Usage> getAllUsages(){
-        List<Usage> posts = new ArrayList<Usage>();
+    public static List<Usage> getAllUsages(Context context){
 
-        Cursor cursor = database.query(UsageContract.TABLE_USAGE,
-                null, null, null, null, null, UsageContract.COLUMN_ID+" desc");
+        Cursor cursor = context.getContentResolver().query(UsageProvider.CONTENT_URI, null, null, null,
+                UsageProvider.QUERY_SORT_ORDER);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Usage post = cursorToPost(cursor);
-            posts.add(post);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
+        List<Usage> usages = UsageProvider.cursorToListUsage(cursor);
         cursor.close();
-        return posts;
+        return usages;
     }
 
     public static List<Usage> getData(Context context, long lower_threshold,long higher_threshold){
@@ -102,32 +95,37 @@ public class UsageSource {
 
     }
 
-    public List<Usage> getUsagesForBackup(){
-        List<Usage> posts = new ArrayList<Usage>();
-
-        Cursor cursor = database.query(UsageContract.TABLE_USAGE,
-                null, UsageContract.COLUMN_SERVER_ID+" = 'NA'", null, null, null, UsageContract.COLUMN_DATE+" asc");
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Usage post = cursorToPost(cursor);
-            posts.add(post);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return posts;
-    }
-
     public static int getTotalUsage(Context context){
         Cursor cursor = context.getContentResolver().query(UsageProvider.CONTENT_URI,
                 new String[]{"SUM(" + UsageContract.COLUMN_USAGE + ") "}, null, null, null);
 
         if(cursor.moveToFirst())
         {
-            return cursor.getInt(0);
+            int total = cursor.getInt(0);
+            cursor.close();
+            return total;
         }
 
+        if (cursor != null) {
+            cursor.close();
+        }
+        return 0;
+    }
+
+    public static int getAverageUsage(Context context) {
+        Cursor cursor = context.getContentResolver().query(UsageProvider.CONTENT_URI,
+                new String[]{"AVG(" + UsageContract.COLUMN_USAGE + ") "}, null, null, null);
+
+        if(cursor.moveToFirst())
+        {
+            int average = cursor.getInt(0);
+            cursor.close();
+            return average;
+        }
+
+        if (cursor != null) {
+           cursor.close();
+        }
         return 0;
     }
 
