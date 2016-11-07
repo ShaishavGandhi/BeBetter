@@ -9,7 +9,9 @@ import java.util.List;
 
 import shaishav.com.bebetter.data.models.Goal;
 import shaishav.com.bebetter.data.MySQLiteHelper;
+import shaishav.com.bebetter.data.models.Usage;
 import shaishav.com.bebetter.data.providers.GoalProvider;
+import shaishav.com.bebetter.data.providers.UsageProvider;
 
 /**
  * Created by Shaishav on 9/5/2016.
@@ -60,10 +62,6 @@ public class GoalSource {
         Cursor cursor = context.getContentResolver().query(GoalProvider.CONTENT_URI, null, GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
                 whereClause, GoalProvider.QUERY_SORT_ORDER);
 
-//        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-//                null, MySQLiteHelper.COLUMN_DATE + " > "+low+" AND "+MySQLiteHelper.COLUMN_DATE+" < "+high,
-//                null, null, null, MySQLiteHelper.COLUMN_DATE+" ASC");
-
         cursor.moveToFirst();
 
         if(cursor.getCount() > 0) {
@@ -95,6 +93,15 @@ public class GoalSource {
         return (cursor.getCount() > 0);
     }
 
+    public static List<Goal> getAllGoals(Context context) {
+        Cursor cursor = context.getContentResolver().query(GoalProvider.CONTENT_URI, null, null, null,
+                GoalProvider.QUERY_SORT_ORDER);
+
+        List<Goal> goals = GoalProvider.cursorToListGoals(cursor);
+        cursor.close();
+        return goals;
+    }
+
     public static List<Goal> getData(Context context, long lower_threshold, long higher_threshold){
 
         List<Goal> goals = new ArrayList<Goal>();
@@ -116,46 +123,6 @@ public class GoalSource {
         return goals;
 
     }
-
-//    public List<Goal> getGoalsForBackup(){
-//        List<Goal> goals = new ArrayList<Goal>();
-//
-//        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-//                null, MySQLiteHelper.COLUMN_SERVER_ID+" = 'NA'", null, null, null, MySQLiteHelper.COLUMN_DATE+" asc");
-//
-//        cursor.moveToFirst();
-//        while (!cursor.isAfterLast()) {
-//            Goal goal = cursorToPost(cursor);
-//            goals.add(goal);
-//            cursor.moveToNext();
-//        }
-//        // make sure to close the cursor
-//        cursor.close();
-//        return goals;
-//    }
-//
-//    public void setServerId(String server_id, int id){
-//        ContentValues cv = new ContentValues();
-//        cv.put(MySQLiteHelper.COLUMN_SERVER_ID,server_id);
-//
-//        database.update(GoalContract.TABLE_GOAL,cv,MySQLiteHelper.COLUMN_ID+" = "+id,null);
-//    }
-//
-//
-//    public boolean isExisting(String server_id){
-//
-//        Cursor cursor = database.query(GoalContract.TABLE_GOAL,
-//                null, MySQLiteHelper.COLUMN_SERVER_ID+" = '"+server_id+"'", null, null, null, MySQLiteHelper.COLUMN_DATE+" desc");
-//
-//        cursor.moveToFirst();
-//
-//        if(cursor.getCount()>0)
-//            return true;
-//        else
-//            return false;
-//
-//    }
-
 
     private static Goal cursorToPost(Cursor cursor){
         Goal goal = new Goal();

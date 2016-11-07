@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +22,9 @@ import im.dacer.androidcharts.LineView;
 import shaishav.com.bebetter.activities.MainActivity;
 import shaishav.com.bebetter.data.models.Goal;
 import shaishav.com.bebetter.data.models.Time;
+import shaishav.com.bebetter.data.providers.PointsProvider;
 import shaishav.com.bebetter.data.source.GoalSource;
+import shaishav.com.bebetter.data.source.PointSource;
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.data.models.Usage;
 import shaishav.com.bebetter.data.source.UsageSource;
@@ -159,25 +162,14 @@ public class DaySummary extends Fragment {
         lineView.setBottomTextList(xAxes);
         lineView.setDataList(data);
 
+        if (PointSource.getAllPoints(getActivity()) != null) {
+            Toast.makeText(getActivity(), PointSource.getAllPoints(getActivity()).get(0).getPoints() + "", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private long getAverageUsage(){
-
-        Cursor cursor = getActivity().getContentResolver().query(UsageProvider.CONTENT_URI, null, null, null,
-                UsageProvider.QUERY_SORT_ORDER);
-
-        List<Usage> usages = UsageProvider.cursorToListUsage(cursor);
-        long sum = 0;
-
-        if(usages.size()==0)
-            return 0;
-
-        for(Usage usage : usages){
-            sum += usage.getUsage();
-        }
-
-        return sum/(usages.size());
-
+        return UsageSource.getAverageUsage(getActivity());
     }
 
     private void setData(){

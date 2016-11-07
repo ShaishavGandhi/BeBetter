@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import shaishav.com.bebetter.data.contracts.ExperienceContract;
 import shaishav.com.bebetter.data.contracts.GoalContract;
+import shaishav.com.bebetter.data.contracts.PointContract;
 import shaishav.com.bebetter.data.contracts.UsageContract;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
@@ -39,9 +39,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(ExperienceContract.LESSON_CREATE_TABLE);
         database.execSQL(UsageContract.CREATE_USAGE_TABLE);
         database.execSQL(GoalContract.CREATE_GOAL);
+        database.execSQL(PointContract.CREATE_POINTS);
     }
 
     @Override

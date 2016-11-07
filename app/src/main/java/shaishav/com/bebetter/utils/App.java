@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.facebook.stetho.Stetho;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
@@ -30,6 +31,7 @@ public class App extends Application {
     public void onCreate(){
         super.onCreate();
         instance = this;
+        Stetho.initializeWithDefaults(this);
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
         if(preferences.getBoolean(Constants.FIRST_TIME, false)) {

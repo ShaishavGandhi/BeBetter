@@ -3,12 +3,16 @@ package shaishav.com.bebetter.data.source;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 
 import java.util.Date;
+import java.util.List;
 
 import shaishav.com.bebetter.data.contracts.GoalContract;
+import shaishav.com.bebetter.data.contracts.PointContract;
 import shaishav.com.bebetter.data.contracts.UsageContract;
 import shaishav.com.bebetter.data.models.Goal;
+import shaishav.com.bebetter.data.models.Usage;
 import shaishav.com.bebetter.data.providers.GoalProvider;
 import shaishav.com.bebetter.data.providers.UsageProvider;
 import shaishav.com.bebetter.utils.App;
@@ -45,6 +49,7 @@ public class PreferenceSource {
         long unlocked = new Date().getTime();
         if(dayChanged(last_unlocked,unlocked) && last_unlocked!=0){
             storeSessionInDb(context,last_unlocked,preferences.getLong(Constants.SESSION,0));
+            calculatePoints(context);
             editor.putLong(Constants.SESSION,0);
         }
 
@@ -61,12 +66,14 @@ public class PreferenceSource {
 
         long last_unlock_time = preferences.getLong(Constants.UNLOCKED,0);
 
-        if(last_unlock_time==0) {
+        // First time it is fired
+        if (last_unlock_time==0) {
             editor.commit();
             return;
         }
 
-        if(dayChanged(lock_time,last_unlock_time)){
+        // New day, save it in DB please
+        if (dayChanged(lock_time,last_unlock_time)) {
             Date previousDate = new Date(last_unlock_time);
             previousDate.setHours(23);
             previousDate.setMinutes(59);
@@ -74,7 +81,8 @@ public class PreferenceSource {
             session_time = previousDate.getTime() - last_unlock_time;
 
 
-            storeSessionInDb(context,previousDate.getTime(),preferences.getLong(Constants.SESSION,0)+session_time);
+            storeSessionInDb(context,previousDate.getTime(), preferences.getLong(Constants.SESSION,0) + session_time);
+            calculatePoints(context);
 
             previousDate.setDate(previousDate.getDate()+1);
             previousDate.setHours(0);
@@ -89,8 +97,7 @@ public class PreferenceSource {
             editor.putLong(Constants.UNLOCKED,last_unlock_time);
             editor.putLong(Constants.SESSION,session_time);
 
-        }
-        else{
+        } else {
             session_time = lock_time - last_unlock_time;
             long prev_session = preferences.getLong(Constants.SESSION,0);
             session_time += prev_session;
@@ -101,25 +108,69 @@ public class PreferenceSource {
 
     }
 
-    public long getLastBackedUpTime(){
-        return preferences.getLong(Constants.LAST_BACKED_UP,0);
+    /*
+     *   1. Get goal for yesterday
+     *   2. Get usage for yesterday
+     *   3. Get number of times goal less than usage
+     *   4. Calculate average usage excluding yesterday
+     *   5. Assign points for goal reached/not
+     *   6. Assign points for calculation with average
+     *   7. Save in Db
+     */
+    private void calculatePoints(Context context) {
+
+        List<Usage> usages = UsageSource.getAllUsages(context);
+        List<Goal> goals = GoalSource.getAllGoals(context);
+        int points = 0;
+
+        Usage usageYesterday = usages.size() > 1 ? usages.get(usages.size() - 2) : usages.get(0);
+        Goal goalYesterday = goals.size() > 1 ? goals.get(goals.size() - 2) : goals.get(0);
+        long averageUsage = getAverageUsage(usages);
+
+        int streak = getUsagesLessThanGoal(usages, goals);
+
+        if (usageYesterday.getUsage() < goalYesterday.getGoal()) {
+            points += Constants.MEET_GOAL;
+        }
+
+        if ((usageYesterday.getUsage() - averageUsage) < 0) {
+            long num = averageUsage - usageYesterday.getUsage();
+            if (streak > 0) {
+                num *= streak;
+            }
+            points += (num)/(averageUsage);
+        }
+
+        ContentValues mValues = new ContentValues();
+        mValues.put(PointContract.COLUMN_DATE, usageYesterday.getDate());
+        mValues.put(PointContract.COLUMN_POINTS, (long)points);
+        PointSource.createPoint(context, mValues);
     }
 
-    public void setLastBackedUpTime(long time){
-        editor.putLong(Constants.LAST_BACKED_UP, time);
-        editor.commit();
+    private long getAverageUsage(List<Usage> usages) {
+        long sum = 0;
+        if (usages.size() == 1) {
+            return usages.get(0).getUsage();
+        }
+        for (int i = 0; i < usages.size() - 1; i++) {
+            sum += usages.get(i).getUsage();
+        }
+
+        return sum/(usages.size() - 1);
+    }
+
+    private int getUsagesLessThanGoal(List<Usage> usages, List<Goal> goals) {
+        int counter = 0;
+        for (int i = 0; i < usages.size(); i++ ) {
+            if (i < usages.size() && i < goals.size() && (usages.get(i).getUsage() < goals.get(i).getGoal())) {
+                counter++;
+            }
+        }
+        return counter;
     }
 
     public long getUsageUnit(){
-        return preferences.getLong(Constants.PREFERENCE_USAGE_UNIT,1000*60);
-    }
-
-    public void setUsageUnit(String usageUnit){
-        if(usageUnit.equals("Hours"))
-            editor.putLong(Constants.PREFERENCE_USAGE_UNIT,1000*60*60);
-        else
-            editor.putLong(Constants.PREFERENCE_USAGE_UNIT,1000*60);
-        editor.commit();
+        return preferences.getLong(Constants.PREFERENCE_USAGE_UNIT, 1000*60);
     }
 
     public long getLastUnlockedTime(){
@@ -232,7 +283,7 @@ public class PreferenceSource {
 
         setGoal(getPreviousDayGoal());
 
-        return lock_date.getDate()!=unlock_date.getDate();
+        return lock_date.getDate() != unlock_date.getDate();
 
     }
 

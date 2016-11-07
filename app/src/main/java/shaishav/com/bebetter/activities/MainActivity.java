@@ -8,20 +8,15 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.List;
-
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.fragments.DaySummary;
 import shaishav.com.bebetter.fragments.Settings;
-import shaishav.com.bebetter.data.models.Experience;
-import shaishav.com.bebetter.data.source.ExperienceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.utils.Constants;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -31,11 +26,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences preferences;
-    ExperienceSource experienceSource;
-    List<Experience> experienceList;
     PreferenceSource preferenceSource;
     BottomNavigationView mBottomNavigationView;
-    FloatingActionButton fab;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -82,13 +74,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void initialize(){
-
-        // Open connection to Db and get all lessons
-        experienceSource = new ExperienceSource(this);
-        experienceSource.open();
-        experienceList = experienceSource.getAllLessons();
-        experienceSource.close();
-
         // Initialize preferences
         preferenceSource = PreferenceSource.getInstance(MainActivity.this);
         preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
@@ -128,12 +113,10 @@ public class MainActivity extends AppCompatActivity
 
     public void hideBottomNavigation(){
         mBottomNavigationView.animate().translationY(mBottomNavigationView.getHeight()).setDuration(100);
-        fab.animate().translationY(fab.getHeight() + mBottomNavigationView.getHeight() + 100).setDuration(100);
     }
 
     public void showBottomNavigation(){
         mBottomNavigationView.animate().translationY(0).setDuration(100);
-        fab.animate().translationY(0).setDuration(100);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
