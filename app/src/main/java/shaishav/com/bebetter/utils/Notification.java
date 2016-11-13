@@ -36,8 +36,8 @@ public class Notification {
         if(Long.parseLong(usage) > (preferenceSource.getGoal()/preferenceSource.getUsageUnit()))
             mContentView.setTextColor(R.id.notiftext, Color.RED);
 
-        mContentView.setTextViewText(R.id.notiftext, "Your mobile usage is "+usage+" min. " +
-                "Usage goal : "+goal+" min.");
+        mContentView.setTextViewText(R.id.notiftext, "Your mobile usage is " + usage + " min. " +
+                "Usage goal : " + goal + " min.");
 
         android.app.Notification notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notif)
