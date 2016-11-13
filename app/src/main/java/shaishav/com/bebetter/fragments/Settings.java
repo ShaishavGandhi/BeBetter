@@ -1,6 +1,8 @@
 package shaishav.com.bebetter.fragments;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
@@ -9,8 +11,12 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.support.annotation.NonNull;
+import android.transition.Transition;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.TimePicker;
 import android.widget.Toast;
 

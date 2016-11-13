@@ -21,6 +21,7 @@ import java.util.List;
 import im.dacer.androidcharts.LineView;
 import shaishav.com.bebetter.activities.MainActivity;
 import shaishav.com.bebetter.data.models.Goal;
+import shaishav.com.bebetter.data.models.Point;
 import shaishav.com.bebetter.data.models.Time;
 import shaishav.com.bebetter.data.providers.PointsProvider;
 import shaishav.com.bebetter.data.source.GoalSource;
@@ -38,9 +39,12 @@ public class DaySummary extends Fragment {
 
     PreferenceSource preferenceSource;
     private TextView current_session_tv,daily_session_tv,average_daily_usage_tv,total_usage_tv, timeUnit;
+    private TextView totalPointsTextView;
     private View rootView;
     private long daily_session,current_session,average_daily_usage,daily_goal,total_usage;
-    LineView lineView;
+    private int totalPoints;
+    LineView usageChart;
+    LineView pointsChart;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public DaySummary() {
@@ -80,10 +84,15 @@ public class DaySummary extends Fragment {
         total_usage_tv = (TextView)rootView.findViewById(R.id.total_usage);
         timeUnit = (TextView) rootView.findViewById(R.id.timeUnit);
 
-        lineView = (LineView)rootView.findViewById(R.id.usage_chart_2);
-        lineView.setDrawDotLine(true); //optional
-        lineView.setColorArray(new String[]{"#674172","#F25268","#F25268"});
-        lineView.setShowPopup(LineView.SHOW_POPUPS_All); //optional
+        usageChart = (LineView)rootView.findViewById(R.id.usage_chart_2);
+        usageChart.setDrawDotLine(true); //optional
+        usageChart.setColorArray(new String[]{"#674172","#F25268","#F25268"});
+        usageChart.setShowPopup(LineView.SHOW_POPUPS_All); //optional
+
+        pointsChart = (LineView) rootView.findViewById(R.id.pointsChart);
+        pointsChart.setDrawDotLine(true); //optional
+        pointsChart.setColorArray(new String[]{"#674172","#F25268","#F25268"});
+        pointsChart.setShowPopup(LineView.SHOW_POPUPS_All); //optional
 
         NestedScrollView scrollView = (NestedScrollView) rootView.findViewById(R.id.scrollView);
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -108,6 +117,8 @@ public class DaySummary extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        totalPointsTextView = (TextView) rootView.findViewById(R.id.totalPoints);
 
     }
 
@@ -136,6 +147,7 @@ public class DaySummary extends Fragment {
 
         total_usage = (daily_session + total_usage);
 
+        totalPoints = PointSource.getTotalPoints(getActivity());
 
         ArrayList<String> xAxes = new ArrayList<>();
         ArrayList<Integer> yAxes = new ArrayList<>();
@@ -145,7 +157,7 @@ public class DaySummary extends Fragment {
         List<Goal> weeklyGoal = getWeeklyGoal();
 
 
-        for(int i=0;i<weeklyData.size();i++){
+        for (int i = 0; i < weeklyData.size(); i++) {
             Date date = new Date(weeklyData.get(i).getDate());
             xAxes.add(Constants.getFormattedDate(date));
             threshold.add((int)weeklyGoal.get(i).getGoal()/(1000*60));
@@ -159,12 +171,23 @@ public class DaySummary extends Fragment {
         ArrayList<ArrayList<Integer>> data = new ArrayList<ArrayList<Integer>>();
         data.add(yAxes);
         data.add(threshold);
-        lineView.setBottomTextList(xAxes);
-        lineView.setDataList(data);
+        usageChart.setBottomTextList(xAxes);
+        usageChart.setDataList(data);
 
-        if (PointSource.getAllPoints(getActivity()) != null) {
-            Toast.makeText(getActivity(), PointSource.getAllPoints(getActivity()).get(0).getPoints() + "", Toast.LENGTH_SHORT).show();
+        List<Point> points = PointSource.getAllPoints(getActivity());
+        ArrayList<String> pointsXAxes = new ArrayList<>();
+        ArrayList<Integer> pointsYAxes = new ArrayList<>();
+
+        for (int i = 0 ; i < points.size(); i++) {
+            pointsXAxes.add(Constants.getFormattedDate(new Date(points.get(i).getDate())));
+            pointsYAxes.add(points.get(i).getPoints());
+
         }
+
+        ArrayList<ArrayList<Integer>> pointsData = new ArrayList<>();
+        pointsData.add(pointsYAxes);
+        pointsChart.setBottomTextList(pointsXAxes);
+        pointsChart.setDataList(pointsData);
 
     }
 
@@ -185,6 +208,8 @@ public class DaySummary extends Fragment {
         animateCounter(total_usage_tv, time.getValue());
 
         timeUnit.setText(time.getUnit());
+
+        animateCounter(totalPointsTextView, totalPoints);
 
         Notification notif = new Notification();
         notif.updateNotification(getActivity().getApplicationContext(),
