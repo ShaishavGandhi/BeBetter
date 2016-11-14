@@ -17,6 +17,7 @@ import shaishav.com.bebetter.data.providers.GoalProvider;
 import shaishav.com.bebetter.data.providers.UsageProvider;
 import shaishav.com.bebetter.utils.App;
 import shaishav.com.bebetter.utils.Constants;
+import shaishav.com.bebetter.utils.FirebaseHelper;
 
 /**
  * Created by Shaishav on 06-08-2016.
@@ -50,7 +51,7 @@ public class PreferenceSource {
         if(dayChanged(last_unlocked,unlocked) && last_unlocked!=0){
             storeSessionInDb(context,last_unlocked,preferences.getLong(Constants.SESSION,0));
             calculatePoints(context);
-            editor.putLong(Constants.SESSION,0);
+            editor.putLong(Constants.SESSION, 0);
         }
 
 
@@ -143,8 +144,10 @@ public class PreferenceSource {
 
         ContentValues mValues = new ContentValues();
         mValues.put(PointContract.COLUMN_DATE, usageYesterday.getDate());
-        mValues.put(PointContract.COLUMN_POINTS, (long)points);
+        mValues.put(PointContract.COLUMN_POINTS, (long) points);
         PointSource.createPoint(context, mValues);
+
+        FirebaseHelper.saveGoalInDb(PointSource.getTotalPoints(context));
     }
 
     private long getAverageUsage(List<Usage> usages) {
