@@ -342,7 +342,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Usage Trend"
+                android:text="Points Trend"
                 android:textAlignment="center"
                 android:paddingBottom="10dp"
                 android:paddingTop="5dp"

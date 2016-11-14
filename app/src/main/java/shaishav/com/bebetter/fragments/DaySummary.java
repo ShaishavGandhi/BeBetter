@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -184,10 +186,12 @@ public class DaySummary extends Fragment {
 
         }
 
-        ArrayList<ArrayList<Integer>> pointsData = new ArrayList<>();
-        pointsData.add(pointsYAxes);
-        pointsChart.setBottomTextList(pointsXAxes);
-        pointsChart.setDataList(pointsData);
+        if (pointsXAxes.size() > 0 && pointsYAxes.size() > 0) {
+            ArrayList<ArrayList<Integer>> pointsData = new ArrayList<>();
+            pointsData.add(pointsYAxes);
+            pointsChart.setBottomTextList(pointsXAxes);
+            pointsChart.setDataList(pointsData);
+        }
 
     }
 
