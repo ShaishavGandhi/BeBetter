@@ -41,18 +41,23 @@ public class Leaderboard extends Fragment {
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
 
-        Query fiftyHighest = FirebaseDatabase.getInstance().getReference("points").orderByValue().limitToLast(50);
+        Query fiftyHighest = FirebaseDatabase.getInstance().getReference("points").orderByChild("points").limitToLast(10);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new FirebaseRecyclerAdapter<shaishav.com.bebetter.data.Leaderboard, LeaderboardHolder>(shaishav.com.bebetter.data.Leaderboard.class,
                 R.layout.list_item_leaderboard, LeaderboardHolder.class, fiftyHighest) {
             @Override
             protected void populateViewHolder(LeaderboardHolder viewHolder, shaishav.com.bebetter.data.Leaderboard model, int position) {
+                String points = String.valueOf(model.getPoints());
+
                 viewHolder.mName.setText(model.getName());
-                viewHolder.mPoints.setText(model.getPoints() + " points");
-                viewHolder.mPosition.setText((position + 1) + "");
+                viewHolder.mPoints.setText(points + " points");
+                viewHolder.mPosition.setText((getItemCount() - position) + "");
             }
         };
 
