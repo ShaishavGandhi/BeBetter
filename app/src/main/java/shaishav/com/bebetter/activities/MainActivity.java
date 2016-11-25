@@ -20,6 +20,7 @@ import shaishav.com.bebetter.fragments.Leaderboard;
 import shaishav.com.bebetter.fragments.Settings;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.utils.Constants;
+import shaishav.com.bebetter.utils.FirebaseHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
