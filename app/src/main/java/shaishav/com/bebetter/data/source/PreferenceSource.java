@@ -132,14 +132,16 @@ public class PreferenceSource {
 
         if (usageYesterday.getUsage() < goalYesterday.getGoal()) {
             points += Constants.MEET_GOAL;
-        }
 
-        if ((usageYesterday.getUsage() - averageUsage) < 0) {
-            long num = averageUsage - usageYesterday.getUsage();
-            if (streak > 0) {
-                num *= streak;
+            if ((usageYesterday.getUsage() - averageUsage) < 0) {
+                long num = averageUsage - usageYesterday.getUsage();
+                if (streak > 0) {
+                    num *= streak;
+                    num *= num*100;
+                }
+                points += (num)/(averageUsage);
             }
-            points += (num)/(averageUsage);
+
         }
 
         ContentValues mValues = new ContentValues();

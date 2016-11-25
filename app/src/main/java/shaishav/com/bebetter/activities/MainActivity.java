@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.fragments.DaySummary;
+import shaishav.com.bebetter.fragments.Leaderboard;
 import shaishav.com.bebetter.fragments.Settings;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.utils.Constants;
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_daily_experiences)
-            fragment = null;
+            fragment = new Leaderboard();
         else if (id == R.id.nav_summary)
             fragment = new DaySummary();
         else if (id == R.id.nav_settings)

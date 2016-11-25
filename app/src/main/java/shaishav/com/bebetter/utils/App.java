@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.facebook.stetho.Stetho;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
@@ -38,6 +39,8 @@ public class App extends Application {
             // Set daily reminder
             startService(new Intent(getApplicationContext(), BackgroundService.class));
         }
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
     }
 
