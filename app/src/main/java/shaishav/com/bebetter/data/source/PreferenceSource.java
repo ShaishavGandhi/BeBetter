@@ -232,8 +232,8 @@ public class PreferenceSource {
         return preferences.getBoolean(Constants.PREFERENCE_BACKUP,true);
     }
 
-    public void setIsBackupEnabled(boolean backup){
-        editor.putBoolean(Constants.PREFERENCE_BACKUP,backup);
+    public void setIsLeaderboardEnabled(boolean isLeaderboardEnabled){
+        editor.putBoolean(Constants.PREFERENCE_BACKUP, isLeaderboardEnabled);
         editor.commit();
     }
 

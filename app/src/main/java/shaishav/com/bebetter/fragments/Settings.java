@@ -25,6 +25,7 @@ import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 import java.util.Calendar;
 import java.util.Date;
 
+import shaishav.com.bebetter.activities.MainActivity;
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.utils.Constants;
@@ -36,11 +37,11 @@ public class Settings extends PreferenceFragment {
 
     PreferenceSource preferenceSource;
 
-    Preference reminderTime,goal;
-    SwitchPreference backup;
+    Preference goal;
+    SwitchPreference leaderboard;
     long usage_unit_val;
-    String reminder_time_val,goal_val;
-    boolean backup_val;
+    String goal_val;
+    boolean leaderboardVal;
     String usageUnitText;
 
     public Settings() {
@@ -50,6 +51,7 @@ public class Settings extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Settings");
         addPreferencesFromResource(R.xml.settings_preferences);
 
 
@@ -61,8 +63,7 @@ public class Settings extends PreferenceFragment {
     }
 
     public void initialize(){
-        reminderTime = findPreference("reminderTime");
-        backup = (SwitchPreference)findPreference("backup");
+        leaderboard = (SwitchPreference) findPreference("leaderboard");
         goal = findPreference("goal");
 
         preferenceSource = PreferenceSource.getInstance(getActivity());
@@ -75,46 +76,24 @@ public class Settings extends PreferenceFragment {
 
     public void getPreferencesData(){
 
-        reminder_time_val =  preferenceSource.getReminderTime();
-        backup_val = preferenceSource.isBackupEnabled();
         goal_val = String.valueOf(preferenceSource.getGoal()/(preferenceSource.getUsageUnit()));
         usage_unit_val = preferenceSource.getUsageUnit();
 
     }
 
     public void setPreferences(){
-
-        reminderTime.setSummary(reminder_time_val);
-        backup.setChecked(backup_val);
         goal.setSummary(goal_val + " "+usageUnitText);
-
-
+        leaderboard.setChecked(leaderboardVal);
     }
 
     public void setPreferencesListeners(){
 
-        reminderTime.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Calendar calendar = Calendar.getInstance();
-                new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                        setTimeOnView(reminderTime,hourOfDay,minute);
-                        preferenceSource.setBackupPreference(hourOfDay,minute);
-                    }
-                },calendar.getTime().getHours(),calendar.getTime().getMinutes(),false).show();
 
-                return false;
-            }
-        });
-
-        backup.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        leaderboard.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 SwitchPreference temp = (SwitchPreference)preference;
-                preferenceSource.setIsBackupEnabled(!temp.isChecked());
+                preferenceSource.setIsLeaderboardEnabled(!temp.isChecked());
                 return true;
             }
         });
@@ -154,13 +133,4 @@ public class Settings extends PreferenceFragment {
 
 
     }
-
-    public void setTimeOnView(Preference reminderTime,int hourOfDay, int minute){
-
-        reminderTime.setSummary(Constants.getTimeInAMPM(hourOfDay,minute));
-
-    }
-
-
-
 }

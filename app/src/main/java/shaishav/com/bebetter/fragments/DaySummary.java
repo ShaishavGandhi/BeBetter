@@ -70,6 +70,8 @@ public class DaySummary extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_day_summary, container, false);
+
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("BeBetter");
         initialize();
         getData();
         setData();

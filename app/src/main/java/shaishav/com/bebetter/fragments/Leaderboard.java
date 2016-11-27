@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.activities.MainActivity;
 import shaishav.com.bebetter.holder.LeaderboardHolder;
 
 /**
@@ -40,6 +41,7 @@ public class Leaderboard extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Leaderboard");
 
         Query fiftyHighest = FirebaseDatabase.getInstance().getReference("points").orderByChild("points").limitToLast(10);
 
