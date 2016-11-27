@@ -16,7 +16,6 @@ import java.util.Date;
 
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.fragments.IntroFirst;
-import shaishav.com.bebetter.fragments.IntroSecond;
 import shaishav.com.bebetter.fragments.IntroThird;
 import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.service.BackgroundService;
@@ -45,7 +44,6 @@ public class Intro extends AppIntro {
         );
 
         addSlide(new IntroFirst());
-        addSlide(new IntroSecond());
         addSlide(new IntroThird());
 
         showSkipButton(false);

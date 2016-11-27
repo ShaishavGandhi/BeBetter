@@ -2,29 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Reminder">
-
-        <Preference
-            android:key="reminderTime"
-            android:title="Choose time at which you get lesson reminders">
-
-        </Preference>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="Backup">
-
-        <SwitchPreference
-            android:key="backup"
-            android:title="Sync data to cloud"
-            android:summary="All your ideas, experiences and usages are safe in the cloud.">
-
-        </SwitchPreference>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="Usage">
 
 
@@ -34,6 +11,13 @@
             android:summary="">
 
         </Preference>
+
+        <SwitchPreference
+            android:key="leaderboard"
+            android:title="Opt in to leaderboard"
+            android:summary="See how you stack up against other users">
+
+        </SwitchPreference>
 
 
     </PreferenceCategory>
