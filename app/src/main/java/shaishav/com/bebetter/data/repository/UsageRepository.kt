@@ -33,5 +33,5 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
         return databaseManager.totalUsage()
     }
 
-    
+
 }
