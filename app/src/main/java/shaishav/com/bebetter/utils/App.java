@@ -6,41 +6,42 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import com.facebook.stetho.Stetho;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Calendar;
 
+import shaishav.com.bebetter.di.DependencyGraph;
+import shaishav.com.bebetter.di.components.AppComponent;
+import shaishav.com.bebetter.di.components.DaggerAppComponent;
+import shaishav.com.bebetter.di.components.SummaryComponent;
+import shaishav.com.bebetter.di.modules.AppModule;
+import shaishav.com.bebetter.di.modules.SummaryModule;
 import shaishav.com.bebetter.service.BackgroundService;
 
 /**
  * Created by Shaishav on 22-06-2016.
  */
-public class App extends Application {
+public class App extends Application implements DependencyGraph {
 
-    private static App instance;
+    AppComponent appComponent;
+    SummaryComponent summaryComponent;
 
-
-    public static App getInstance() {
-        return instance;
-    }
-
-    @Override
-    public void onCreate(){
+    @Override public void onCreate(){
         super.onCreate();
-        instance = this;
+        appComponent = DaggerAppComponent
+                .builder()
+                .appModule(new AppModule(this))
+                .build();
         Stetho.initializeWithDefaults(this);
 
-        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
-        if(preferences.getBoolean(Constants.FIRST_TIME, false)) {
-            // Set daily reminder
-            startService(new Intent(getApplicationContext(), BackgroundService.class));
-        }
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        startService(new Intent(getApplicationContext(), BackgroundService.class));
 
     }
 
@@ -98,5 +99,17 @@ public class App extends Application {
 
         return deletedAll;
 
+    }
+
+    @NonNull @Override public SummaryComponent addSummaryComponent(@NotNull SummaryModule module) {
+        if (summaryComponent == null) {
+            summaryComponent = appComponent.addSummaryComponent(module);
+        }
+        return summaryComponent;
+    }
+
+    @Override
+    public void removeSummaryComponent() {
+        summaryComponent = null;
     }
 }

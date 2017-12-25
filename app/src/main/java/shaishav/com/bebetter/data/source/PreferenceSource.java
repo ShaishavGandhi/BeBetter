@@ -3,7 +3,6 @@ package shaishav.com.bebetter.data.source;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 
 import java.util.Date;
 import java.util.List;
@@ -15,9 +14,7 @@ import shaishav.com.bebetter.data.models.Goal;
 import shaishav.com.bebetter.data.models.Usage;
 import shaishav.com.bebetter.data.providers.GoalProvider;
 import shaishav.com.bebetter.data.providers.UsageProvider;
-import shaishav.com.bebetter.utils.App;
 import shaishav.com.bebetter.utils.Constants;
-import shaishav.com.bebetter.utils.FirebaseHelper;
 
 /**
  * Created by Shaishav on 06-08-2016.
@@ -149,7 +146,6 @@ public class PreferenceSource {
         mValues.put(PointContract.COLUMN_POINTS, (long) points);
         PointSource.createPoint(context, mValues);
 
-        FirebaseHelper.saveGoalInDb(PointSource.getTotalPoints(context));
     }
 
     private long getAverageUsage(List<Usage> usages) {

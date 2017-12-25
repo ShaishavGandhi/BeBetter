@@ -1,6 +1,5 @@
 package shaishav.com.bebetter.data.models;
 
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Shaishav on 9/5/2016.
@@ -9,7 +8,6 @@ public class Goal {
 
     long id, date, goal;
 
-    @SerializedName("_id")
     String server_id;
 
     public long getId() {

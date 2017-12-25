@@ -1,11 +1,9 @@
 package shaishav.com.bebetter.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -15,12 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import shaishav.com.bebetter.data.source.PreferenceSource;
-import shaishav.com.bebetter.fragments.DaySummary;
-import shaishav.com.bebetter.fragments.Leaderboard;
-import shaishav.com.bebetter.fragments.Settings;
+import shaishav.com.bebetter.fragments.SummaryFragment;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.fragments.SummaryFragment2;
 import shaishav.com.bebetter.utils.Constants;
-import shaishav.com.bebetter.utils.FirebaseHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -71,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
     public void setFirstScreen(){
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container_body,new DaySummary()).commit();
+        fragmentManager.beginTransaction().replace(R.id.container_body,new SummaryFragment2()).commit();
 
     }
 
@@ -131,12 +127,8 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
 
-        if (id == R.id.nav_daily_experiences)
-            fragment = new Leaderboard();
-        else if (id == R.id.nav_summary)
-            fragment = new DaySummary();
-        else if (id == R.id.nav_settings)
-            fragment = new Settings();
+        if (id == R.id.nav_summary)
+            fragment = new SummaryFragment2();
 
         fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
         return true;
@@ -147,11 +139,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void introduceApp(){
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(Constants.FIRST_TIME, true);
-        editor.commit();
-
-        Intent intent = new Intent(this, Intro.class);
-        startActivity(intent);
+        
     }
 }

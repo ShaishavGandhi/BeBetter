@@ -9,6 +9,14 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_details">Details</string>
 
+    <string name="current_session">Current Session</string>
+    <string name="minute">min</string>
+    <string name="points">points</string>
+    <string name="daily_usage">Usage Today</string>
+    <string name="average_daily_usage">Average Daily Usage</string>
+    <string name="total_usage">Total Usage</string>
+    <string name="total_points">Total Points</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">Settings</string>
