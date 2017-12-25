@@ -18,6 +18,7 @@ import shaishav.com.bebetter.data.providers.UsageProvider;
 /**
  * Created by Shaishav on 26-06-2016.
  */
+@Deprecated
 public class UsageSource {
 
     private SQLiteDatabase database;

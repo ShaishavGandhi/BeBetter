@@ -14,8 +14,6 @@ import shaishav.com.bebetter.utils.TimeWidget;
 
 public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
-
-
     @Override
     public void onReceive(Context context, Intent intent) {
 

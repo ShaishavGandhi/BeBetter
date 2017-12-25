@@ -15,7 +15,7 @@ import shaishav.com.bebetter.data.providers.UsageProvider;
 /**
  * Created by shaishavgandhi05 on 11/6/16.
  */
-
+@Deprecated
 public class PointSource {
 
     public static void createPoint(Context mContext, ContentValues mContentValues) {
