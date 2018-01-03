@@ -14,7 +14,8 @@ class UsageDatabaseManagerImpl(val contentResolver: BriteContentResolver): Usage
         return contentResolver.createQuery(UsageProvider.CONTENT_URI,
                 arrayOf("AVG(" + UsageContract.COLUMN_USAGE + ") "), null, null, null, false)
                 .mapToOne {
-                    return@mapToOne it.getInt(0).toLong()
+                    // TODO : Replace with preference
+                    return@mapToOne it.getInt(0).toLong() / (1000 * 60)
                 }
     }
 
@@ -34,6 +35,9 @@ class UsageDatabaseManagerImpl(val contentResolver: BriteContentResolver): Usage
     override fun totalUsage(): Observable<Long> {
         return contentResolver.createQuery(UsageProvider.CONTENT_URI,
                 arrayOf("SUM(" + UsageContract.COLUMN_USAGE + ") "), null, null, null, false)
-                .mapToOne { return@mapToOne it.getInt(0).toLong() }
+                .mapToOne {
+                    // TODO : Replace with preference instead of static 1000 * 60
+                    return@mapToOne it.getInt(0).toLong() / (1000 * 60)
+                }
     }
 }

@@ -10,10 +10,13 @@ import com.squareup.sqlbrite3.SqlBrite
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
+import shaishav.com.bebetter.data.database.GoalDatabaseManager
+import shaishav.com.bebetter.data.database.GoalDatabaseManagerImpl
 import shaishav.com.bebetter.data.database.UsageDatabaseManager
 import shaishav.com.bebetter.data.database.UsageDatabaseManagerImpl
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.data.preferences.PreferenceDataStoreImpl
+import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
 import shaishav.com.bebetter.di.scopes.ApplicationScope
 import shaishav.com.bebetter.utils.Constants
@@ -46,5 +49,13 @@ class DatabaseModule {
 
     @Provides @ApplicationScope fun providesBlogDatabaseManager(contentResolver: BriteContentResolver): UsageDatabaseManager {
         return UsageDatabaseManagerImpl(contentResolver)
+    }
+
+    @Provides @ApplicationScope fun providesGoalRepository(databaseManager: GoalDatabaseManager): GoalRepository {
+        return GoalRepository(databaseManager)
+    }
+
+    @Provides @ApplicationScope fun providesGoalDatabaseManager(contentResolver: BriteContentResolver): GoalDatabaseManager {
+        return GoalDatabaseManagerImpl(contentResolver)
     }
 }

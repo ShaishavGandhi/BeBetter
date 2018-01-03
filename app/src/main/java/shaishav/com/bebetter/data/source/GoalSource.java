@@ -16,6 +16,7 @@ import shaishav.com.bebetter.data.providers.UsageProvider;
 /**
  * Created by Shaishav on 9/5/2016.
  */
+@Deprecated
 public class GoalSource {
 
     public static Goal getCurrentGoal(Context context){

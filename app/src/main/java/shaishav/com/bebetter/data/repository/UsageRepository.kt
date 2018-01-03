@@ -1,6 +1,7 @@
 package shaishav.com.bebetter.data.repository
 
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import shaishav.com.bebetter.data.database.UsageDatabaseManager
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
@@ -16,7 +17,6 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
         return databaseManager.usages()
     }
 
-
     fun currentSession(): Observable<Long> {
         return preferenceStore.currentSession(Date().time)
     }
@@ -30,7 +30,9 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
     }
 
     fun totalUsage(): Observable<Long> {
-        return databaseManager.totalUsage()
+        return Observable.combineLatest(databaseManager.totalUsage(), preferenceStore.dailyUsageSoFar(), BiFunction { totalUsage, dailyUsageSoFar ->
+            return@BiFunction totalUsage + dailyUsageSoFar
+        })
     }
 
 

@@ -8,9 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
+import com.jakewharton.rxbinding2.widget.RxTextView
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.adapter.RecyclerUsageController
 import shaishav.com.bebetter.contracts.SummaryContract
+import shaishav.com.bebetter.data.models.Goal
+import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.presenter.SummaryPresenter
@@ -67,5 +70,17 @@ class SummaryFragment2: Fragment(), SummaryContract {
 
     override fun setDailyUsage(usage: Long) {
         adapter.dailyUsage = usage
+    }
+
+    override fun setTotalUsage(usage: Long) {
+        adapter.totalUsage = usage
+    }
+
+    override fun setGoals(goals: List<Goal>) {
+        adapter.goals = goals
+    }
+
+    override fun setUsages(usages: List<Usage>) {
+        adapter.usages = usages
     }
 }

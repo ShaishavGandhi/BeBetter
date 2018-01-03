@@ -3,7 +3,10 @@ package shaishav.com.bebetter.adapter
 import android.content.Context
 import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.data.models.Goal
+import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.models.UsageCardModel_
+import shaishav.com.bebetter.models.UsageTrendModel_
 
 /**
  * Created by shaishav.gandhi on 12/24/17.
@@ -31,12 +34,30 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
             requestModelBuild()
         }
 
+    var totalPoints: Long = 0
+        set(value) {
+            field = value
+            requestModelBuild()
+        }
+
+    var usages: List<Usage> = ArrayList()
+        set(value) {
+            field = value
+            requestModelBuild()
+        }
+
+    var goals: List<Goal> = ArrayList()
+        set(value) {
+            field = value
+            requestModelBuild()
+        }
+
     override fun buildModels() {
         addCurrentSessionModel()
         addDailyUsage()
         addAverageDailyUsage()
         addTotalUsage()
-        addTotalPoints()
+        addUsageTrend()
     }
 
     private fun addCurrentSessionModel() {
@@ -87,9 +108,17 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
         val header = context.getString(R.string.total_points)
         val footer = context.getString(R.string.points)
 
-        if (totalUsage > 0) {
-            UsageCardModel_(header, totalUsage, footer)
-                    .id("total_usage")
+        if (totalPoints > 0) {
+            UsageCardModel_(header, totalPoints, footer)
+                    .id("total_points")
+                    .addTo(this)
+        }
+    }
+
+    private fun addUsageTrend() {
+        if (usages.isNotEmpty() && goals.isNotEmpty()) {
+            UsageTrendModel_(usages, goals)
+                    .id("usage_trend")
                     .addTo(this)
         }
     }

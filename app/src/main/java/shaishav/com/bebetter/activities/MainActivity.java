@@ -20,12 +20,10 @@ import shaishav.com.bebetter.utils.Constants;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     PreferenceSource preferenceSource;
-    BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -50,10 +48,6 @@ public class MainActivity extends AppCompatActivity
 
         if(isFirstTime())
             introduceApp();
-
-        mBottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
-
-        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         //Set first screen
         setFirstScreen();
@@ -108,31 +102,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void hideBottomNavigation(){
-        mBottomNavigationView.animate().translationY(mBottomNavigationView.getHeight()).setDuration(100);
-    }
-
-    public void showBottomNavigation(){
-        mBottomNavigationView.animate().translationY(0).setDuration(100);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = null;
-
-
-        if (id == R.id.nav_summary)
-            fragment = new SummaryFragment2();
-
-        fragmentManager.beginTransaction().replace(R.id.container_body,fragment).commit();
-        return true;
-    }
 
     private boolean isFirstTime(){
         return !preferences.getBoolean(Constants.FIRST_TIME,false);

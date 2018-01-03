@@ -23,15 +23,4 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        app:menu="@menu/activity_main_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:elevation="8dp"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
-        app:itemBackground="@color/colorPrimary" />
-
 </android.support.design.widget.CoordinatorLayout>

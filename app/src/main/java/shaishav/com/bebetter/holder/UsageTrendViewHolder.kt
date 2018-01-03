@@ -1,0 +1,18 @@
+package shaishav.com.bebetter.holder
+
+import android.databinding.DataBindingUtil
+import android.view.View
+import com.airbnb.epoxy.EpoxyHolder
+import shaishav.com.bebetter.databinding.ListItemUsageTrendBinding
+
+/**
+ * Created by shaishav.gandhi on 12/25/17.
+ */
+class UsageTrendViewHolder: EpoxyHolder() {
+
+    lateinit var binding: ListItemUsageTrendBinding
+
+    override fun bindView(itemView: View) {
+        binding = DataBindingUtil.bind(itemView)
+    }
+}
