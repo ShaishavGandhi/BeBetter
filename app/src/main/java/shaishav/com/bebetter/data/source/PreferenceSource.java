@@ -19,6 +19,7 @@ import shaishav.com.bebetter.utils.Constants;
 /**
  * Created by Shaishav on 06-08-2016.
  */
+@Deprecated
 public class PreferenceSource {
 
     public static PreferenceSource preferenceSource;
