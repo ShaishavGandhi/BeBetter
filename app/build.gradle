@@ -31,9 +31,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.prod
         }
-        debug {
-            signingConfig signingConfigs.prod
-        }
     }
 }
 repositories {
