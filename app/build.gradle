@@ -12,7 +12,7 @@ android {
             storePassword 'PinkFloyd786'
         }
     }
-    compileSdkVersion 27
+    compileSdkVersion 26
     defaultConfig {
         applicationId "shaishav.com.bebetter"
         minSdkVersion 21
