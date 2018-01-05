@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.facebook.stetho.Stetho;
@@ -27,7 +28,7 @@ import shaishav.com.bebetter.service.BackgroundService;
 /**
  * Created by Shaishav on 22-06-2016.
  */
-public class App extends Application implements DependencyGraph {
+public class BBApplication extends Application implements DependencyGraph {
 
     AppComponent appComponent;
     SummaryComponent summaryComponent;
@@ -41,7 +42,11 @@ public class App extends Application implements DependencyGraph {
         Stetho.initializeWithDefaults(this);
 
 
-        startService(new Intent(getApplicationContext(), BackgroundService.class));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(getApplicationContext(), BackgroundService.class));
+        } else {
+            startService(new Intent(getApplicationContext(), BackgroundService.class));
+        }
 
     }
 

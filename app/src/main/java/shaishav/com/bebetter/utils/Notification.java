@@ -1,5 +1,6 @@
 package shaishav.com.bebetter.utils;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
@@ -20,7 +23,10 @@ import shaishav.com.bebetter.R;
  */
 public class Notification {
 
-    public android.app.Notification createNotification(Context context,String usage, String goal){
+    public android.app.Notification createNotification(Context context, String usage, String goal) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerNotificationChannel(context);
+        }
 
         Intent notificationIntent = new Intent(context, MainActivity.class);
 
@@ -39,53 +45,25 @@ public class Notification {
         mContentView.setTextViewText(R.id.notiftext, "Your mobile usage is " + usage + " min. " +
                 "Usage goal : " + goal + " min.");
 
-        android.app.Notification notification = new NotificationCompat.Builder(context)
+        return new NotificationCompat.Builder(context, "be_better")
                 .setSmallIcon(R.drawable.notif)
                 .setCustomContentView(mContentView)
                 .setPriority(android.app.Notification.PRIORITY_MIN)
                 .setCustomBigContentView(mContentView)
                 .setContentIntent(pendingIntent).build();
 
-        return notification;
-
     }
 
-    public void createReminderNotification(Context context,String name){
-        //Create intent for the activity where you enter the lesson
-        Intent resultIntent = new Intent(context, MainActivity.class);
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        context,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void registerNotificationChannel(Context context) {
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        RemoteViews mContentView = new RemoteViews(context.getPackageName(), R.layout.notification);
-        mContentView.setImageViewResource(R.id.notifimage, R.drawable.logo);
-        mContentView.setTextViewText(R.id.notiftitle, "Hi "+name);
-        mContentView.setTextColor(R.id.notiftitle,Color.WHITE);
-        mContentView.setTextColor(R.id.notiftext,Color.WHITE);
-        mContentView.setTextViewText(R.id.notiftext,"What did you learn today?");
-
-        //Create the notification
-        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.notif)
-                .setContent(mContentView)
-                .setCustomBigContentView(mContentView)
-                .setSound(defaultSoundUri)
-                .setAutoCancel(true);
-
-        //Set intent to notification
-        builder.setContentIntent(resultPendingIntent);
-
-        //Notify
-        notificationManager.notify(1,builder.build());
-
+        String channelId = "be_better";
+        CharSequence channelName = "Usage";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+        notificationManager.createNotificationChannel(notificationChannel);
     }
 
     public void updateNotification(Context context,android.app.Notification notification){

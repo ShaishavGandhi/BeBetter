@@ -1,4 +1,4 @@
-package shaishav.com.bebetter.holder
+package shaishav.com.bebetter.viewholder
 
 import android.databinding.DataBindingUtil
 import android.view.View

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.jakewharton.rxbinding2.widget.RxTextView
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.adapter.RecyclerUsageController
 import shaishav.com.bebetter.contracts.SummaryContract
@@ -43,11 +44,12 @@ class SummaryFragment2: Fragment(), SummaryContract {
         initViews()
 
         adapter = RecyclerUsageController(activity.applicationContext)
+        recyclerView.itemAnimator = SlideInUpAnimator()
         recyclerView.setController(adapter)
         return rootView
     }
 
-    fun initViews() {
+    private fun initViews() {
         recyclerView = rootView.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity.applicationContext)
     }
