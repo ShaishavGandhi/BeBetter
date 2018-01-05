@@ -11,7 +11,7 @@ import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.R;
 
 /**
- * Implementation of App Widget functionality.
+ * Implementation of BBApplication Widget functionality.
  */
 public class TimeWidget extends AppWidgetProvider {
 
