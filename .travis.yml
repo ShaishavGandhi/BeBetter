@@ -16,8 +16,8 @@ android:
 jdk:
         - oraclejdk8
 
-script:
-        - ./gradlew :app:assembleDebug
+#script:
+#        - ./gradlew :app:assembleDebug
 before_install:
         - chmod +x gradlew
 notifications:
