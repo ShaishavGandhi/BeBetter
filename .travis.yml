@@ -17,7 +17,7 @@ jdk:
         - oraclejdk8
 
 script:
-        - ./gradlew build
+        - ./gradlew :app:assembleDebug
 before_install:
         - chmod +x gradlew
 notifications:
