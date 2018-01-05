@@ -170,7 +170,6 @@ public class UsageProvider extends ContentProvider{
         post.setId(cursor.getLong(0));
         post.setDate(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_DATE)));
         post.setUsage(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_USAGE)));
-        post.setServer_id(cursor.getString(cursor.getColumnIndex(UsageContract.COLUMN_SERVER_ID)));
 
         return post;
     }

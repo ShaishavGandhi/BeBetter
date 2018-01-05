@@ -2,21 +2,29 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+private String getPropertyOrEmpty(String property) {
+    if (hasProperty(property)) {
+        return project.properties[property]
+    } else {
+        return ""
+    }
+}
+
 
 android {
     signingConfigs {
         prod {
             keyAlias 'shaishav gandhi'
-            keyPassword 'PinkFloyd786'
+            keyPassword getPropertyOrEmpty("bebetter_signing_store_password")
             storeFile file('../androidkeystore.jks')
-            storePassword 'PinkFloyd786'
+            storePassword getPropertyOrEmpty("bebetter_signing_store_password")
         }
     }
-    compileSdkVersion 27
+    compileSdkVersion 26
     defaultConfig {
         applicationId "shaishav.com.bebetter"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -29,9 +37,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.prod
-        }
-        debug {
             signingConfig signingConfigs.prod
         }
     }

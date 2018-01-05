@@ -5,7 +5,7 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Usage
-import shaishav.com.bebetter.holder.UsageTrendViewHolder
+import shaishav.com.bebetter.viewholder.UsageTrendViewHolder
 import shaishav.com.bebetter.utils.Constants
 import java.util.*
 
