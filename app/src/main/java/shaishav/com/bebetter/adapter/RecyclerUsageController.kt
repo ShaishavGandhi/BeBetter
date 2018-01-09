@@ -13,17 +13,17 @@ import shaishav.com.bebetter.models.UsageTrendModel_
  */
 class RecyclerUsageController(val context: Context): EpoxyController() {
 
-    var currentUsage: Long = 0
+    var currentUsage: Long = -1
         set(value) {
             field = value
             requestModelBuild()
         }
-    var dailyUsage: Long = 0
+    var dailyUsage: Long = -1
         set(value) {
             field = value
             requestModelBuild()
         }
-    var averageDailyUsage: Long = 0
+    var averageDailyUsage: Long = -1
         set(value) {
             field = value
             requestModelBuild()
@@ -34,7 +34,7 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
             requestModelBuild()
         }
 
-    var totalPoints: Long = 0
+    var totalPoints: Long = -1
         set(value) {
             field = value
             requestModelBuild()
@@ -64,7 +64,7 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
         val header = context.getString(R.string.current_session)
         val footer = context.getString(R.string.minute)
 
-        if (currentUsage > 0) {
+        if (currentUsage > -1) {
             UsageCardModel_(header, currentUsage, footer)
                     .id("current_usage")
                     .addTo(this)
@@ -75,7 +75,7 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
         val header = context.getString(R.string.daily_usage)
         val footer = context.getString(R.string.minute)
 
-        if (dailyUsage > 0) {
+        if (dailyUsage > -1) {
             UsageCardModel_(header, dailyUsage, footer)
                     .id("daily_usage")
                     .addTo(this)
@@ -86,7 +86,7 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
         val header = context.getString(R.string.average_daily_usage)
         val footer = context.getString(R.string.minute)
 
-        if (averageDailyUsage > 0) {
+        if (averageDailyUsage > -1) {
             UsageCardModel_(header, averageDailyUsage, footer)
                     .id("average_daily_usage")
                     .addTo(this)
@@ -97,7 +97,7 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
         val header = context.getString(R.string.total_usage)
         val footer = context.getString(R.string.minute)
 
-        if (totalUsage > 0) {
+        if (totalUsage > -1) {
             UsageCardModel_(header, totalUsage, footer)
                     .id("total_usage")
                     .addTo(this)
@@ -108,7 +108,7 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
         val header = context.getString(R.string.total_points)
         val footer = context.getString(R.string.points)
 
-        if (totalPoints > 0) {
+        if (totalPoints > -1) {
             UsageCardModel_(header, totalPoints, footer)
                     .id("total_points")
                     .addTo(this)

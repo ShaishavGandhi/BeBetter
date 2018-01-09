@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import shaishav.com.bebetter.data.models.Goal;
 import shaishav.com.bebetter.data.MySQLiteHelper;
-import shaishav.com.bebetter.data.models.Usage;
+import shaishav.com.bebetter.data.models.Goal;
 import shaishav.com.bebetter.data.providers.GoalProvider;
-import shaishav.com.bebetter.data.providers.UsageProvider;
 
 /**
  * Created by Shaishav on 9/5/2016.
@@ -38,7 +36,7 @@ public class GoalSource {
         cursor.moveToFirst();
 
         if(cursor.getCount() > 0) {
-            Goal goal = cursorToPost(cursor);
+            Goal goal = GoalProvider.cursorToGoal(cursor);
             cursor.close();
             return goal;
         }
@@ -66,7 +64,7 @@ public class GoalSource {
         cursor.moveToFirst();
 
         if(cursor.getCount() > 0) {
-            Goal goal = cursorToPost(cursor);
+            Goal goal = GoalProvider.cursorToGoal(cursor);
             cursor.close();
             return goal;
         }
@@ -115,7 +113,7 @@ public class GoalSource {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            Goal goal = cursorToPost(cursor);
+            Goal goal = GoalProvider.cursorToGoal(cursor);
             goals.add(goal);
             cursor.moveToNext();
         }
@@ -123,15 +121,6 @@ public class GoalSource {
         cursor.close();
         return goals;
 
-    }
-
-    private static Goal cursorToPost(Cursor cursor){
-        Goal goal = new Goal();
-        goal.setId(cursor.getLong(0));
-        goal.setDate(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_DATE)));
-        goal.setGoal(cursor.getLong(cursor.getColumnIndex(MySQLiteHelper.COLUMN_GOAL)));
-        goal.setServer_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_SERVER_ID)));
-        return goal;
     }
 
 }

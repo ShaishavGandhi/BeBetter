@@ -36,4 +36,6 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
     }
 
 
+
+
 }
