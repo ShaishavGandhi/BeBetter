@@ -20,7 +20,6 @@ import java.util.Map;
 import shaishav.com.bebetter.data.MySQLiteHelper;
 import shaishav.com.bebetter.data.contracts.GoalContract;
 import shaishav.com.bebetter.data.models.Goal;
-import shaishav.com.bebetter.data.models.Usage;
 import shaishav.com.bebetter.utils.Constants;
 
 /**
@@ -166,13 +165,10 @@ public class GoalProvider extends ContentProvider {
     }
 
     public static Goal cursorToGoal(Cursor cursor){
-        Goal goal = new Goal();
-        goal.setId(cursor.getLong(0));
-        goal.setDate(cursor.getLong(cursor.getColumnIndex(GoalContract.COLUMN_DATE)));
-        goal.setGoal(cursor.getLong(cursor.getColumnIndex(GoalContract.COLUMN_GOAL)));
-        goal.setServer_id(cursor.getString(cursor.getColumnIndex(GoalContract.COLUMN_SERVER_ID)));
-
-        return goal;
+        long id = cursor.getLong(0);
+        long date = cursor.getLong(cursor.getColumnIndex(GoalContract.COLUMN_DATE));
+        long goalValue = cursor.getLong(cursor.getColumnIndex(GoalContract.COLUMN_GOAL));
+        return new Goal(id, date, goalValue);
     }
 
     public static List<Goal> cursorToListGoals(Cursor cursor){

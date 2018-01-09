@@ -7,10 +7,8 @@ import android.database.Cursor;
 import java.util.List;
 
 import shaishav.com.bebetter.data.contracts.PointContract;
-import shaishav.com.bebetter.data.contracts.UsageContract;
 import shaishav.com.bebetter.data.models.Point;
 import shaishav.com.bebetter.data.providers.PointsProvider;
-import shaishav.com.bebetter.data.providers.UsageProvider;
 
 /**
  * Created by shaishavgandhi05 on 11/6/16.

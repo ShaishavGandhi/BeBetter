@@ -10,7 +10,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -166,12 +165,11 @@ public class UsageProvider extends ContentProvider{
     }
 
     public static Usage cursorToUsage(Cursor cursor){
-        Usage post = new Usage();
-        post.setId(cursor.getLong(0));
-        post.setDate(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_DATE)));
-        post.setUsage(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_USAGE)));
+        long id = cursor.getLong(0);
+        long date = cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_DATE));
+        long usage = cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_USAGE));
 
-        return post;
+        return new Usage(id, date, usage);
     }
 
     public static List<Usage> cursorToListUsage(Cursor cursor){

@@ -17,6 +17,9 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences): PreferenceD
                 .asObservable()
                 .map {
                     // TODO: Replace with all the minutes and hours from preferences
+                    if (it == 0L) {
+                        return@map it
+                    }
                     return@map (currentTime - it) / (1000 * 60)
                 }
     }
