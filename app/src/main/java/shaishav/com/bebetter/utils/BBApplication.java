@@ -50,62 +50,6 @@ public class BBApplication extends Application implements DependencyGraph {
 
     }
 
-
-    public void clearApplicationData() {
-
-        File cacheDirectory = getCacheDir();
-        File applicationDirectory = new File(cacheDirectory.getParent());
-        if (applicationDirectory.exists()) {
-
-            String[] fileNames = applicationDirectory.list();
-
-            for (String fileName : fileNames) {
-
-                if (!fileName.equals("lib")) {
-
-                    deleteFile(new File(applicationDirectory, fileName));
-
-                }
-
-            }
-
-        }
-
-        SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES,MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.commit();
-
-    }
-
-    public static boolean deleteFile(File file) {
-
-        boolean deletedAll = true;
-
-        if (file != null) {
-
-            if (file.isDirectory()) {
-
-                String[] children = file.list();
-
-                for (int i = 0; i < children.length; i++) {
-
-                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
-
-                }
-
-            } else {
-
-                deletedAll = file.delete();
-
-            }
-
-        }
-
-        return deletedAll;
-
-    }
-
     @NonNull @Override public SummaryComponent addSummaryComponent(@NotNull SummaryModule module) {
         if (summaryComponent == null) {
             summaryComponent = appComponent.addSummaryComponent(module);

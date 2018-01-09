@@ -18,11 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 import shaishav.com.bebetter.data.MySQLiteHelper;
-import shaishav.com.bebetter.data.contracts.GoalContract;
 import shaishav.com.bebetter.data.contracts.PointContract;
-import shaishav.com.bebetter.data.contracts.UsageContract;
 import shaishav.com.bebetter.data.models.Point;
-import shaishav.com.bebetter.data.models.Usage;
 import shaishav.com.bebetter.utils.Constants;
 
 /**
@@ -168,12 +165,11 @@ public class PointsProvider extends ContentProvider {
     }
 
     public static Point cursorToPoints(Cursor cursor){
-        Point point = new Point();
-        point.setId(cursor.getLong(0));
-        point.setDate(cursor.getLong(cursor.getColumnIndex(PointContract.COLUMN_DATE)));
-        point.setPoints(cursor.getInt(cursor.getColumnIndex(PointContract.COLUMN_POINTS)));
+        long id = cursor.getLong(0);
+        long date = cursor.getLong(cursor.getColumnIndex(PointContract.COLUMN_DATE));
+        int points = cursor.getInt(cursor.getColumnIndex(PointContract.COLUMN_POINTS));
 
-        return point;
+        return new Point(date, id, points);
     }
 
     public static List<Point> cursorToListPoints(Cursor cursor){

@@ -56,7 +56,7 @@ public class UsageSource {
 
 
 
-        Usage post = cursorToPost(cursor);
+        Usage post = UsageProvider.cursorToUsage(cursor);
         cursor.close();
 
         return post;
@@ -150,15 +150,5 @@ public class UsageSource {
         else
             return false;
 
-    }
-
-
-    private Usage cursorToPost(Cursor cursor){
-        Usage post = new Usage();
-        post.setId(cursor.getLong(0));
-        post.setDate(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_DATE)));
-        post.setUsage(cursor.getLong(cursor.getColumnIndex(UsageContract.COLUMN_USAGE)));
-
-        return post;
     }
 }
