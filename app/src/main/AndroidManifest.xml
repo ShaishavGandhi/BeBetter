@@ -30,7 +30,7 @@
         <receiver
             android:enabled="true"
             android:exported="true"
-            android:name=".receiver.BootupReceiver">
+            android:name=".receiver.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -38,7 +38,7 @@
         </receiver>
 
         <service
-            android:name=".service.BackgroundService"
+            android:name=".service.UsageService"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -1,6 +1,7 @@
 package shaishav.com.bebetter.di.modules
 
 import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import shaishav.com.bebetter.di.scopes.ApplicationScope
@@ -13,6 +14,10 @@ import shaishav.com.bebetter.utils.BBApplication
 
     @Provides @ApplicationScope fun getApplication() : Application {
         return app
+    }
+
+    @Provides @ApplicationScope fun getContext(): Context {
+        return app.applicationContext
     }
 
 }

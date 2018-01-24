@@ -1,6 +1,7 @@
 package shaishav.com.bebetter.data.repository
 
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import shaishav.com.bebetter.data.database.UsageDatabaseManager
 import shaishav.com.bebetter.data.models.Usage
@@ -35,7 +36,21 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
         })
     }
 
+    fun insertSession(usage: Usage): Single<Long> {
+        return Single.just(databaseManager.insertSession(usage))
+    }
 
+    fun storePhoneLockedTime(lockTime: Long) {
+        preferenceStore.insertPhoneLockTime(lockTime)
+    }
+
+    fun lastUnlockedTime(): Long {
+        return preferenceStore.lastUnlockTime()
+    }
+
+    fun storeCurrentSession(sessionTime: Long) {
+        preferenceStore.storeSessionTime(sessionTime)
+    }
 
 
 }

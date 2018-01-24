@@ -1,6 +1,5 @@
 package shaishav.com.bebetter.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.fragments.SummaryFragment2;
+import shaishav.com.bebetter.fragments.SummaryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setFirstScreen(){
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container_body,new SummaryFragment2()).commit();
-
+        fragmentManager.beginTransaction().replace(R.id.container_body,new SummaryFragment()).commit();
     }
 
     @Override

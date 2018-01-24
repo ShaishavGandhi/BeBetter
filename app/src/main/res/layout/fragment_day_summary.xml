@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:padding="@dimen/padding_small"
     android:layout_height="match_parent">
@@ -12,114 +11,5 @@
         tools:listitem="@layout/list_item_usage_card"
         android:layout_height="match_parent"/>
 
-    <!--<android.support.v4.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/scrollView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--xmlns:tools="http://schemas.android.com/tools"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical"-->
-            <!--android:padding="8dp"-->
-            <!--tools:context="shaishav.com.bebetter.fragments.SummaryFragment">-->
-
-            <!--<android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--app:cardCornerRadius="2dp"-->
-                <!--app:cardElevation="1dp">-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:padding="5dp">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:paddingBottom="10dp"-->
-                        <!--android:paddingTop="5dp"-->
-                        <!--android:text="Usage Trend"-->
-                        <!--android:textAlignment="center"-->
-                        <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />-->
-
-                    <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="#ccc"-->
-                        <!--android:padding="5dp"></View>-->
-
-
-                    <!--<HorizontalScrollView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="8dp"-->
-                        <!--android:layout_marginTop="8dp">-->
-
-                        <!--<view-->
-                            <!--android:id="@+id/usage_chart_2"-->
-                            <!--class="im.dacer.androidcharts.LineView"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="300dp" />-->
-                    <!--</HorizontalScrollView>-->
-
-                <!--</LinearLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
-
-
-            <!--<android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--app:cardCornerRadius="2dp"-->
-                <!--app:cardElevation="1dp">-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:padding="5dp">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:paddingBottom="10dp"-->
-                        <!--android:paddingTop="5dp"-->
-                        <!--android:text="Points Trend"-->
-                        <!--android:textAlignment="center"-->
-                        <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />-->
-
-                    <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="#ccc"-->
-                        <!--android:padding="5dp"></View>-->
-
-
-                    <!--<HorizontalScrollView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="8dp"-->
-                        <!--android:layout_marginTop="8dp">-->
-
-                        <!--<view-->
-                            <!--android:id="@+id/pointsChart"-->
-                            <!--class="im.dacer.androidcharts.LineView"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="300dp" />-->
-                    <!--</HorizontalScrollView>-->
-
-                <!--</LinearLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
-
-
-        <!--</LinearLayout>-->
-    <!--</android.support.v4.widget.NestedScrollView>-->
-</android.support.v4.widget.SwipeRefreshLayout>
+</android.support.constraint.ConstraintLayout>

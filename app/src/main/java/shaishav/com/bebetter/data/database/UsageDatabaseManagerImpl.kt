@@ -1,6 +1,9 @@
 package shaishav.com.bebetter.data.database
 
-import com.squareup.sqlbrite3.BriteContentResolver
+import android.content.ContentValues
+import android.support.annotation.WorkerThread
+import com.squareup.sqlbrite2.BriteContentResolver
+import com.squareup.sqlbrite2.BriteDatabase
 import io.reactivex.Observable
 import shaishav.com.bebetter.data.contracts.UsageContract
 import shaishav.com.bebetter.data.models.Usage
@@ -9,7 +12,7 @@ import shaishav.com.bebetter.data.providers.UsageProvider
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class UsageDatabaseManagerImpl(val contentResolver: BriteContentResolver): UsageDatabaseManager {
+class UsageDatabaseManagerImpl(val contentResolver: BriteContentResolver, val database: BriteDatabase): UsageDatabaseManager {
     override fun averageDailyUsage(): Observable<Long> {
         return contentResolver.createQuery(UsageProvider.CONTENT_URI,
                 arrayOf("AVG(" + UsageContract.COLUMN_USAGE + ") "), null, null, null, false)
@@ -39,5 +42,13 @@ class UsageDatabaseManagerImpl(val contentResolver: BriteContentResolver): Usage
                     // TODO : Replace with preference instead of static 1000 * 60
                     return@mapToOne it.getInt(0).toLong() / (1000 * 60)
                 }
+    }
+
+    @WorkerThread override fun insertSession(usage: Usage): Long {
+        val contentValues = ContentValues()
+        contentValues.put(UsageContract.COLUMN_DATE, usage.date)
+        contentValues.put(UsageContract.COLUMN_USAGE, usage.usage)
+
+        return database.insert(UsageContract.TABLE_USAGE, contentValues)
     }
 }

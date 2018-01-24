@@ -3,13 +3,16 @@ package shaishav.com.bebetter.di.modules
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.database.sqlite.SQLiteOpenHelper
 import android.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import com.squareup.sqlbrite3.BriteContentResolver
-import com.squareup.sqlbrite3.SqlBrite
+import com.squareup.sqlbrite2.BriteContentResolver
+import com.squareup.sqlbrite2.BriteDatabase
+import com.squareup.sqlbrite2.SqlBrite
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
+import shaishav.com.bebetter.data.MySQLiteHelper
 import shaishav.com.bebetter.data.database.GoalDatabaseManager
 import shaishav.com.bebetter.data.database.GoalDatabaseManagerImpl
 import shaishav.com.bebetter.data.database.UsageDatabaseManager
@@ -35,6 +38,14 @@ class DatabaseModule {
         return sqlBrite.wrapContentProvider(application.contentResolver, scheduler)
     }
 
+    @Provides @ApplicationScope fun providesBriteDatabase(sqlBrite: SqlBrite, sqLiteOpenHelper: SQLiteOpenHelper, scheduler: Scheduler): BriteDatabase {
+        return sqlBrite.wrapDatabaseHelper(sqLiteOpenHelper, scheduler)
+    }
+
+    @Provides @ApplicationScope fun providesSqliteOpenHelper(context: Context): SQLiteOpenHelper {
+        return MySQLiteHelper(context)
+    }
+
     @Provides @ApplicationScope fun providesSharedPreferences(application: Application): SharedPreferences {
         return application.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
     }
@@ -47,8 +58,8 @@ class DatabaseModule {
         return PreferenceDataStoreImpl(preferences)
     }
 
-    @Provides @ApplicationScope fun providesBlogDatabaseManager(contentResolver: BriteContentResolver): UsageDatabaseManager {
-        return UsageDatabaseManagerImpl(contentResolver)
+    @Provides @ApplicationScope fun providesBlogDatabaseManager(contentResolver: BriteContentResolver, database: BriteDatabase): UsageDatabaseManager {
+        return UsageDatabaseManagerImpl(contentResolver, database)
     }
 
     @Provides @ApplicationScope fun providesGoalRepository(databaseManager: GoalDatabaseManager): GoalRepository {

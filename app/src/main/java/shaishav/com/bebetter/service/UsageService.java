@@ -10,11 +10,12 @@ import android.support.annotation.Nullable;
 
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.receiver.PhoneUnlockedReceiver;
+import shaishav.com.bebetter.utils.NotificationHelper;
 
 /**
  * Created by Shaishav on 26-06-2016.
  */
-public class BackgroundService extends Service {
+public class UsageService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -25,6 +26,7 @@ public class BackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        // Register for locks and unlocks
         final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
@@ -36,11 +38,11 @@ public class BackgroundService extends Service {
         long usage = preferenceSource.getSessionTime()/(preferenceSource.getUsageUnit());
         long goal = preferenceSource.getGoal()/(preferenceSource.getUsageUnit());
 
-        shaishav.com.bebetter.utils.Notification notif = new shaishav.com.bebetter.utils.Notification();
-        Notification notification = notif.createNotification(this,String.valueOf(usage),String.valueOf(goal));
+        // TODO: Inject this
+        NotificationHelper notif = new NotificationHelper(getApplication());
+        Notification notification = notif.createNotification(usage, goal);
 
         startForeground(1337, notification);
-
 
     }
 

@@ -1,6 +1,6 @@
 package shaishav.com.bebetter.data.database
 
-import com.squareup.sqlbrite3.BriteContentResolver
+import com.squareup.sqlbrite2.BriteContentResolver
 import io.reactivex.Observable
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.providers.PointsProvider

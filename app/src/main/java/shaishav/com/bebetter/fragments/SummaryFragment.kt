@@ -3,12 +3,11 @@ package shaishav.com.bebetter.fragments
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
-import com.jakewharton.rxbinding2.widget.RxTextView
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.adapter.RecyclerUsageController
@@ -23,7 +22,7 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class SummaryFragment2: Fragment(), SummaryContract {
+class SummaryFragment : Fragment(), SummaryContract {
 
     lateinit var rootView: View
     lateinit var recyclerView: EpoxyRecyclerView
