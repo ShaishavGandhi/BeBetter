@@ -9,7 +9,7 @@ import android.widget.RemoteViews;
 
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.utils.Notification;
+import shaishav.com.bebetter.utils.NotificationHelper;
 import shaishav.com.bebetter.utils.TimeWidget;
 
 public class PhoneUnlockedReceiver extends BroadcastReceiver {
@@ -24,10 +24,8 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
             preferenceSource.savePhoneLockTime();
 
-            Notification notif = new Notification();
-            notif.updateNotification(context,
-                    notif.createNotification(context,String.valueOf(preferenceSource.getSessionTime()/(preferenceSource.getUsageUnit())),
-                            String.valueOf(preferenceSource.getGoal()/preferenceSource.getUsageUnit())));
+            NotificationHelper notif = new NotificationHelper(context.getApplicationContext());
+            notif.updateNotification(notif.createNotification(preferenceSource.getSessionTime(), preferenceSource.getGoal()));
 
 
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
