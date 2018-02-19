@@ -11,30 +11,30 @@ class UsageWorkflow(val usageRepository: UsageRepository) {
 
 
     fun phoneLocked(lockTime: Long) {
-        usageRepository.storePhoneLockedTime(lockTime)
-
-        val unlockTime = usageRepository.lastUnlockedTime()
-
-        if (unlockTime == 0L) {
-            return
-        } else if (hasDayChanged(lockTime, unlockTime)){
-            val previousDay = Calendar.getInstance()
-            previousDay.timeInMillis = unlockTime
-            previousDay.set(Calendar.HOUR_OF_DAY, 23)
-            previousDay.set(Calendar.MINUTE, 59)
-
-            var currentSessionTime = previousDay.timeInMillis - unlockTime
-            var session = usageRepository
-            usageRepository.storeDailySession(previousDay.timeInMillis, )
-
-        } else {
-            // Still the same day. Just store the session time
-            var sessionTime = lockTime - unlockTime
-            // TODO: Get previous session
-            val previousSession = 0L
-            sessionTime += previousSession
-            usageRepository.storeCurrentSession(sessionTime)
-        }
+//        usageRepository.storePhoneLockedTime(lockTime)
+//
+//        val unlockTime = usageRepository.lastUnlockedTime()
+//
+//        if (unlockTime == 0L) {
+//            return
+//        } else if (hasDayChanged(lockTime, unlockTime)){
+//            val previousDay = Calendar.getInstance()
+//            previousDay.timeInMillis = unlockTime
+//            previousDay.set(Calendar.HOUR_OF_DAY, 23)
+//            previousDay.set(Calendar.MINUTE, 59)
+//
+//            var currentSessionTime = previousDay.timeInMillis - unlockTime
+//            var session = usageRepository
+//            usageRepository.storeDailySession(previousDay.timeInMillis, )
+//
+//        } else {
+//            // Still the same day. Just store the session time
+//            var sessionTime = lockTime - unlockTime
+//            // TODO: Get previous session
+//            val previousSession = 0L
+//            sessionTime += previousSession
+//            usageRepository.storeCurrentSession(sessionTime)
+//        }
 
     }
 
