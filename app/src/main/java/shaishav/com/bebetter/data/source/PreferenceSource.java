@@ -188,55 +188,12 @@ public class PreferenceSource {
         return preferences.getLong(Constants.SESSION, 0);
     }
 
-    public void setBackupPreference(int hourOfDay, int minute){
-
-        editor.putInt(Constants.REMINDER_HOUR,hourOfDay);
-        editor.putInt(Constants.REMINDER_MINUTE,minute);
-        editor.commit();
-    }
-
-    public String getReminderTime(){
-        int hour = preferences.getInt(Constants.REMINDER_HOUR,0);
-        int minute = preferences.getInt(Constants.REMINDER_MINUTE,0);
-        return Constants.getTimeInAMPM(hour,minute);
-    }
-
-    public void saveUserData(String name, String email, String display_pic){
-        editor.putString(Constants.FULL_NAME,name);
-        editor.putString(Constants.EMAIL,email);
-        editor.putString(Constants.DISPLAY_PIC,display_pic);
-        editor.commit();
-    }
-
     public String getName(){
         return preferences.getString(Constants.FULL_NAME,"");
     }
 
     public void setName(String name){
         editor.putString(Constants.FULL_NAME, name);
-    }
-
-    public String getEmail(){
-        return preferences.getString(Constants.EMAIL,"");
-    }
-
-    public void saveReminderTime(int hour, int minute){
-        editor.putInt(Constants.REMINDER_HOUR, hour);
-        editor.putInt(Constants.REMINDER_MINUTE,minute);
-        editor.commit();
-    }
-
-    public boolean isBackupEnabled(){
-        return preferences.getBoolean(Constants.PREFERENCE_BACKUP,true);
-    }
-
-    public void setIsLeaderboardEnabled(boolean isLeaderboardEnabled){
-        editor.putBoolean(Constants.PREFERENCE_BACKUP, isLeaderboardEnabled);
-        editor.commit();
-    }
-
-    public String getGcm(){
-        return preferences.getString(Constants.GCM_TOKEN,"");
     }
 
     public long getGoal(){
