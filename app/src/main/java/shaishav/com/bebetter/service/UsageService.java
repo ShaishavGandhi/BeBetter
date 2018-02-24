@@ -54,8 +54,6 @@ public class UsageService extends Service {
 
     @Override
     public void onDestroy(){
-
         stopForeground(true);
-
     }
 }
