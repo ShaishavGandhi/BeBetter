@@ -47,15 +47,19 @@ class DatabaseModule {
     }
 
     @Provides @ApplicationScope fun providesSharedPreferences(application: Application): SharedPreferences {
-        return application.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+        return application.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
     }
 
     @Provides @ApplicationScope fun providesRxPreferences(preferences: SharedPreferences): RxSharedPreferences {
         return RxSharedPreferences.create(preferences)
     }
 
-    @Provides @ApplicationScope fun providesPreferenceDataStore(preferences: RxSharedPreferences): PreferenceDataStore {
-        return PreferenceDataStoreImpl(preferences)
+    @Provides @ApplicationScope fun providesPreferenceDataStore(preferences: RxSharedPreferences, editor: SharedPreferences.Editor): PreferenceDataStore {
+        return PreferenceDataStoreImpl(preferences, editor)
+    }
+
+    @Provides @ApplicationScope fun providesEditor(preferences: SharedPreferences): SharedPreferences.Editor {
+        return preferences.edit()
     }
 
     @Provides @ApplicationScope fun providesBlogDatabaseManager(contentResolver: BriteContentResolver, database: BriteDatabase): UsageDatabaseManager {

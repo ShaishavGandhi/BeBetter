@@ -145,7 +145,8 @@ public class PreferenceSource {
         ContentValues mValues = new ContentValues();
         mValues.put(PointContract.COLUMN_DATE, usageYesterday.getDate());
         mValues.put(PointContract.COLUMN_POINTS, (long) points);
-        PointSource.createPoint(context, mValues);
+        // TODO: Create points and store them
+//        PointSource.createPoint(context, mValues);
 
     }
 
