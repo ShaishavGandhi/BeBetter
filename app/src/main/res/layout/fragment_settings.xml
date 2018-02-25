@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="shaishav.com.bebetter.fragments.Settings">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blcontrollerment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
