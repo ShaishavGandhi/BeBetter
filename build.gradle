@@ -33,6 +33,8 @@ ext {
     rxPreferences = "com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3"
     rxBinding = "com.jakewharton.rxbinding2:rxbinding:2.0.0"
 
+    conductor = "com.bluelinelabs:conductor:2.1.4"
+
     epoxyVersion = "2.8.0"
     epoxy = "com.airbnb.android:epoxy:$epoxyVersion"
     epoxyCompiler = "com.airbnb.android:epoxy-processor:2.8.0"
