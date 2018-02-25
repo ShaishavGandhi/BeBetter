@@ -8,5 +8,6 @@ import shaishav.com.bebetter.data.models.Goal
  */
 interface GoalDatabaseManager {
 
-    fun goals(): Observable<List<Goal>>
+  fun goals(): Observable<List<Goal>>
+  fun currentGoal(): Observable<Goal>
 }
