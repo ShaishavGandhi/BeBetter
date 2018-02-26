@@ -6,11 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+
+import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
 
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.fragments.SummaryFragment;
+import shaishav.com.bebetter.fragments.SummaryController;
 
 public class MainActivity extends AppCompatActivity {
+
+
+  private Router router;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -19,19 +27,17 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    //Set first screen
-    setFirstScreen();
+    ViewGroup container = findViewById(R.id.container_body);
 
+    router = Conductor.attachRouter(this, container, savedInstanceState);
+    if (!router.hasRootController()) {
+      router.setRoot(RouterTransaction.with(new SummaryController()));
+    }
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-  }
-
-  public void setFirstScreen() {
-    FragmentManager fragmentManager = getFragmentManager();
-    fragmentManager.beginTransaction().replace(R.id.container_body, new SummaryFragment()).commit();
   }
 
   @Override
