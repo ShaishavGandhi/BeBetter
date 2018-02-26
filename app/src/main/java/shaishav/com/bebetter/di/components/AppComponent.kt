@@ -11,9 +11,11 @@ import shaishav.com.bebetter.di.scopes.ApplicationScope
 /**
  * Created by shaishav.gandhi on 12/17/17.
  */
-@ApplicationScope @Component(modules = [(AppModule::class), (DatabaseModule::class), (UtilsModule::class)]) interface AppComponent {
+@ApplicationScope @Component(modules = [(AppModule::class), (DatabaseModule::class), (UtilsModule::class)])
+interface AppComponent {
 
-    fun getApplication() : Application
-    fun addSummaryComponent(module: SummaryModule): SummaryComponent
+  fun getApplication(): Application
+  fun addSummaryComponent(module: SummaryModule): SummaryComponent
+  fun addServiceComponent(): ServiceComponent
 
 }

@@ -226,15 +226,6 @@ public class PreferenceSource {
         }
     }
 
-    public void setIsForegroundServiceRunning(boolean isRunning){
-        editor.putBoolean(Constants.PREFERENCE_FOREGROUND,isRunning);
-        editor.commit();
-    }
-
-    public boolean getIsForegroundServiceRunning(){
-        return preferences.getBoolean(Constants.PREFERENCE_FOREGROUND,true);
-    }
-
     // Helper functions start
     private boolean dayChanged(long lock_time,long unlock_time){
 

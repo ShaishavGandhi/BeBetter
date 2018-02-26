@@ -7,13 +7,59 @@ import io.reactivex.Observable
  */
 interface PreferenceDataStore {
 
-    fun currentSession(currentTime: Long): Observable<Long>
-    fun dailyUsageSoFar(): Observable<Long>
+  /**
+   * Get currently running session time.
+   *
+   * @param currentTime
+   * @return Observable<Long>
+   */
+  fun currentSession(currentTime: Long): Observable<Long>
 
-    fun insertPhoneLockTime(lockTime: Long)
-    fun insertPhoneUnlockTime(unlcokTime: Long)
+  /**
+   * Get the current daily usage including the
+   * current session time.
+   *
+   * @return Observable<Long>
+   */
+  fun dailyUsageSoFar(): Observable<Long>
 
-    fun lastUnlockTime(): Long
-    fun lastLockTime(): Observable<Long>
-    fun storeSessionTime(sessionTime: Long)
+  /**
+   * Store phone lock time.
+   * @param lockTime
+   */
+  fun insertPhoneLockTime(lockTime: Long)
+
+  /**
+   * Store the phone unlock time
+   * @param unlockTime
+   */
+  fun insertPhoneUnlockTime(unlockTime: Long)
+
+  /**
+   * Get the last unlock time
+   * @return The last unlock time (long)
+   */
+  fun lastUnlockTime(): Long
+
+  /**
+   * Get the last lock time
+   *
+   * @return Observable<Long>
+   */
+  fun lastLockTime(): Observable<Long>
+
+  /**
+   * Store the current session time
+   *
+   * @param sessionTime to be stored
+   */
+  fun storeCurrentSessionTime(sessionTime: Long)
+
+  /**
+   * Get the usage time for the current day.
+   * Returns a Long instead of Observable. If you
+   * want a stream of changes to the daily session,
+   * then see @see dailyUsageSoFar()
+   */
+  fun rawDailyUsage(): Long
 }

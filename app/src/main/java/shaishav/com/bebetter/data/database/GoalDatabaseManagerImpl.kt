@@ -1,16 +1,20 @@
 package shaishav.com.bebetter.data.database
 
 import com.squareup.sqlbrite2.BriteContentResolver
+import com.squareup.sqlbrite2.BriteDatabase
+import io.reactivex.Completable
 import io.reactivex.Observable
+import shaishav.com.bebetter.data.contracts.GoalContract
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.providers.GoalProvider
+import shaishav.com.bebetter.di.scopes.ApplicationScope
 import java.util.*
 import javax.inject.Inject
 
 /**
  * Created by shaishav.gandhi on 12/25/17.
  */
-class GoalDatabaseManagerImpl @Inject constructor(val contentResolver: BriteContentResolver) : GoalDatabaseManager {
+@ApplicationScope class GoalDatabaseManagerImpl @Inject constructor(val contentResolver: BriteContentResolver, val database: BriteDatabase) : GoalDatabaseManager {
 
   override fun goals(): Observable<List<Goal>> {
     return contentResolver.createQuery(GoalProvider.CONTENT_URI, null, null, null,
@@ -34,13 +38,19 @@ class GoalDatabaseManagerImpl @Inject constructor(val contentResolver: BriteCont
     val whereClause = arrayOf(low.toString(), high.toString())
     return contentResolver
             .createQuery(GoalProvider.CONTENT_URI,
-            null,
-            GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
-             whereClause,
-             GoalProvider.QUERY_SORT_ORDER,
-             false)
+                    null,
+                    GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
+                    whereClause,
+                    GoalProvider.QUERY_SORT_ORDER,
+                    false)
             .mapToOne {
               return@mapToOne GoalProvider.cursorToGoal(it)
             }
+  }
+
+  override fun saveGoal(goal: Goal): Completable {
+    return Completable.fromCallable {
+      return@fromCallable database.insert(GoalContract.TABLE_GOAL, goal.toContentValues())
+    }
   }
 }
