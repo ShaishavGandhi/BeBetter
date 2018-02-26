@@ -7,26 +7,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import shaishav.com.bebetter.data.repository.GoalRepository;
 import shaishav.com.bebetter.data.repository.UsageRepository;
 import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.R;
+import shaishav.com.bebetter.utils.BBApplication;
 import shaishav.com.bebetter.utils.NotificationHelper;
 import shaishav.com.bebetter.utils.TimeWidget;
+import shaishav.com.bebetter.workflow.UsageWorkflow;
 
 public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
+  @Inject UsageWorkflow workflow;
+
   @Override
   public void onReceive(Context context, Intent intent) {
+    ((BBApplication) context.getApplicationContext())
+            .addServiceComponent()
+            .inject(this);
 
     PreferenceSource preferenceSource = PreferenceSource.getInstance(context);
 
 
     if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
-      preferenceSource.savePhoneLockTime();
+      workflow.phoneLocked(new Date().getTime());
 
       NotificationHelper notif = new NotificationHelper(context.getApplicationContext());
       notif.updateNotification(notif.createNotification(preferenceSource.getSessionTime() / (preferenceSource.getUsageUnit()), preferenceSource.getGoal() / (preferenceSource.getUsageUnit())));
@@ -34,7 +43,7 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
     } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 
-      preferenceSource.savePhoneUnlockTime();
+      workflow.phoneUnlocked(new Date().getTime());
 
       //Update screen widget if present
 
