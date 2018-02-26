@@ -68,7 +68,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // Store phone unlock time
         usageRepository.storePhoneUnlockedTime(lastUnlockTime)
         // Store the session
-        usageRepository.storeCurrentSession(currentSessionTime)
+        usageRepository.storeCurrentDayUsage(currentSessionTime)
 
 
       }
@@ -79,7 +79,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         val previousSession = usageRepository.rawDailyUsage()
         sessionTime += previousSession
         // Store in db
-        usageRepository.storeCurrentSession(sessionTime)
+        usageRepository.storeCurrentDayUsage(sessionTime)
       }
     }
 
@@ -129,7 +129,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       goalRepository.cloneGoal(unlockTime)
 
       // Reset session data to zero
-      usageRepository.storeCurrentSession(0)
+      usageRepository.storeCurrentDayUsage(0)
     }
 
     // Store the unlock time
