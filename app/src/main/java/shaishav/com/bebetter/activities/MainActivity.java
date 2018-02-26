@@ -17,10 +17,10 @@ import shaishav.com.bebetter.fragments.SummaryController;
 
 public class MainActivity extends AppCompatActivity {
 
+
   private Router router;
 
   @Override
-
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);

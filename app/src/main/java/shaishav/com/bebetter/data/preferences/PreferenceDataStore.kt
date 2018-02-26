@@ -49,11 +49,11 @@ interface PreferenceDataStore {
   fun lastLockTime(): Observable<Long>
 
   /**
-   * Store the current session time
+   * Store the current day's usage
    *
    * @param sessionTime to be stored
    */
-  fun storeCurrentSessionTime(sessionTime: Long)
+  fun storeCurrentDayUsage(sessionTime: Long)
 
   /**
    * Get the usage time for the current day.

@@ -59,8 +59,8 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
     return preferenceStore.lastUnlockTime()
   }
 
-  fun storeCurrentSession(sessionTime: Long) {
-    preferenceStore.storeCurrentSessionTime(sessionTime)
+  fun storeCurrentDayUsage(sessionTime: Long) {
+    preferenceStore.storeCurrentDayUsage(sessionTime)
   }
 
 
