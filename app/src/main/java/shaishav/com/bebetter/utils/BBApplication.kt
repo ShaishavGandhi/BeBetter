@@ -8,6 +8,7 @@ import shaishav.com.bebetter.BuildConfig
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.components.AppComponent
 import shaishav.com.bebetter.di.components.DaggerAppComponent
+import shaishav.com.bebetter.di.components.ServiceComponent
 import shaishav.com.bebetter.di.components.SummaryComponent
 import shaishav.com.bebetter.di.modules.AppModule
 import shaishav.com.bebetter.di.modules.SummaryModule
@@ -19,39 +20,47 @@ import timber.log.Timber
  */
 class BBApplication : Application(), DependencyGraph {
 
-    lateinit var appComponent: AppComponent
-    var summaryComponent: SummaryComponent? = null
+  lateinit var appComponent: AppComponent
+  var summaryComponent: SummaryComponent? = null
+  var serviceComponent: ServiceComponent? = null
 
-    override fun onCreate() {
-        super.onCreate()
-        appComponent = DaggerAppComponent
-                .builder()
-                .appModule(AppModule(this))
-                .build()
+  override fun onCreate() {
+    super.onCreate()
+    appComponent = DaggerAppComponent
+            .builder()
+            .appModule(AppModule(this))
+            .build()
 
-        Stetho.initializeWithDefaults(this)
+    Stetho.initializeWithDefaults(this)
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(Intent(applicationContext, UsageService::class.java))
-        } else {
-            startService(Intent(applicationContext, UsageService::class.java))
-        }
-
+    if (BuildConfig.DEBUG) {
+      Timber.plant(Timber.DebugTree())
     }
 
-    override fun addSummaryComponent(module: SummaryModule): SummaryComponent {
-        if (summaryComponent == null) {
-            summaryComponent = appComponent.addSummaryComponent(module)
-        }
-        return summaryComponent as SummaryComponent
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      startForegroundService(Intent(applicationContext, UsageService::class.java))
+    } else {
+      startService(Intent(applicationContext, UsageService::class.java))
     }
 
-    override fun removeSummaryComponent() {
-        summaryComponent = null
+  }
+
+  override fun addSummaryComponent(module: SummaryModule): SummaryComponent {
+    if (summaryComponent == null) {
+      summaryComponent = appComponent.addSummaryComponent(module)
     }
+    return summaryComponent as SummaryComponent
+  }
+
+  override fun removeSummaryComponent() {
+    summaryComponent = null
+  }
+
+  override fun addServiceComponent(): ServiceComponent {
+    if (serviceComponent == null) {
+      serviceComponent = appComponent.addServiceComponent()
+    }
+    return serviceComponent as ServiceComponent
+  }
 }

@@ -62,15 +62,12 @@ class DatabaseModule {
         return preferences.edit()
     }
 
-    @Provides @ApplicationScope fun providesBlogDatabaseManager(contentResolver: BriteContentResolver, database: BriteDatabase): UsageDatabaseManager {
-        return UsageDatabaseManagerImpl(contentResolver, database)
+    @Provides fun providesUsageDatabaseManager(database: UsageDatabaseManagerImpl): UsageDatabaseManager {
+        return database
     }
 
-    @Provides @ApplicationScope fun providesGoalRepository(databaseManager: GoalDatabaseManager): GoalRepository {
-        return GoalRepository(databaseManager)
-    }
 
-    @Provides @ApplicationScope fun providesGoalDatabaseManager(contentResolver: BriteContentResolver): GoalDatabaseManager {
-        return GoalDatabaseManagerImpl(contentResolver)
+    @Provides fun providesGoalDatabaseManager(goalDatabaseManager: GoalDatabaseManagerImpl): GoalDatabaseManager {
+        return goalDatabaseManager
     }
 }

@@ -1,5 +1,6 @@
 package shaishav.com.bebetter.di
 
+import shaishav.com.bebetter.di.components.ServiceComponent
 import shaishav.com.bebetter.di.components.SummaryComponent
 import shaishav.com.bebetter.di.modules.SummaryModule
 
@@ -8,6 +9,9 @@ import shaishav.com.bebetter.di.modules.SummaryModule
  */
 interface DependencyGraph {
 
-    fun addSummaryComponent(module: SummaryModule): SummaryComponent
-    fun removeSummaryComponent()
+  fun addSummaryComponent(module: SummaryModule): SummaryComponent
+  fun removeSummaryComponent()
+
+  fun addServiceComponent(): ServiceComponent
+
 }
