@@ -45,16 +45,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".utils.TimeWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/time_widget_info" />
-        </receiver>
-
         <provider
             android:name=".data.providers.GoalProvider"
             android:authorities="shaishav.com.bebetter.goal"
