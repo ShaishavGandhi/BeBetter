@@ -1,28 +1,27 @@
 package shaishav.com.bebetter.receiver;
 
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.RemoteViews;
 
 import java.util.Date;
 
 import javax.inject.Inject;
 
-import shaishav.com.bebetter.data.repository.GoalRepository;
-import shaishav.com.bebetter.data.repository.UsageRepository;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import shaishav.com.bebetter.data.models.Stat;
+import shaishav.com.bebetter.data.repository.StatsRepository;
 import shaishav.com.bebetter.data.source.PreferenceSource;
-import shaishav.com.bebetter.R;
 import shaishav.com.bebetter.utils.BBApplication;
 import shaishav.com.bebetter.utils.NotificationHelper;
-import shaishav.com.bebetter.utils.TimeWidget;
 import shaishav.com.bebetter.workflow.UsageWorkflow;
 
 public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
   @Inject UsageWorkflow workflow;
+  @Inject NotificationHelper notificationHelper;
+  @Inject StatsRepository statsRepository;
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -30,39 +29,28 @@ public class PhoneUnlockedReceiver extends BroadcastReceiver {
             .addServiceComponent()
             .inject(this);
 
-    PreferenceSource preferenceSource = PreferenceSource.getInstance(context);
-
-
     if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
       workflow.phoneLocked(new Date().getTime());
+      statsRepository.getStat().subscribeOn(Schedulers.io()).subscribeWith(new DisposableObserver<Stat>() {
+        @Override
+        public void onNext(Stat stat) {
+          notificationHelper.updateNotification(notificationHelper.createNotification(stat.getUsage(), stat.getGoal()));
+        }
 
-      NotificationHelper notif = new NotificationHelper(context.getApplicationContext());
-      notif.updateNotification(notif.createNotification(preferenceSource.getSessionTime() / (preferenceSource.getUsageUnit()), preferenceSource.getGoal() / (preferenceSource.getUsageUnit())));
+        @Override
+        public void onError(Throwable e) {
 
+        }
 
+        @Override
+        public void onComplete() {
+
+        }
+      });
     } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-
       workflow.phoneUnlocked(new Date().getTime());
-
-      //Update screen widget if present
-
-      RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_widget);
-      ComponentName thisWidget = new ComponentName(context, TimeWidget.class);
-      AppWidgetManager.getInstance(context).updateAppWidget(thisWidget, views);
-
-      updateWidget(context);
-
     }
   }
 
-  void updateWidget(Context context) {
-    Intent intent = new Intent(context, TimeWidget.class);
-    intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-    // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-    // since it seems the onUpdate() is only fired on that:
-    int ids[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, TimeWidget.class));
-    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-    context.sendBroadcast(intent);
-  }
 }
