@@ -10,11 +10,12 @@ import android.support.v4.app.NotificationCompat
 import android.widget.RemoteViews
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
+import javax.inject.Inject
 
 /**
  * Created by shaishav.gandhi on 1/9/18.
  */
-class NotificationHelper(val context: Context) {
+class NotificationHelper @Inject constructor(val context: Context) {
 
   companion object {
     val channelId = "be_better"

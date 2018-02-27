@@ -29,7 +29,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager): EpoxyContro
             field = value
             requestModelBuild()
         }
-    var totalUsage: Long = 0
+    var totalUsage: Long = -1
         set(value) {
             field = value
             requestModelBuild()
@@ -67,7 +67,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager): EpoxyContro
 
         if (currentUsage > -1) {
             UsageCardModel_(header, currentUsage, footer)
-                    .id("current_usage")
+                    .id("current_usage_$currentUsage")
                     .addTo(this)
         }
     }
@@ -78,7 +78,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager): EpoxyContro
 
         if (dailyUsage > -1) {
             UsageCardModel_(header, dailyUsage, footer)
-                    .id("daily_usage")
+                    .id("daily_usage_$dailyUsage")
                     .addTo(this)
         }
     }
@@ -89,7 +89,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager): EpoxyContro
 
         if (averageDailyUsage > -1) {
             UsageCardModel_(header, averageDailyUsage, footer)
-                    .id("average_daily_usage")
+                    .id("average_daily_usage_$averageDailyUsage")
                     .addTo(this)
         }
     }
@@ -100,7 +100,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager): EpoxyContro
 
         if (totalUsage > -1) {
             UsageCardModel_(header, totalUsage, footer)
-                    .id("total_usage")
+                    .id("total_usage_$totalUsage")
                     .addTo(this)
         }
     }
