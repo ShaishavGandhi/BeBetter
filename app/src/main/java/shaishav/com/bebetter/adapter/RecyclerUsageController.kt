@@ -7,11 +7,12 @@ import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.models.UsageCardModel_
 import shaishav.com.bebetter.models.UsageTrendModel_
+import shaishav.com.bebetter.utils.ResourceManager
 
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class RecyclerUsageController(val context: Context): EpoxyController() {
+class RecyclerUsageController(val resourceManager: ResourceManager): EpoxyController() {
 
     var currentUsage: Long = -1
         set(value) {
@@ -28,7 +29,7 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
             field = value
             requestModelBuild()
         }
-    var totalUsage: Long = 0
+    var totalUsage: Long = -1
         set(value) {
             field = value
             requestModelBuild()
@@ -61,52 +62,52 @@ class RecyclerUsageController(val context: Context): EpoxyController() {
     }
 
     private fun addCurrentSessionModel() {
-        val header = context.getString(R.string.current_session)
-        val footer = context.getString(R.string.minute)
+        val header = resourceManager.getString(R.string.current_session)
+        val footer = resourceManager.getString(R.string.minute)
 
         if (currentUsage > -1) {
             UsageCardModel_(header, currentUsage, footer)
-                    .id("current_usage")
+                    .id("current_usage_$currentUsage")
                     .addTo(this)
         }
     }
 
     private fun addDailyUsage() {
-        val header = context.getString(R.string.daily_usage)
-        val footer = context.getString(R.string.minute)
+        val header = resourceManager.getString(R.string.daily_usage)
+        val footer = resourceManager.getString(R.string.minute)
 
         if (dailyUsage > -1) {
             UsageCardModel_(header, dailyUsage, footer)
-                    .id("daily_usage")
+                    .id("daily_usage_$dailyUsage")
                     .addTo(this)
         }
     }
 
     private fun addAverageDailyUsage() {
-        val header = context.getString(R.string.average_daily_usage)
-        val footer = context.getString(R.string.minute)
+        val header = resourceManager.getString(R.string.average_daily_usage)
+        val footer = resourceManager.getString(R.string.minute)
 
         if (averageDailyUsage > -1) {
             UsageCardModel_(header, averageDailyUsage, footer)
-                    .id("average_daily_usage")
+                    .id("average_daily_usage_$averageDailyUsage")
                     .addTo(this)
         }
     }
 
     private fun addTotalUsage() {
-        val header = context.getString(R.string.total_usage)
-        val footer = context.getString(R.string.minute)
+        val header = resourceManager.getString(R.string.total_usage)
+        val footer = resourceManager.getString(R.string.minute)
 
         if (totalUsage > -1) {
             UsageCardModel_(header, totalUsage, footer)
-                    .id("total_usage")
+                    .id("total_usage_$totalUsage")
                     .addTo(this)
         }
     }
 
     private fun addTotalPoints() {
-        val header = context.getString(R.string.total_points)
-        val footer = context.getString(R.string.points)
+        val header = resourceManager.getString(R.string.total_points)
+        val footer = resourceManager.getString(R.string.points)
 
         if (totalPoints > -1) {
             UsageCardModel_(header, totalPoints, footer)
