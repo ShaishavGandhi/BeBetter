@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import shaishav.com.bebetter.data.MySQLiteHelper;
 import shaishav.com.bebetter.data.models.Goal;
 import shaishav.com.bebetter.data.providers.GoalProvider;
 

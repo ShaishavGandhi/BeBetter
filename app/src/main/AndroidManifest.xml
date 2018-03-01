@@ -20,16 +20,11 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
-        </activity>
-
-        <activity
-            android:name=".activities.SplashActivity"
-            android:theme="@style/SplashTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <receiver
@@ -49,16 +44,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </service>
-
-        <receiver android:name=".utils.TimeWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/time_widget_info" />
-        </receiver>
 
         <provider
             android:name=".data.providers.GoalProvider"

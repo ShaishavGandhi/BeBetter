@@ -10,56 +10,67 @@ import java.util.*
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: SharedPreferences.Editor): PreferenceDataStore {
+class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: SharedPreferences.Editor) : PreferenceDataStore {
 
-    override fun currentSession(currentTime: Long): Observable<Long> {
-        return preferences
-                .getLong(Constants.UNLOCKED)
-                .asObservable()
-                .map {
-                    // TODO: Replace with all the minutes and hours from preferences
-                    if (it == 0L) {
-                        return@map it
-                    }
-                    return@map (currentTime - it) / (1000 * 60)
-                }
-    }
+  companion object {
+    val KEY_CURRENT_DAILY_SESSION = "session"
+    val KEY_LOCKED = "locked"
+    val KEY_UNLOCKED = "unlocked"
+  }
 
-    override fun dailyUsageSoFar(): Observable<Long> {
-        // TODO: Add current session to it
-        return Observable.combineLatest(currentSession(Date().time),
-                dailyUsage(), BiFunction { currentSession, dailyUsage ->
-            return@BiFunction currentSession + dailyUsage
-        })
+  override fun currentSession(currentTime: Long): Observable<Long> {
+    return preferences
+            .getLong(KEY_UNLOCKED)
+            .asObservable()
+            .map {
+              // TODO: Replace with all the minutes and hours from preferences
+              if (it == 0L) {
+                return@map it
+              }
+              return@map (currentTime - it) / (1000 * 60)
+            }
+  }
 
-    }
+  override fun dailyUsageSoFar(): Observable<Long> {
+    return Observable.combineLatest(currentSession(Date().time),
+            dailyUsage(), BiFunction { currentSession, dailyUsage ->
+      return@BiFunction currentSession + dailyUsage
+    })
+  }
 
-    fun dailyUsage(): Observable<Long> {
-        return preferences
-                .getLong(Constants.SESSION)
-                .asObservable()
-                .map {
-                    return@map it / (1000 * 60)
-                }
-    }
+  override fun rawDailyUsage(): Long {
+    return preferences.getLong(KEY_CURRENT_DAILY_SESSION).get()
+  }
 
-    override fun insertPhoneLockTime(lockTime: Long) {
-        editor.putLong(Constants.LOCKED, lockTime)
-    }
+  fun dailyUsage(): Observable<Long> {
+    return preferences
+            .getLong(KEY_CURRENT_DAILY_SESSION)
+            .asObservable()
+            .map {
+              return@map it / (1000 * 60)
+            }
+  }
 
-    override fun insertPhoneUnlockTime(unlcokTime: Long) {
+  override fun insertPhoneLockTime(lockTime: Long) {
+    editor.putLong(KEY_LOCKED, lockTime)
+    editor.apply()
+  }
 
-    }
+  override fun insertPhoneUnlockTime(unlockTime: Long) {
+    editor.putLong(KEY_UNLOCKED, unlockTime)
+    editor.apply()
+  }
 
-    override fun lastUnlockTime(): Long {
-        return preferences.getLong(Constants.UNLOCKED).get()
-    }
+  override fun lastUnlockTime(): Long {
+    return preferences.getLong(KEY_UNLOCKED).get()
+  }
 
-    override fun lastLockTime(): Observable<Long> {
-        return Observable.just(1)
-    }
+  override fun lastLockTime(): Observable<Long> {
+    return Observable.just(1)
+  }
 
-    override fun storeSessionTime(sessionTime: Long) {
-        editor.putLong(Constants.SESSION, sessionTime)
-    }
+  override fun storeCurrentDayUsage(sessionTime: Long) {
+    editor.putLong(KEY_CURRENT_DAILY_SESSION, sessionTime)
+    editor.apply()
+  }
 }
