@@ -25,7 +25,7 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>): 
         val threshold = ArrayList<Int>()
 
 
-        for (index in usages.indices) {
+        for (index in usages.size - 1 downTo 0) {
             if (index >= usages.size || index >= goals.size) {
                 break
             }
