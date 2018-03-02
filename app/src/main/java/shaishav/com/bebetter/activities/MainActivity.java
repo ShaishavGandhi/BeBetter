@@ -1,7 +1,6 @@
 package shaishav.com.bebetter.activities;
 
 import android.os.Bundle;
-import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -9,30 +8,49 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 
+import javax.inject.Inject;
+
 import shaishav.com.bebetter.R;
-import shaishav.com.bebetter.fragments.SummaryController;
+import shaishav.com.bebetter.controller.PickGoalController;
+import shaishav.com.bebetter.controller.SummaryController;
+import shaishav.com.bebetter.data.preferences.PreferenceDataStore;
+import shaishav.com.bebetter.di.DependencyGraph;
+import shaishav.com.bebetter.utils.BBApplication;
 
 public class MainActivity extends AppCompatActivity {
 
 
   private Router router;
+  @Inject PreferenceDataStore preferenceDataStore;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    if (getApplication() instanceof DependencyGraph) {
+      ((BBApplication) getApplication()).getAppComponent().inject(this);
+    }
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
     ViewGroup container = findViewById(R.id.container_body);
 
     router = Conductor.attachRouter(this, container, savedInstanceState);
+    Controller rootController = getRootController();
     if (!router.hasRootController()) {
-      router.setRoot(RouterTransaction.with(new SummaryController()));
+      router.setRoot(RouterTransaction.with(rootController));
     }
+  }
+
+  private Controller getRootController() {
+    if (preferenceDataStore.hasUserOnBoarded()) {
+      return new SummaryController();
+    }
+    return new PickGoalController();
   }
 
   @Override
