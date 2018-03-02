@@ -33,7 +33,7 @@ public class GoalProvider extends ContentProvider {
   public static final Uri CONTENT_URI = Uri.parse(URL);
 
   public static String QUERY_SORT_ORDER = GoalContract.COLUMN_DATE + " ASC";
-  public static String QUERY_SELECTION_ARGS_GOAL_RANGE = GoalContract.COLUMN_DATE + " > ? AND " + GoalContract.COLUMN_GOAL +
+  public static String QUERY_SELECTION_ARGS_GOAL_RANGE = GoalContract.COLUMN_DATE + " > ? AND " + GoalContract.COLUMN_DATE +
           " < ?";
 
   static final int GOALS = 1;

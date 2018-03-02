@@ -62,4 +62,14 @@ interface PreferenceDataStore {
    * then see @see dailyUsageSoFar()
    */
   fun rawDailyUsage(): Long
+
+  /**
+   * Get whether user has gone through the onboarding flow
+   */
+  fun hasUserOnBoarded(): Boolean
+
+  /**
+   * Set value for whether user has onboarded
+   */
+  fun setUserHasOnboarded()
 }
