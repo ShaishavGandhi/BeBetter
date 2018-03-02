@@ -12,7 +12,7 @@ class StatsRepository @Inject constructor(private val usageRepository: UsageRepo
 
   fun getStat(): Observable<Stat> {
     return Observable.combineLatest(usageRepository.dailyUsage(), goalRepository.currentGoal(), BiFunction { usage, goal ->
-      return@BiFunction Stat(usage, goal.goal)
+      return@BiFunction Stat(usage, goal.goal / (1000 * 60))
     })
   }
 

@@ -16,6 +16,7 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: 
     val KEY_CURRENT_DAILY_SESSION = "session"
     val KEY_LOCKED = "locked"
     val KEY_UNLOCKED = "unlocked"
+    val USER_ONBOARDED = "userOnboarded"
   }
 
   override fun currentSession(currentTime: Long): Observable<Long> {
@@ -72,5 +73,13 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: 
   override fun storeCurrentDayUsage(sessionTime: Long) {
     editor.putLong(KEY_CURRENT_DAILY_SESSION, sessionTime)
     editor.apply()
+  }
+
+  override fun hasUserOnBoarded(): Boolean {
+    return preferences.getBoolean(USER_ONBOARDED).get()
+  }
+
+  override fun setUserHasOnboarded() {
+    editor.putBoolean(USER_ONBOARDED, true).apply()
   }
 }
