@@ -74,4 +74,8 @@ class BBApplication : Application(), DependencyGraph {
   override fun removePickGoalComponent() {
     pickGoalComponent = null
   }
+
+  override fun removeServiceComponent() {
+    serviceComponent = null
+  }
 }
