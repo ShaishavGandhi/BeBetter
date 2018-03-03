@@ -19,5 +19,5 @@ interface DependencyGraph {
   fun removePickGoalComponent()
 
   fun addServiceComponent(): ServiceComponent
-
+  fun removeServiceComponent()
 }
