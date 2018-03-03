@@ -83,6 +83,6 @@ class SummaryController : Controller(), SummaryContract {
   }
 
   override fun setCurrentGoal(goal: Goal) {
-    adapter.currentGoal = goal.goal / 1000 * 60
+    adapter.currentGoal = goal.goal / (1000 * 60)
   }
 }
