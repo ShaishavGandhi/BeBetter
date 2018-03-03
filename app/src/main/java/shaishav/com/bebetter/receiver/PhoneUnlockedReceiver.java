@@ -12,7 +12,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import shaishav.com.bebetter.data.models.Stat;
 import shaishav.com.bebetter.data.repository.StatsRepository;
-import shaishav.com.bebetter.data.source.PreferenceSource;
 import shaishav.com.bebetter.utils.BBApplication;
 import shaishav.com.bebetter.utils.NotificationHelper;
 import shaishav.com.bebetter.workflow.UsageWorkflow;
