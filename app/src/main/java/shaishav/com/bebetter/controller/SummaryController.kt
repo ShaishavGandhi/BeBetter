@@ -55,7 +55,7 @@ class SummaryController : Controller(), SummaryContract {
     if (activity?.application is DependencyGraph) {
       (activity?.application as DependencyGraph).removeSummaryComponent()
     }
-    presenter.disposables.dispose()
+    presenter.unsubscribe()
   }
 
   override fun setAverageDaiyUsage(usage: Long) {
@@ -80,5 +80,9 @@ class SummaryController : Controller(), SummaryContract {
 
   override fun setUsages(usages: List<Usage>) {
     adapter.usages = usages
+  }
+
+  override fun setCurrentGoal(goal: Goal) {
+    adapter.currentGoal = goal.goal / 1000 * 60
   }
 }
