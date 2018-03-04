@@ -2,10 +2,8 @@ package shaishav.com.bebetter.di.components
 
 import android.app.Application
 import dagger.Component
-import shaishav.com.bebetter.di.modules.AppModule
-import shaishav.com.bebetter.di.modules.DatabaseModule
-import shaishav.com.bebetter.di.modules.SummaryModule
-import shaishav.com.bebetter.di.modules.UtilsModule
+import shaishav.com.bebetter.activities.MainActivity
+import shaishav.com.bebetter.di.modules.*
 import shaishav.com.bebetter.di.scopes.ApplicationScope
 
 /**
@@ -17,5 +15,8 @@ interface AppComponent {
   fun getApplication(): Application
   fun addSummaryComponent(module: SummaryModule): SummaryComponent
   fun addServiceComponent(): ServiceComponent
+  fun addPickGoalComponent(module: PickGoalModule): PickGoalComponent
+
+  fun inject(activity: MainActivity)
 
 }

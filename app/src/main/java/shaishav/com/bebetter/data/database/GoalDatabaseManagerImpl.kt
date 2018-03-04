@@ -27,11 +27,11 @@ import javax.inject.Inject
   override fun currentGoal(): Observable<Goal> {
 
     val calender = Calendar.getInstance()
-    calender.set(Calendar.HOUR, 23)
+    calender.set(Calendar.HOUR_OF_DAY, 23)
     calender.set(Calendar.MINUTE, 59)
     val high = calender.timeInMillis
 
-    calender.set(Calendar.HOUR, 0)
+    calender.set(Calendar.HOUR_OF_DAY, 0)
     calender.set(Calendar.MINUTE, 0)
     val low = calender.timeInMillis
 
