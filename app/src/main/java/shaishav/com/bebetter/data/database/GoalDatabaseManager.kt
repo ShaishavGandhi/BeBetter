@@ -10,7 +10,29 @@ import shaishav.com.bebetter.data.models.Goal
  */
 interface GoalDatabaseManager {
 
+  /**
+   * Returns a hot observable of the user's
+   * entire Goal history
+   *
+   * @return Observable<List<Goal>>
+   */
   fun goals(): Observable<List<Goal>>
+
+  /**
+   * Returns the current goal of a user.
+   * The method will filter the goal table
+   * by the current day and return the valid
+   * goal
+   *
+   * @return Observable<Goal>
+   */
   fun currentGoal(): Observable<Goal>
+
+  /**
+   * Method to save a goal to database
+   * given a Goal object.
+   *
+   * Completes or errors out
+   */
   fun saveGoal(goal: Goal): Completable
 }
