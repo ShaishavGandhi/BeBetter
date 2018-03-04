@@ -10,9 +10,15 @@ import javax.inject.Inject
  */
 class StatsRepository @Inject constructor(private val usageRepository: UsageRepository, private val goalRepository: GoalRepository) {
 
+  /**
+   * Method that gives the user's current daily usage
+   * and their current goal. Useful for showing data in notification.
+   *
+   * @return Observable<Stat>
+   */
   fun getStat(): Observable<Stat> {
     return Observable.combineLatest(usageRepository.dailyUsage(), goalRepository.currentGoal(), BiFunction { usage, goal ->
-      return@BiFunction Stat(usage, goal.goal)
+      return@BiFunction Stat(usage, goal.goal / (1000 * 60))
     })
   }
 

@@ -5,12 +5,11 @@ import android.content.Intent
 import android.os.Build
 import com.facebook.stetho.Stetho
 import shaishav.com.bebetter.BuildConfig
+import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.DependencyGraph
-import shaishav.com.bebetter.di.components.AppComponent
-import shaishav.com.bebetter.di.components.DaggerAppComponent
-import shaishav.com.bebetter.di.components.ServiceComponent
-import shaishav.com.bebetter.di.components.SummaryComponent
+import shaishav.com.bebetter.di.components.*
 import shaishav.com.bebetter.di.modules.AppModule
+import shaishav.com.bebetter.di.modules.PickGoalModule
 import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.service.UsageService
 import timber.log.Timber
@@ -21,8 +20,9 @@ import timber.log.Timber
 class BBApplication : Application(), DependencyGraph {
 
   lateinit var appComponent: AppComponent
-  var summaryComponent: SummaryComponent? = null
-  var serviceComponent: ServiceComponent? = null
+  private var summaryComponent: SummaryComponent? = null
+  private var serviceComponent: ServiceComponent? = null
+  private var pickGoalComponent: PickGoalComponent? = null
 
   override fun onCreate() {
     super.onCreate()
@@ -62,5 +62,20 @@ class BBApplication : Application(), DependencyGraph {
       serviceComponent = appComponent.addServiceComponent()
     }
     return serviceComponent as ServiceComponent
+  }
+
+  override fun addPickGoalComponent(view: PickGoalContract): PickGoalComponent {
+    if (pickGoalComponent == null) {
+      pickGoalComponent = appComponent.addPickGoalComponent(PickGoalModule(view))
+    }
+    return pickGoalComponent as PickGoalComponent
+  }
+
+  override fun removePickGoalComponent() {
+    pickGoalComponent = null
+  }
+
+  override fun removeServiceComponent() {
+    serviceComponent = null
   }
 }

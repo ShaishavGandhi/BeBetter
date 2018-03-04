@@ -30,4 +30,8 @@ import javax.inject.Inject
             }.subscribeOn(Schedulers.io())
   }
 
+  fun saveGoal(goal: Goal): Completable {
+    return databaseManager.saveGoal(goal)
+  }
+
 }

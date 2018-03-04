@@ -37,14 +37,7 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".service.UsageService"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </service>
-
+        <service android:name=".service.UsageService"/>
         <provider
             android:name=".data.providers.GoalProvider"
             android:authorities="shaishav.com.bebetter.goal"

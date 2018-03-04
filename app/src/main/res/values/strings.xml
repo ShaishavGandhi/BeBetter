@@ -16,6 +16,7 @@
     <string name="average_daily_usage">Average Daily Usage</string>
     <string name="total_usage">Total Usage</string>
     <string name="total_points">Total Points</string>
+    <string name="current_goal">Current Goal</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank controller</string>
@@ -27,4 +28,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_experience_editor">Add Experience</string>
     <string name="web_client_id">625165464182-p0mhdhjfsc8b290j7sh76ik761n89e2g.apps.googleusercontent.com</string>
+    <string name="enter_goal">Enter daily usage goal</string>
+    <string name="next">Next</string>
 </resources>
