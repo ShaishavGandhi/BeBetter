@@ -8,5 +8,12 @@ import shaishav.com.bebetter.data.models.Point
  */
 interface PointsDatabaseManager {
 
-    fun points(): Observable<List<Point>>
+
+  /**
+   * Returns a list of Point accrued
+   * by the user. WIP
+   *
+   * @return Observable<List<Point>>
+   */
+  fun points(): Observable<List<Point>>
 }
