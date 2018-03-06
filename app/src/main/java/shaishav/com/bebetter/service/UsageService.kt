@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.data.models.Stat
@@ -20,6 +21,7 @@ class UsageService : Service() {
 
   @Inject lateinit var statsRepository: StatsRepository
   @Inject lateinit var notificationHelper: NotificationHelper
+  private val disposables = CompositeDisposable()
 
   override fun onBind(intent: Intent): IBinder? {
     return null
@@ -39,10 +41,12 @@ class UsageService : Service() {
     val mReceiver = PhoneUnlockedReceiver()
     registerReceiver(mReceiver, filter)
 
-    statsRepository.getStat().subscribe { stat ->
+    val disposable = statsRepository.getStat().subscribe { stat ->
       val notification = notificationHelper.createNotification(stat.usage, stat.goal)
       notificationHelper.updateNotification(notification)
     }
+
+    disposables.add(disposable)
 
     val notification = notificationHelper.createNotification(0, 200)
     startForeground(1337, notification)
@@ -56,6 +60,7 @@ class UsageService : Service() {
 
   override fun onDestroy() {
     stopForeground(true)
+    disposables.dispose()
     (application as BBApplication).removeServiceComponent()
   }
 }
