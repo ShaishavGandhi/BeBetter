@@ -6,6 +6,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.Observable
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -30,7 +31,7 @@ class GoalRepositoryUTest {
     goalRepository = GoalRepository(databaseManager)
   }
 
-  @Test fun testCloneGoal() {
+  @Ignore @Test fun testCloneGoal() {
     val goal = Goal(id = 0, date = Date().time,goal = 220 * 1000 * 60)
     whenever(databaseManager.currentGoal()).thenReturn(Observable.just(goal))
     whenever(databaseManager.saveGoal(any())).thenReturn(Completable.complete())

@@ -3,7 +3,9 @@ package shaishav.com.bebetter.utils
 import android.app.Application
 import android.content.Intent
 import android.os.Build
+import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
+import io.fabric.sdk.android.Fabric
 import shaishav.com.bebetter.BuildConfig
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.DependencyGraph
@@ -32,6 +34,7 @@ class BBApplication : Application(), DependencyGraph {
             .build()
 
     Stetho.initializeWithDefaults(this)
+    initCrashlytics()
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
@@ -44,6 +47,10 @@ class BBApplication : Application(), DependencyGraph {
       startService(Intent(applicationContext, UsageService::class.java))
     }
 
+  }
+
+  fun initCrashlytics() {
+    Fabric.with(this, Crashlytics())
   }
 
   override fun addSummaryComponent(module: SummaryModule): SummaryComponent {
