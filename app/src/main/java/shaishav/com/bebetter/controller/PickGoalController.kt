@@ -55,8 +55,8 @@ class PickGoalController: Controller(), PickGoalContract {
                     .popChangeHandler(FadeChangeHandler()))
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onDestroyView(view: View) {
+    super.onDestroyView(view)
     presenter.unsubscribe()
   }
 }

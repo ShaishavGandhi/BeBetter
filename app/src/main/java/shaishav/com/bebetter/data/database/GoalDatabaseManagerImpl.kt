@@ -26,25 +26,12 @@ import javax.inject.Inject
 
   override fun currentGoal(): Observable<Goal> {
 
-    val calender = Calendar.getInstance()
-    calender.set(Calendar.HOUR_OF_DAY, 23)
-    calender.set(Calendar.MINUTE, 59)
-    val high = calender.timeInMillis
-
-    calender.set(Calendar.HOUR_OF_DAY, 0)
-    calender.set(Calendar.MINUTE, 0)
-    val low = calender.timeInMillis
-
-    val whereClause = arrayOf(low.toString(), high.toString())
-    return contentResolver
-            .createQuery(GoalProvider.CONTENT_URI,
-                    null,
-                    GoalProvider.QUERY_SELECTION_ARGS_GOAL_RANGE,
-                    whereClause,
-                    GoalProvider.QUERY_SORT_ORDER,
-                    false)
-            .mapToOne {
-              return@mapToOne GoalProvider.cursorToGoal(it)
+    return goals()
+            .filter { goals ->
+              goals.isNotEmpty()
+            }
+            .flatMap { goals ->
+              return@flatMap Observable.just(goals.last())
             }
   }
 

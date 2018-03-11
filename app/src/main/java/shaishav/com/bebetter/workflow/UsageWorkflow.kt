@@ -32,7 +32,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // The day has passed between last lock and unlock
 
         // Copy over previous goal
-        goalRepository.cloneGoal(lockTime)
+        goalRepository.cloneGoal(lockTime).subscribe()
 
         // Construct the last minute of yesterdat
         val previousDay = Calendar.getInstance()
@@ -126,7 +126,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
               .subscribe()
 
       // Clone the goal
-      goalRepository.cloneGoal(unlockTime)
+      goalRepository.cloneGoal(unlockTime).subscribe()
 
       // Reset session data to zero
       usageRepository.storeCurrentDayUsage(0)
