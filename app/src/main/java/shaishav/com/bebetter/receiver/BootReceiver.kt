@@ -6,11 +6,16 @@ import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import shaishav.com.bebetter.service.UsageService
+import shaishav.com.bebetter.workflow.UsageWorkflow
+import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by shaishav.gandhi on 2/23/18.
  */
 class BootReceiver : BroadcastReceiver() {
+
+  @Inject lateinit var workflow: UsageWorkflow
 
   override fun onReceive(context: Context, intent: Intent) {
     Toast.makeText(context, "Started", Toast.LENGTH_SHORT).show()
@@ -19,5 +24,7 @@ class BootReceiver : BroadcastReceiver() {
     } else {
       context.startService(Intent(context, UsageService::class.java))
     }
+
+    workflow.phoneUnlocked(Date().time)
   }
 }
