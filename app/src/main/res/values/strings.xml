@@ -17,6 +17,7 @@
     <string name="total_usage">Total Usage</string>
     <string name="total_points">Total Points</string>
     <string name="current_goal">Current Goal</string>
+    <string name="set_goal">Set your daily usage goal</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank controller</string>
