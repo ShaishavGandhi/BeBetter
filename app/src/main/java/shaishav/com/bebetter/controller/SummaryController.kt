@@ -78,6 +78,10 @@ class SummaryController : Controller(), SummaryContract {
     adapter.goals = goals
   }
 
+  override fun setCurrentStreak(currentStreak: Long) {
+    adapter.currentStreak = currentStreak
+  }
+
   override fun setUsages(usages: List<Usage>) {
     adapter.usages = usages
   }
