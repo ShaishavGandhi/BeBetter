@@ -10,6 +10,7 @@ import org.junit.runners.JUnit4
 import org.mockito.Mock
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.repository.GoalRepository
+import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
 
 /**
@@ -28,13 +29,14 @@ class SummaryPresenterUTest {
   @Mock lateinit var view: SummaryContract
   @Mock lateinit var usageRepository: UsageRepository
   @Mock lateinit var goalRepository: GoalRepository
+  @Mock lateinit var streakRepository: StreakRepository
   lateinit var presenter: SummaryPresenter
 
   @Before
   @Throws
   fun setUp() {
     setupData()
-    presenter = SummaryPresenter(view, usageRepository, goalRepository, CompositeDisposable())
+    presenter = SummaryPresenter(view, usageRepository, goalRepository, streakRepository, CompositeDisposable())
   }
 
   fun setupData() {
