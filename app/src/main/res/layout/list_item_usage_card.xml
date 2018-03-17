@@ -54,17 +54,18 @@
         app:layout_constraintTop_toBottomOf="@+id/heading"
         android:padding="10dp"/>
 
-    <TextView
+    <com.robinhood.ticker.TickerView
         android:id="@+id/value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
+        android:paddingTop="@dimen/padding_base"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider"
         tools:text="193"
-        android:text="@{usage}"
-        android:textAlignment="center"
+        android:text="0"
+        app:ticker_defaultCharacterList="number"
+        android:gravity="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Display3"
         android:textColor="@color/colorPrimaryDark" />
 
