@@ -15,7 +15,7 @@ class StreakRepository @Inject constructor(private val goalRepository: GoalRepos
       if (usages.isEmpty()) {
         return@BiFunction currentStreak
       }
-      for (i in usages.size - 1 downTo  0) {
+      for (i in 0 until usages.size) {
         val usage = usages[i]
         val goal = goals[i]
         if (usage.usage < goal.goal) {
