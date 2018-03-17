@@ -53,11 +53,6 @@ class UsageService : Service() {
 
   }
 
-  override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-    return super.onStartCommand(intent, flags, startId)
-  }
-
-
   override fun onDestroy() {
     stopForeground(true)
     disposables.dispose()
