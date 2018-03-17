@@ -15,5 +15,6 @@ interface SummaryContract {
   fun setGoals(goals: List<Goal>)
   fun setUsages(usages: List<Usage>)
   fun setCurrentGoal(goal: Goal)
+  fun setCurrentStreak(currentStreak: Long)
 
 }
