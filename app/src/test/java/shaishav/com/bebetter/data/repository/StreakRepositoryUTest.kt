@@ -63,7 +63,7 @@ class StreakRepositoryUTest {
     val calendar = Calendar.getInstance()
 
     val usage = Usage(id = 0, date = calendar.timeInMillis, usage = 280 * 1000 * 60L)
-    val usages = listOf(usage)
+    val usages = listOf(usage).reversed()
     whenever(usageRepository.usages()).thenReturn(Observable.just(usages))
 
     val testObserver = streakRepository.currentStreak().test()
@@ -81,7 +81,7 @@ class StreakRepositoryUTest {
 
     val usage = Usage(id = 0, date = calendar.timeInMillis, usage = 180 * 1000 * 60L)
     val usage2 = Usage(id = 1, date = calendar.timeInMillis, usage = 123 * 1000 * 60L)
-    val usages = listOf(usage, usage2)
+    val usages = listOf(usage, usage2).asReversed()
     whenever(usageRepository.usages()).thenReturn(Observable.just(usages))
 
     val testObserver = streakRepository.currentStreak().test()
@@ -100,7 +100,7 @@ class StreakRepositoryUTest {
     val usage = Usage(id = 0, date = calendar.timeInMillis, usage = 180 * 1000 * 60L)
     val usage2 = Usage(id = 1, date = calendar.timeInMillis, usage = 123 * 1000 * 60L)
     val usage3 = Usage(id = 2, date = calendar.timeInMillis, usage = 220 * 1000 * 60L)
-    val usages = listOf(usage, usage2, usage3)
+    val usages = listOf(usage, usage2, usage3).asReversed()
     whenever(usageRepository.usages()).thenReturn(Observable.just(usages))
 
     val testObserver = streakRepository.currentStreak().test()
@@ -119,7 +119,7 @@ class StreakRepositoryUTest {
     val usage = Usage(id = 0, date = calendar.timeInMillis, usage = 280 * 1000 * 60L)
     val usage2 = Usage(id = 1, date = calendar.timeInMillis, usage = 123 * 1000 * 60L)
     val usage3 = Usage(id = 2, date = calendar.timeInMillis, usage = 120 * 1000 * 60L)
-    val usages = listOf(usage, usage2, usage3)
+    val usages = listOf(usage, usage2, usage3).asReversed()
     whenever(usageRepository.usages()).thenReturn(Observable.just(usages))
 
     val testObserver = streakRepository.currentStreak().test()
@@ -139,7 +139,7 @@ class StreakRepositoryUTest {
     val usage2 = Usage(id = 1, date = calendar.timeInMillis, usage = 223 * 1000 * 60L)
     val usage3 = Usage(id = 2, date = calendar.timeInMillis, usage = 120 * 1000 * 60L)
     val usage4 = Usage(id = 3, date = calendar.timeInMillis, usage = 120 * 1000 * 60L)
-    val usages = listOf(usage, usage2, usage3, usage4)
+    val usages = listOf(usage, usage2, usage3, usage4).asReversed()
     whenever(usageRepository.usages()).thenReturn(Observable.just(usages))
 
     val testObserver = streakRepository.currentStreak().test()
