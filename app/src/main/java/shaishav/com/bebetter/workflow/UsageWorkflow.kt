@@ -34,7 +34,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // Copy over previous goal
         goalRepository.cloneGoal(lockTime).subscribe()
 
-        // Construct the last minute of yesterdat
+        // Construct the last minute of yesterday
         val previousDay = Calendar.getInstance()
         previousDay.timeInMillis = unlockTime
         previousDay.set(Calendar.HOUR_OF_DAY, 23)

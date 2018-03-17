@@ -43,6 +43,9 @@ ext {
 
     timber = "com.jakewharton.timber:timber:4.6.0"
 
+    ticker = "com.robinhood.ticker:ticker:1.2.2"
+    spark = "com.robinhood.spark:spark:1.2.0"
+
     supportVersion = "26.1.0"
     appCompat = "com.android.support:appcompat-v7:$supportVersion"
     design = "com.android.support:design:$supportVersion"
