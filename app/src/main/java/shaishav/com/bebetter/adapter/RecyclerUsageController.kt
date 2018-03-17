@@ -53,6 +53,12 @@ class RecyclerUsageController(val resourceManager: ResourceManager) : EpoxyContr
       requestModelBuild()
     }
 
+  var currentStreak: Long = -1
+    set(value) {
+      field = value
+      requestModelBuild()
+    }
+
   var currentGoal: Long = -1
   set(value) {
     field = value
@@ -63,9 +69,10 @@ class RecyclerUsageController(val resourceManager: ResourceManager) : EpoxyContr
     addCurrentSessionModel()
     addDailyUsage()
     addCurrentGoal()
+    addUsageTrend()
+    addCurrentStreak()
     addAverageDailyUsage()
     addTotalUsage()
-    addUsageTrend()
   }
 
   private fun addCurrentSessionModel() {
@@ -75,6 +82,17 @@ class RecyclerUsageController(val resourceManager: ResourceManager) : EpoxyContr
     if (currentUsage > -1) {
       UsageCardModel_(header, currentUsage, footer)
               .id("current_usage_$currentUsage")
+              .addTo(this)
+    }
+  }
+
+  private fun addCurrentStreak() {
+    val header = resourceManager.getString(R.string.current_streak)
+    val footer = resourceManager.getString(R.string.day)
+
+    if (currentStreak > -1) {
+      UsageCardModel_(header, currentStreak, footer)
+              .id("current_streak_$currentStreak")
               .addTo(this)
     }
   }
