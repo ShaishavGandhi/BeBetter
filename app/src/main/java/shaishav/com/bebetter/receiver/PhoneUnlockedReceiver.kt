@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.support.v4.content.ContextCompat.startForegroundService
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.data.models.Stat
@@ -24,6 +25,7 @@ class PhoneUnlockedReceiver : BroadcastReceiver() {
   @Inject lateinit var workflow: UsageWorkflow
   @Inject lateinit var notificationHelper: NotificationHelper
   @Inject lateinit var statsRepository: StatsRepository
+  val disposables = CompositeDisposable()
 
   override fun onReceive(context: Context, intent: Intent) {
     (context.applicationContext as BBApplication)
@@ -33,7 +35,7 @@ class PhoneUnlockedReceiver : BroadcastReceiver() {
     if (intent.action == Intent.ACTION_SCREEN_OFF) {
 
       workflow.phoneLocked(Date().time)
-      statsRepository.getStat().subscribeOn(Schedulers.io()).subscribeWith(object : DisposableObserver<Stat>() {
+      val disposable = statsRepository.getStat().subscribeOn(Schedulers.io()).subscribeWith(object : DisposableObserver<Stat>() {
         override fun onNext(stat: Stat) {
           notificationHelper.updateNotification(notificationHelper.createNotification(stat.usage, stat.goal))
         }
@@ -42,6 +44,7 @@ class PhoneUnlockedReceiver : BroadcastReceiver() {
 
         override fun onComplete() {}
       })
+      disposables.add(disposable)
     } else if (intent.action == Intent.ACTION_SCREEN_ON) {
       workflow.phoneUnlocked(Date().time)
     }
