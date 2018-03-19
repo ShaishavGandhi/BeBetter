@@ -1,5 +1,6 @@
 package shaishav.com.bebetter.data.database
 
+import io.reactivex.Completable
 import io.reactivex.Observable
 import shaishav.com.bebetter.data.models.Point
 
@@ -16,4 +17,20 @@ interface PointsDatabaseManager {
    * @return Observable<List<Point>>
    */
   fun points(): Observable<List<Point>>
+
+  /**
+   * Returns the total points accrued
+   * by the user
+   *
+   * @return Observable<Long>
+   */
+  fun totalPoints(): Observable<Long>
+
+  /**
+   * Save given point object in database
+   *
+   * @param point
+   * @return Completable
+   */
+  fun savePoint(point: Point): Completable
 }
