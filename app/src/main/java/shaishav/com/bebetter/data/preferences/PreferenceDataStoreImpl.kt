@@ -28,7 +28,7 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: 
               if (it == 0L) {
                 return@map it
               }
-              return@map (currentTime - it) / (1000 * 60)
+              return@map (Date().time - it) / (1000 * 60)
             }
   }
 
