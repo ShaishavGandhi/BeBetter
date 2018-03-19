@@ -24,6 +24,7 @@ import javax.inject.Inject
   fun cloneGoal(date: Long): Completable {
     return currentGoal()
             .flatMapCompletable { currentGoal ->
+              // TODO: Check if goal is of same day. Otherwise don't save it
               val goalValue = currentGoal.goal
               val goal = Goal(0, date, goalValue)
               return@flatMapCompletable databaseManager.saveGoal(goal)

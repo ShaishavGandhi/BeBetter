@@ -10,7 +10,12 @@ import javax.inject.Inject
  */
 class PointsRepository @Inject constructor(private val databaseManager: PointsDatabaseManager) {
 
-    fun points(): Observable<List<Point>> {
-        return databaseManager.points()
-    }
+  fun points(): Observable<List<Point>> {
+    return databaseManager.points()
+  }
+
+  fun totalPoints(): Observable<Long> {
+    return databaseManager.totalPoints()
+  }
+
 }

@@ -13,10 +13,7 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
 import shaishav.com.bebetter.data.MySQLiteHelper
-import shaishav.com.bebetter.data.database.GoalDatabaseManager
-import shaishav.com.bebetter.data.database.GoalDatabaseManagerImpl
-import shaishav.com.bebetter.data.database.UsageDatabaseManager
-import shaishav.com.bebetter.data.database.UsageDatabaseManagerImpl
+import shaishav.com.bebetter.data.database.*
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.data.preferences.PreferenceDataStoreImpl
 import shaishav.com.bebetter.data.repository.GoalRepository
@@ -66,8 +63,11 @@ class DatabaseModule {
         return database
     }
 
-
     @Provides fun providesGoalDatabaseManager(goalDatabaseManager: GoalDatabaseManagerImpl): GoalDatabaseManager {
         return goalDatabaseManager
+    }
+
+    @Provides fun providesPointsDatabaseManager(pointsDatabaseManagerImpl: PointsDatabaseManagerImpl): PointsDatabaseManager {
+        return pointsDatabaseManagerImpl
     }
 }
