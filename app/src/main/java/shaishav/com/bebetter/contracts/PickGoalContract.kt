@@ -5,4 +5,5 @@ package shaishav.com.bebetter.contracts
  */
 interface PickGoalContract {
   fun homeScreen()
+  fun error()
 }
