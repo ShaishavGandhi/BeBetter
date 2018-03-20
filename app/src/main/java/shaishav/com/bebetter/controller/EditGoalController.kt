@@ -12,16 +12,14 @@ import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.DependencyGraph
-import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.presenter.PickGoalPresenter
-import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_pick_goal.*
 import java.util.*
+import javax.inject.Inject
 
 /**
- * Created by shaishav.gandhi on 3/1/18.
+ * Created by shaishav.gandhi on 3/19/18.
  */
-class PickGoalController: Controller(), PickGoalContract {
+class EditGoalController: Controller(), PickGoalContract {
 
   lateinit var rootView: View
   lateinit var nextButton: Button
@@ -46,7 +44,9 @@ class PickGoalController: Controller(), PickGoalContract {
   private fun initListeners() {
     nextButton.setOnClickListener {
       val minutes = goalEditText.text.toString()
-      presenter.saveGoal(Calendar.getInstance().timeInMillis, minutes.toInt())
+      val calendar = Calendar.getInstance()
+      calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1)
+      presenter.saveGoal(calendar.timeInMillis, minutes.toInt())
     }
   }
 
@@ -58,7 +58,7 @@ class PickGoalController: Controller(), PickGoalContract {
   }
 
   override fun error() {
-    Toast.makeText(activity, "Goal already exists.", Toast.LENGTH_SHORT).show()
+    Toast.makeText(activity, "Goal already exists for that day.", Toast.LENGTH_SHORT).show()
     homeScreen()
   }
 
