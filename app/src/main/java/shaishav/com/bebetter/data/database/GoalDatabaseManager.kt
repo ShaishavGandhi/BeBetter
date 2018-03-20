@@ -19,18 +19,20 @@ interface GoalDatabaseManager {
   fun goals(): Observable<List<Goal>>
 
   /**
-   * Returns the current goal of a user.
+   * Returns the goal of a user on given date
    * The method will filter the goal table
    * by the current day and return the valid
    * goal
    *
    * @return Observable<Goal>
    */
-  fun currentGoal(): Observable<Goal>
+  fun goalOnDay(day: Long): Observable<Goal>
 
   /**
    * Method to save a goal to database
-   * given a Goal object.
+   * given a Goal object. Will check if
+   * a goal already exists for that particular
+   * day and will throw exception if it does
    *
    * Completes or errors out
    */
