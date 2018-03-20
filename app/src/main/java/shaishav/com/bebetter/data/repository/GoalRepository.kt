@@ -6,6 +6,7 @@ import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.data.database.GoalDatabaseManager
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.di.scopes.ApplicationScope
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -18,13 +19,15 @@ import javax.inject.Inject
   }
 
   fun currentGoal(): Observable<Goal> {
-    return databaseManager.currentGoal()
+    return databaseManager.goalOnDay(Date().time)
   }
 
   fun cloneGoal(date: Long): Completable {
     return currentGoal()
             .flatMapCompletable { currentGoal ->
-              // TODO: Check if goal is of same day. Otherwise don't save it
+              if (isSameDay(Date().time, currentGoal.date)) {
+                return@flatMapCompletable Completable.error(Exception("Goal already exists for that day"))
+              }
               val goalValue = currentGoal.goal
               val goal = Goal(0, date, goalValue)
               return@flatMapCompletable databaseManager.saveGoal(goal)
@@ -33,6 +36,16 @@ import javax.inject.Inject
 
   fun saveGoal(goal: Goal): Completable {
     return databaseManager.saveGoal(goal)
+  }
+
+  fun isSameDay(day1: Long, day2: Long): Boolean {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = day1
+
+    val calendar2 = Calendar.getInstance()
+    calendar2.timeInMillis = day2
+
+    return calendar.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR)
   }
 
 }

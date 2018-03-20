@@ -5,6 +5,7 @@ import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Usage
+import shaishav.com.bebetter.listener.SummaryListener
 import shaishav.com.bebetter.models.UsageCardModel_
 import shaishav.com.bebetter.models.UsageTrendModel_
 import shaishav.com.bebetter.utils.ResourceManager
@@ -12,7 +13,7 @@ import shaishav.com.bebetter.utils.ResourceManager
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class RecyclerUsageController(val resourceManager: ResourceManager) : EpoxyController() {
+class RecyclerUsageController(val resourceManager: ResourceManager, val listener: SummaryListener) : EpoxyController() {
 
   var currentUsage: Long = -1
     set(value) {
@@ -126,7 +127,9 @@ class RecyclerUsageController(val resourceManager: ResourceManager) : EpoxyContr
     if (currentGoal > -1) {
       UsageCardModel_(header, currentGoal, footer)
               .id("current_goal_$currentGoal")
+              .addListener(listener)
               .addTo(this)
+
     }
   }
 

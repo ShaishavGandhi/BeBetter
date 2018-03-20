@@ -1,7 +1,7 @@
 package shaishav.com.bebetter.di.components
 
-import dagger.Module
 import dagger.Subcomponent
+import shaishav.com.bebetter.controller.EditGoalController
 import shaishav.com.bebetter.controller.PickGoalController
 import shaishav.com.bebetter.di.modules.PickGoalModule
 import shaishav.com.bebetter.di.scopes.ActivityScope
@@ -12,5 +12,6 @@ import shaishav.com.bebetter.di.scopes.ActivityScope
 @Subcomponent(modules = [(PickGoalModule::class)]) @ActivityScope interface PickGoalComponent {
 
   fun inject(controller: PickGoalController)
+  fun inject(controller: EditGoalController)
 
 }
