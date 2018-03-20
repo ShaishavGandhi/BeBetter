@@ -54,6 +54,8 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
                 .subscribe()
 
         // TODO: Add points logic here
+        addPoints()
+
 
         // Fast forward to the current date to calculate the session of the new day
         previousDay.set(Calendar.DAY_OF_YEAR, previousDay.get(Calendar.DAY_OF_YEAR) + 1)
@@ -134,5 +136,12 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
 
     // Store the unlock time
     usageRepository.storePhoneUnlockedTime(unlockTime)
+  }
+
+  /**
+   * 
+   */
+  fun addPoints() {
+
   }
 }

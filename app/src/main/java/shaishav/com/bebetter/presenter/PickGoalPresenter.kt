@@ -19,9 +19,8 @@ class PickGoalPresenter @Inject constructor(private var view: PickGoalContract?,
                                             private val preferenceDataStore: PreferenceDataStore,
                                             val disposables: CompositeDisposable) {
 
-  fun saveGoal(minutes: Int) {
-    val currentTime = Calendar.getInstance()
-    val goal = Goal(0, date = currentTime.timeInMillis, goal = minutes * 1000 * 60L)
+  fun saveGoal(day: Long, minutes: Int) {
+    val goal = Goal(0, date = day, goal = minutes * 1000 * 60L)
     goalRepository.saveGoal(goal)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -32,7 +31,7 @@ class PickGoalPresenter @Inject constructor(private var view: PickGoalContract?,
               }
 
               override fun onError(e: Throwable) {
-                view?.homeScreen()
+                view?.error()
               }
 
             })

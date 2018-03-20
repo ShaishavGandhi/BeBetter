@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.adapter.RecyclerUsageController
@@ -15,6 +17,7 @@ import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.modules.SummaryModule
+import shaishav.com.bebetter.listener.SummaryListener
 import shaishav.com.bebetter.presenter.SummaryPresenter
 import shaishav.com.bebetter.utils.ResourceManager
 import javax.inject.Inject
@@ -22,7 +25,7 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class SummaryController : Controller(), SummaryContract {
+class SummaryController : Controller(), SummaryContract, SummaryListener {
 
   lateinit var rootView: View
   lateinit var recyclerView: EpoxyRecyclerView
@@ -39,7 +42,7 @@ class SummaryController : Controller(), SummaryContract {
     presenter.view = this
     initViews(rootView.context)
 
-    adapter = RecyclerUsageController(resources)
+    adapter = RecyclerUsageController(resources, this)
     recyclerView.itemAnimator = SlideInUpAnimator()
     recyclerView.setController(adapter)
     return rootView
@@ -56,6 +59,13 @@ class SummaryController : Controller(), SummaryContract {
       (activity?.application as DependencyGraph).removeSummaryComponent()
     }
     presenter.unsubscribe()
+  }
+
+  override fun onEditGoal() {
+    router.pushController(
+            RouterTransaction.with(EditGoalController())
+                    .pushChangeHandler(FadeChangeHandler())
+                    .popChangeHandler(FadeChangeHandler()))
   }
 
   override fun setAverageDaiyUsage(usage: Long) {
