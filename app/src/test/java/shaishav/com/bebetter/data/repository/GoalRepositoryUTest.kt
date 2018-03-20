@@ -33,7 +33,7 @@ class GoalRepositoryUTest {
 
   @Ignore @Test fun testCloneGoal() {
     val goal = Goal(id = 0, date = Date().time,goal = 220 * 1000 * 60)
-    whenever(databaseManager.goalOnDay()).thenReturn(Observable.just(goal))
+    whenever(databaseManager.goalOnDay(Date().time)).thenReturn(Observable.just(goal))
     whenever(databaseManager.saveGoal(any())).thenReturn(Completable.complete())
 
     goalRepository.cloneGoal(Date().time)
