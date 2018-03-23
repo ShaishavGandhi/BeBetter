@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.AutoTransitionChangeHandler
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
@@ -64,8 +65,8 @@ class SummaryController : Controller(), SummaryContract, SummaryListener {
   override fun onEditGoal() {
     router.pushController(
             RouterTransaction.with(EditGoalController())
-                    .pushChangeHandler(FadeChangeHandler())
-                    .popChangeHandler(FadeChangeHandler()))
+                    .pushChangeHandler(AutoTransitionChangeHandler())
+                    .popChangeHandler(AutoTransitionChangeHandler()))
   }
 
   override fun setAverageDaiyUsage(usage: Long) {

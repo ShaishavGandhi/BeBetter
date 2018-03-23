@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.AutoTransitionChangeHandler
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.contracts.PickGoalContract
@@ -53,8 +54,8 @@ class EditGoalController: Controller(), PickGoalContract {
   override fun homeScreen() {
     router.pushController(
             RouterTransaction.with(SummaryController())
-                    .pushChangeHandler(FadeChangeHandler())
-                    .popChangeHandler(FadeChangeHandler()))
+                    .pushChangeHandler(AutoTransitionChangeHandler())
+                    .popChangeHandler(AutoTransitionChangeHandler()))
   }
 
   override fun error() {
