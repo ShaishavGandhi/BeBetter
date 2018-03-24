@@ -50,7 +50,6 @@ class UsageService : Service() {
 
     val notification = notificationHelper.createNotification(0, 200)
     startForeground(1337, notification)
-
   }
 
   override fun onDestroy() {
