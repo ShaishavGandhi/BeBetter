@@ -31,7 +31,7 @@ class EditGoalController: Controller(), PickGoalContract {
     if (activity?.application is DependencyGraph) {
       (activity?.application as DependencyGraph).addPickGoalComponent(this).inject(this)
     }
-    rootView = inflater.inflate(R.layout.fragment_pick_goal, container, false)
+    rootView = inflater.inflate(R.layout.fragment_edit_goal, container, false)
     initViews(rootView)
     initListeners()
     return rootView
