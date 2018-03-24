@@ -23,12 +23,10 @@ class PointsDatabaseManagerImpl @Inject constructor(val contentResolver: BriteCo
   }
 
   override fun totalPoints(): Observable<Long> {
-    return database.createQuery(PointContract.TABLE_POINTS,
-            "SELECT COUNT(${PointContract.COLUMN_POINTS}) from ${PointContract.TABLE_POINTS}",
-            null)
-            .mapToOne { cursor ->
-              return@mapToOne cursor.getLong(0)
-            }
+    return points().flatMap { points ->
+      val sum = points.sumBy { it.points }
+      return@flatMap Observable.just(sum.toLong())
+    }
   }
 
   override fun savePoint(point: Point): Completable {

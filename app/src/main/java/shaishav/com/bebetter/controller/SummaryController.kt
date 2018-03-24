@@ -100,4 +100,8 @@ class SummaryController : Controller(), SummaryContract, SummaryListener {
   override fun setCurrentGoal(goal: Goal) {
     adapter.currentGoal = goal.goal / (1000 * 60)
   }
+
+  override fun setTotalPoints(totalPoints: Long) {
+    adapter.totalPoints = totalPoints
+  }
 }

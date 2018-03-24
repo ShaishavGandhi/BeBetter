@@ -34,6 +34,7 @@ import javax.inject.Inject
 
     currentDate.set(Calendar.HOUR_OF_DAY, 23)
     currentDate.set(Calendar.MINUTE, 59)
+    currentDate.set(Calendar.SECOND, 0)
     val higher = currentDate.timeInMillis
     return database.createQuery(GoalContract.TABLE_GOAL, "select * from ${GoalContract.TABLE_GOAL} where " +
             " ${GoalContract.COLUMN_DATE} > $lower AND ${GoalContract.COLUMN_DATE} < $higher")

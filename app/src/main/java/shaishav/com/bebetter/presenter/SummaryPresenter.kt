@@ -5,6 +5,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.repository.GoalRepository
+import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
 import javax.inject.Inject
@@ -17,6 +18,7 @@ class SummaryPresenter @Inject constructor(
         val usageRepository: UsageRepository,
         val goalRepository: GoalRepository,
         val streakRepository: StreakRepository,
+        val pointsRepository: PointsRepository,
         val disposables: CompositeDisposable) {
 
   init {
@@ -25,6 +27,7 @@ class SummaryPresenter @Inject constructor(
     averageDailyUsage()
     currentStreak()
     totalUsage()
+    totalPoints()
     usageTrend()
     currentGoal()
   }
@@ -38,6 +41,20 @@ class SummaryPresenter @Inject constructor(
             .subscribe {
               view?.setCurrentSession(it)
             }
+    disposables.add(disposable)
+  }
+
+  fun totalPoints() {
+    val disposable = pointsRepository
+            .totalPoints()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ totalPoints ->
+              view?.setTotalPoints(totalPoints)
+            }, { error ->
+              error.printStackTrace()
+            })
+
     disposables.add(disposable)
   }
 
