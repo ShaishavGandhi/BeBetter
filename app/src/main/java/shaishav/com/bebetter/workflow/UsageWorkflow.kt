@@ -1,8 +1,15 @@
 package shaishav.com.bebetter.workflow
 
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import shaishav.com.bebetter.data.models.Goal
+import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.data.repository.GoalRepository
+import shaishav.com.bebetter.data.repository.PointsRepository
+import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
 import java.util.*
 import javax.inject.Inject
@@ -10,7 +17,10 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 1/10/18.
  */
-class UsageWorkflow @Inject constructor(private val usageRepository: UsageRepository, private val goalRepository: GoalRepository) {
+class UsageWorkflow @Inject constructor(private val usageRepository: UsageRepository,
+                                        private val goalRepository: GoalRepository,
+                                        private val pointsRepository: PointsRepository,
+                                        private val streakRepository: StreakRepository) {
 
   /**
    * Workflow to go through when a phone is locked.
@@ -47,14 +57,15 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
 
         // Add it up to get final daily usage
         val usage = Usage(0, previousDay.timeInMillis, dayUsage + currentSessionTime)
+
+        // Add points
+        addPoints(previousDay.timeInMillis, usage)
+
         // Store in database
         usageRepository.insertSession(usage)
                 .toObservable()
                 .subscribeOn(Schedulers.io())
                 .subscribe({}, { _ -> })
-
-        // TODO: Add points logic here
-        addPoints()
 
 
         // Fast forward to the current date to calculate the session of the new day
@@ -123,6 +134,10 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       // the previous session in database
       val currentSession = usageRepository.rawDailyUsage()
       val usage = Usage(0, lastUnlockedTime, currentSession)
+
+      // Add points
+      addPoints(lastUnlockedTime, usage)
+
       usageRepository.insertSession(usage)
               .subscribeOn(Schedulers.io())
               .subscribe({}, { _ -> })
@@ -139,9 +154,43 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
   }
 
   /**
-   * 
+   * Add points based on their usage, goal and streak.
+   *
+   * @param timeInMillis long representation of current day
+   * @param usage Usage of the past day (since this is run after midnight)
+   *
    */
-  fun addPoints() {
+  fun addPoints(timeInMillis: Long, usage: Usage) {
+    val observable = Observable.combineLatest(goalRepository.goal(timeInMillis), streakRepository.currentStreak(), BiFunction { goal: Goal, streak: Long ->
+      // Default points
+      var pointsAmt = 0
+      var extraPoints = 0.0
+      if (goal.goal > usage.usage) {
+        // Usage is less than goal. Hooray! Give them 50 points
+        pointsAmt += 50
+        // These are extra points you get based on your goal
+        // and streak. We want to reward people with lower
+        // goals and more difference in their usage and goal
+        extraPoints = (goal.goal - usage.usage).toDouble() / (goal.goal * goal.goal).toDouble()
+        extraPoints *= Math.pow(10.0, 9.0)
+      }
 
+      // If they have a streak then reward them for that
+      if (streak > 0) {
+        extraPoints *= streak.toInt()
+      }
+
+      val point = Point(id = 0, date = timeInMillis, points = pointsAmt + Math.round(extraPoints).toInt())
+
+      return@BiFunction point
+    })
+
+    observable.flatMapCompletable { point ->
+      return@flatMapCompletable pointsRepository.save(point)
+    }.subscribe({
+    }, { error ->
+      error.printStackTrace()
+    })
   }
+
 }

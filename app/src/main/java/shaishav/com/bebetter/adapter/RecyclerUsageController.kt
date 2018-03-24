@@ -72,6 +72,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     addCurrentGoal()
     addUsageTrend()
     addCurrentStreak()
+    addTotalPoints()
     addAverageDailyUsage()
     addTotalUsage()
   }

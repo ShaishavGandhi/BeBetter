@@ -22,6 +22,10 @@ import javax.inject.Inject
     return databaseManager.goalOnDay(Date().time)
   }
 
+  fun goal(time: Long): Observable<Goal> {
+    return databaseManager.goalOnDay(time)
+  }
+
   fun cloneGoal(date: Long): Completable {
     return currentGoal()
             .flatMapCompletable { currentGoal ->

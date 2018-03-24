@@ -1,5 +1,6 @@
 package shaishav.com.bebetter.data.repository
 
+import io.reactivex.Completable
 import io.reactivex.Observable
 import shaishav.com.bebetter.data.database.PointsDatabaseManager
 import shaishav.com.bebetter.data.models.Point
@@ -16,6 +17,10 @@ class PointsRepository @Inject constructor(private val databaseManager: PointsDa
 
   fun totalPoints(): Observable<Long> {
     return databaseManager.totalPoints()
+  }
+
+  fun save(point: Point): Completable {
+    return databaseManager.savePoint(point)
   }
 
 }
