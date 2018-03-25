@@ -93,6 +93,10 @@ class PickGoalController: Controller(), PickGoalContract {
 
   private fun initListeners() {
     nextButton.setOnClickListener {
+      if (goalEditText.text.toString().isEmpty()) {
+        Toast.makeText(activity, activity?.getString(R.string.goal_error), Toast.LENGTH_SHORT).show()
+        return@setOnClickListener
+      }
       val minutes = goalEditText.text.toString()
       presenter.saveGoal(Calendar.getInstance().timeInMillis, minutes.toInt())
     }

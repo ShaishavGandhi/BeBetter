@@ -21,6 +21,7 @@
     <string name="current_streak">Current Streak</string>
     <string name="day">days</string>
     <string name="welcome">Welcome To BeBetter</string>
+    <string name="goal_error">Please enter a goal in minutes</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank controller</string>
