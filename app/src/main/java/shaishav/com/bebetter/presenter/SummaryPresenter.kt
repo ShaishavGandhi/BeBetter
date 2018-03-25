@@ -66,7 +66,7 @@ class SummaryPresenter @Inject constructor(
             .subscribe({ currentStreak ->
               view?.setCurrentStreak(currentStreak)
             }, { throwable ->
-
+              throwable.printStackTrace()
             })
     disposables.add(disposable)
   }
