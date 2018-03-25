@@ -22,7 +22,6 @@ class BootReceiver : BroadcastReceiver() {
     (context.applicationContext as BBApplication)
             .addServiceComponent()
             .inject(this)
-    Toast.makeText(context, "Started", Toast.LENGTH_SHORT).show()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       context.startForegroundService(Intent(context, UsageService::class.java))
     } else {
