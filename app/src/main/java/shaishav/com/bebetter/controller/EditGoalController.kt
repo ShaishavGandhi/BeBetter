@@ -44,6 +44,10 @@ class EditGoalController: Controller(), PickGoalContract {
 
   private fun initListeners() {
     nextButton.setOnClickListener {
+      if (goalEditText.text.toString().isEmpty()) {
+        Toast.makeText(activity, activity?.getString(R.string.goal_error), Toast.LENGTH_SHORT).show()
+        return@setOnClickListener
+      }
       val minutes = goalEditText.text.toString()
       val calendar = Calendar.getInstance()
       calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1)
