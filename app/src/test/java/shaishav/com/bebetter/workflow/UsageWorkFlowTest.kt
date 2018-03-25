@@ -2,6 +2,7 @@ package shaishav.com.bebetter.workflow
 
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import io.reactivex.Completable
 import io.reactivex.Observable
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -63,12 +64,14 @@ class UsageWorkFlowTest {
     whenever(goalRepository.goal(currentTime)).thenReturn(Observable.just(sampleGoal))
     whenever(streakRepository.currentStreak()).thenReturn(Observable.just(0))
 
-    workflow.addPoints(currentTime, usage)
-
     var extraPoints = (sampleGoal.goal - usage.usage).toDouble() / (sampleGoal.goal * sampleGoal.goal).toDouble()
     extraPoints *= Math.pow(10.0, 9.0)
     val points = 50 + Math.round(extraPoints).toInt()
     val point = Point(id = 0, date = currentTime, points = points)
+    whenever(pointsRepository.save(point)).thenReturn(Completable.complete())
+
+    workflow.addPoints(currentTime, usage)
+
 
     verify(pointsRepository).save(point)
   }
@@ -82,14 +85,15 @@ class UsageWorkFlowTest {
     whenever(goalRepository.goal(currentTime)).thenReturn(Observable.just(sampleGoal))
     whenever(streakRepository.currentStreak()).thenReturn(Observable.just(streak))
 
-    workflow.addPoints(currentTime, usage)
-
     var extraPoints = (sampleGoal.goal - usage.usage).toDouble() / (sampleGoal.goal * sampleGoal.goal).toDouble()
     extraPoints *= Math.pow(10.0, 9.0)
     extraPoints *= streak
 
     val points = 50 + Math.round(extraPoints).toInt()
     val point = Point(id = 0, date = currentTime, points = points)
+    whenever(pointsRepository.save(point)).thenReturn(Completable.complete())
+
+    workflow.addPoints(currentTime, usage)
 
     verify(pointsRepository).save(point)
   }
@@ -103,14 +107,15 @@ class UsageWorkFlowTest {
     whenever(goalRepository.goal(currentTime)).thenReturn(Observable.just(sampleGoal))
     whenever(streakRepository.currentStreak()).thenReturn(Observable.just(streak))
 
-    workflow.addPoints(currentTime, usage)
-
     var extraPoints = (sampleGoal.goal - usage.usage).toDouble() / (sampleGoal.goal * sampleGoal.goal).toDouble()
     extraPoints *= Math.pow(10.0, 9.0)
     extraPoints *= streak
 
     val points = 50 + Math.round(extraPoints).toInt()
     val point = Point(id = 0, date = currentTime, points = points)
+    whenever(pointsRepository.save(point)).thenReturn(Completable.complete())
+
+    workflow.addPoints(currentTime, usage)
 
     verify(pointsRepository).save(point)
   }
@@ -123,10 +128,11 @@ class UsageWorkFlowTest {
     val sampleGoal = Goal(id = 0, date = currentTime, goal = 200 * 1000 * 60)
     whenever(goalRepository.goal(currentTime)).thenReturn(Observable.just(sampleGoal))
     whenever(streakRepository.currentStreak()).thenReturn(Observable.just(streak))
+    val point = Point(id = 0, date = currentTime, points = 0)
+
+    whenever(pointsRepository.save(point)).thenReturn(Completable.complete())
 
     workflow.addPoints(currentTime, usage)
-
-    val point = Point(id = 0, date = currentTime, points = 0)
 
     verify(pointsRepository).save(point)
   }
