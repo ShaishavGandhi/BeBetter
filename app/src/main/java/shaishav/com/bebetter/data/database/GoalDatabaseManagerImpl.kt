@@ -55,7 +55,7 @@ import javax.inject.Inject
 
 
       val cursor = database.query("select * from ${GoalContract.TABLE_GOAL} where " +
-      " ${GoalContract.COLUMN_DATE} > $lower AND ${GoalContract.COLUMN_DATE} < $higher")
+      " ${GoalContract.COLUMN_DATE} BETWEEN $lower AND $higher")
       if (cursor.count > 0) {
         throw Exception("Goal for current day already exists")
       }

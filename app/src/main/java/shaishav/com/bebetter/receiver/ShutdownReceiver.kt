@@ -15,7 +15,6 @@ import javax.inject.Inject
 class ShutdownReceiver: BroadcastReceiver() {
 
   override fun onReceive(context: Context, intent: Intent) {
-    (context.applicationContext as BBApplication).addServiceComponent().inject(this)
     val serviceIntent = Intent(context, WorkflowService::class.java)
     serviceIntent.action = WorkflowService.ACTION_OFF
     context.startService(serviceIntent)

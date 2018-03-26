@@ -26,8 +26,8 @@ import javax.inject.Inject
     return databaseManager.goalOnDay(time)
   }
 
-  fun cloneGoal(date: Long): Completable {
-    return currentGoal()
+  fun cloneGoal(previousDate: Long, date: Long): Completable {
+    return goal(previousDate)
             .flatMapCompletable { currentGoal ->
               if (isSameDay(Date().time, currentGoal.date)) {
                 return@flatMapCompletable Completable.error(Exception("Goal already exists for that day"))
