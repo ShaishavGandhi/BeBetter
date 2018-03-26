@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/padding_small"
                 android:paddingTop="@dimen/padding_small"
-                android:text="@string/usage_trend"
+                android:text="@string/points_trend"
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
@@ -40,7 +40,7 @@
                 android:layout_marginTop="8dp">
 
                 <view
-                    android:id="@+id/usageChart"
+                    android:id="@+id/pointsChart"
                     class="im.dacer.androidcharts.LineView"
                     android:layout_width="wrap_content"
                     android:layout_height="300dp" />

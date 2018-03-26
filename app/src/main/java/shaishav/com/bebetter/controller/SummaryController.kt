@@ -15,6 +15,7 @@ import shaishav.com.bebetter.R
 import shaishav.com.bebetter.adapter.RecyclerUsageController
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.models.Goal
+import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.modules.SummaryModule
@@ -103,5 +104,9 @@ class SummaryController : Controller(), SummaryContract, SummaryListener {
 
   override fun setTotalPoints(totalPoints: Long) {
     adapter.totalPoints = totalPoints
+  }
+
+  override fun setPoints(points: List<Point>) {
+    adapter.points = points
   }
 }

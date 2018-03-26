@@ -8,6 +8,7 @@ import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -29,6 +30,7 @@ class SummaryPresenter @Inject constructor(
     totalUsage()
     totalPoints()
     usageTrend()
+    pointsTrend()
     currentGoal()
   }
 
@@ -44,6 +46,20 @@ class SummaryPresenter @Inject constructor(
     disposables.add(disposable)
   }
 
+  fun pointsTrend() {
+    val disposable = pointsRepository
+            .points()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ points ->
+              view?.setPoints(points)
+            }, { error ->
+              Timber.e(error)
+            })
+
+    disposables.add(disposable)
+  }
+
   fun totalPoints() {
     val disposable = pointsRepository
             .totalPoints()
@@ -52,7 +68,7 @@ class SummaryPresenter @Inject constructor(
             .subscribe({ totalPoints ->
               view?.setTotalPoints(totalPoints)
             }, { error ->
-              error.printStackTrace()
+              Timber.e(error)
             })
 
     disposables.add(disposable)
@@ -66,7 +82,7 @@ class SummaryPresenter @Inject constructor(
             .subscribe({ currentStreak ->
               view?.setCurrentStreak(currentStreak)
             }, { throwable ->
-              throwable.printStackTrace()
+              Timber.e(throwable)
             })
     disposables.add(disposable)
   }
@@ -76,9 +92,11 @@ class SummaryPresenter @Inject constructor(
             .currentGoal()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { goal ->
+            .subscribe({ goal ->
               view?.setCurrentGoal(goal)
-            }
+            }, { error ->
+              Timber.e(error)
+            })
 
     disposables.add(disposable)
   }
@@ -88,9 +106,11 @@ class SummaryPresenter @Inject constructor(
             .dailyUsage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-              view?.setDailyUsage(it)
-            }
+            .subscribe({ dailyUsage ->
+              view?.setDailyUsage(dailyUsage)
+            }, { error ->
+              Timber.e(error)
+            })
 
     disposables.add(disposable)
   }
@@ -100,9 +120,11 @@ class SummaryPresenter @Inject constructor(
             .averageDailyUsage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe({
               view?.setAverageDaiyUsage(it)
-            }
+            }, { error ->
+              Timber.e(error)
+            })
 
     disposables.add(disposable)
   }
@@ -112,9 +134,11 @@ class SummaryPresenter @Inject constructor(
             .totalUsage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe({
               view?.setTotalUsage(it)
-            }
+            }, { error ->
+              Timber.e(error)
+            })
 
     disposables.add(disposable)
   }
@@ -129,9 +153,11 @@ class SummaryPresenter @Inject constructor(
             .usages()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe({
               view?.setUsages(it)
-            }
+            }, { error ->
+              Timber.e(error)
+            })
 
     disposables.add(disposable)
   }
@@ -141,9 +167,11 @@ class SummaryPresenter @Inject constructor(
             .goals()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe({
               view?.setGoals(it)
-            }
+            }, { error ->
+              Timber.e(error)
+            })
 
     disposables.add(disposable)
   }
