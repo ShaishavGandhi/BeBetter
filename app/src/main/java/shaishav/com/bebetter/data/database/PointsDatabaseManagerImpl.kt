@@ -12,7 +12,8 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 12/25/17.
  */
-class PointsDatabaseManagerImpl @Inject constructor(val contentResolver: BriteContentResolver, val database: BriteDatabase) : PointsDatabaseManager {
+class PointsDatabaseManagerImpl @Inject constructor(private val contentResolver: BriteContentResolver,
+                                                    private val database: BriteDatabase) : PointsDatabaseManager {
 
   override fun points(): Observable<List<Point>> {
     return contentResolver.createQuery(PointsProvider.CONTENT_URI, null, null, null,

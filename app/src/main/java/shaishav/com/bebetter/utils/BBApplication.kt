@@ -13,6 +13,7 @@ import shaishav.com.bebetter.di.components.*
 import shaishav.com.bebetter.di.modules.AppModule
 import shaishav.com.bebetter.di.modules.PickGoalModule
 import shaishav.com.bebetter.di.modules.SummaryModule
+import shaishav.com.bebetter.logging.ReleaseTree
 import shaishav.com.bebetter.service.UsageService
 import timber.log.Timber
 
@@ -39,6 +40,8 @@ class BBApplication : Application(), DependencyGraph {
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
     }
+
+    Timber.plant(ReleaseTree())
 
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
