@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
@@ -41,10 +42,13 @@ class UsageService : Service() {
     val mReceiver = PhoneUnlockedReceiver()
     registerReceiver(mReceiver, filter)
 
-    val disposable = statsRepository.getStat().subscribe { stat ->
-      val notification = notificationHelper.createNotification(stat.usage, stat.goal)
-      notificationHelper.updateNotification(notification)
-    }
+    val disposable = statsRepository.getStat()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { stat ->
+              val notification = notificationHelper.createNotification(stat.usage, stat.goal)
+              notificationHelper.updateNotification(notification)
+            }
 
     disposables.add(disposable)
 

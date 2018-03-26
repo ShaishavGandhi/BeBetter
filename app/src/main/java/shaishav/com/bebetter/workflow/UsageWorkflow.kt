@@ -42,7 +42,9 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // The day has passed between last lock and unlock
 
         // Copy over previous goal
-        goalRepository.cloneGoal(lockTime).subscribe({}, { _ -> })
+        goalRepository.cloneGoal(lockTime)
+                .subscribeOn(Schedulers.io())
+                .subscribe({}, { _ -> })
 
         // Construct the last minute of yesterday
         val previousDay = Calendar.getInstance()
@@ -143,7 +145,9 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
               .subscribe({}, { _ -> })
 
       // Clone the goal
-      goalRepository.cloneGoal(unlockTime).subscribe({}, { _ -> })
+      goalRepository.cloneGoal(unlockTime)
+              .subscribeOn(Schedulers.io())
+              .subscribe({}, { _ -> })
 
       // Reset session data to zero
       usageRepository.storeCurrentDayUsage(0)
@@ -187,7 +191,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
 
     observable.flatMapCompletable { point ->
       return@flatMapCompletable pointsRepository.save(point)
-    }.subscribe({
+    }.subscribeOn(Schedulers.io()).subscribe({
     }, { error ->
       error.printStackTrace()
     })

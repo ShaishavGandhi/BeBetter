@@ -46,6 +46,7 @@
         </receiver>
 
         <service android:name=".service.UsageService"/>
+        <service android:name=".service.WorkflowService"/>
         <provider
             android:name=".data.providers.GoalProvider"
             android:authorities="shaishav.com.bebetter.goal"
