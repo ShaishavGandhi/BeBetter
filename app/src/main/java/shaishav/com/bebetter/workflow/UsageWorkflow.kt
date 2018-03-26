@@ -42,7 +42,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // The day has passed between last lock and unlock
 
         // Copy over previous goal
-        goalRepository.cloneGoal(lockTime)
+        goalRepository.cloneGoal(unlockTime, lockTime)
                 .subscribeOn(Schedulers.io())
                 .subscribe({}, { _ -> })
 
@@ -145,7 +145,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
               .subscribe({}, { _ -> })
 
       // Clone the goal
-      goalRepository.cloneGoal(unlockTime)
+      goalRepository.cloneGoal(lastUnlockedTime, unlockTime)
               .subscribeOn(Schedulers.io())
               .subscribe({}, { _ -> })
 
@@ -165,7 +165,8 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
    *
    */
   fun addPoints(timeInMillis: Long, usage: Usage) {
-    val observable = Observable.combineLatest(goalRepository.goal(timeInMillis), streakRepository.currentStreak(), BiFunction { goal: Goal, streak: Long ->
+    val observable = Observable.combineLatest(goalRepository.goal(timeInMillis).firstElement().toObservable(),
+            streakRepository.currentStreak(), BiFunction { goal: Goal, streak: Long ->
       // Default points
       var pointsAmt = 0
       var extraPoints = 0.0
@@ -189,7 +190,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       return@BiFunction point
     })
 
-    observable.flatMapCompletable { point ->
+    observable.flatMapCompletable { point: Point ->
       return@flatMapCompletable pointsRepository.save(point)
     }.subscribeOn(Schedulers.io()).subscribe({
     }, { error ->
