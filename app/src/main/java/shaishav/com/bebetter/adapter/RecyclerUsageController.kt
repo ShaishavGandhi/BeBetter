@@ -4,8 +4,10 @@ import android.content.Context
 import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Goal
+import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.listener.SummaryListener
+import shaishav.com.bebetter.models.PointsTrendModel_
 import shaishav.com.bebetter.models.UsageCardModel_
 import shaishav.com.bebetter.models.UsageTrendModel_
 import shaishav.com.bebetter.utils.ResourceManager
@@ -54,6 +56,12 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
       requestModelBuild()
     }
 
+  var points: List<Point> = ArrayList()
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   var currentStreak: Long = -1
     set(value) {
       field = value
@@ -73,6 +81,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     addUsageTrend()
     addCurrentStreak()
     addTotalPoints()
+    addPointsStreak()
     addAverageDailyUsage()
     addTotalUsage()
   }
@@ -160,6 +169,14 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     if (usages.isNotEmpty() && goals.isNotEmpty()) {
       UsageTrendModel_(usages, goals)
               .id("usage_trend")
+              .addTo(this)
+    }
+  }
+
+  private fun addPointsStreak() {
+    if (points.isNotEmpty()) {
+      PointsTrendModel_(points)
+              .id("points_trend")
               .addTo(this)
     }
   }
