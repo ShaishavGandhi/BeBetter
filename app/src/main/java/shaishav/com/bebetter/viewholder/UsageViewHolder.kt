@@ -10,9 +10,9 @@ import shaishav.com.bebetter.databinding.ListItemUsageCardBinding
  */
 class UsageViewHolder : EpoxyHolder() {
 
-    lateinit var binding: ListItemUsageCardBinding
+    var binding: ListItemUsageCardBinding? = null
 
-    override fun bindView(itemView: View?) {
+    override fun bindView(itemView: View) {
         binding = DataBindingUtil.bind(itemView)
     }
 }
