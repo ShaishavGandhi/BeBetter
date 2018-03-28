@@ -22,15 +22,17 @@ abstract class UsageCardModel(val header: String, val usage: Long, val footer: S
     super.bind(holder)
 
     val binding = holder.binding
-    with(binding) {
-      title = header
-      this.usage = this@UsageCardModel.usage.toString()
-      this.footer = this@UsageCardModel.footer
+    binding?.let { binding ->
+      with(binding) {
+        title = header
+        this.usage = this@UsageCardModel.usage.toString()
+        this.footer = this@UsageCardModel.footer
+      }
     }
 
-    val exoFont = ResourcesCompat.getFont(binding.root.context, R.font.exo_2)
+    val exoFont = ResourcesCompat.getFont(binding?.root?.context!!, R.font.exo_2)
 
-    holder.binding.value.apply {
+    holder.binding?.value?.apply {
       setCharacterList(TickerUtils.getDefaultNumberList())
       animationDuration = 800
       text = usage.toString()
@@ -39,16 +41,16 @@ abstract class UsageCardModel(val header: String, val usage: Long, val footer: S
 
     if (listener != null) {
       listener?.let { callback ->
-        binding.icon.visibility = View.VISIBLE
-        binding.icon.setOnClickListener {
+        binding?.icon?.visibility = View.VISIBLE
+        binding?.icon?.setOnClickListener {
           callback.onEditGoal()
         }
       }
     } else {
-      binding.icon.visibility = View.GONE
+      binding?.icon?.visibility = View.GONE
     }
 
-    binding.executePendingBindings()
+    binding?.executePendingBindings()
   }
 
   fun addListener(listener: SummaryListener): UsageCardModel {

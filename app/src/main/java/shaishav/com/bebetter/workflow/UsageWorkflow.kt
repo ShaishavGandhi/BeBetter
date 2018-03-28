@@ -11,6 +11,7 @@ import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -42,7 +43,9 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // The day has passed between last lock and unlock
 
         // Copy over previous goal
-        goalRepository.cloneGoal(lockTime).subscribe({}, { _ -> })
+        goalRepository.cloneGoal(unlockTime, lockTime)
+                .subscribeOn(Schedulers.io())
+                .subscribe({}, { _ -> })
 
         // Construct the last minute of yesterday
         val previousDay = Calendar.getInstance()
@@ -143,7 +146,9 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
               .subscribe({}, { _ -> })
 
       // Clone the goal
-      goalRepository.cloneGoal(unlockTime).subscribe({}, { _ -> })
+      goalRepository.cloneGoal(lastUnlockedTime, unlockTime)
+              .subscribeOn(Schedulers.io())
+              .subscribe({}, { _ -> })
 
       // Reset session data to zero
       usageRepository.storeCurrentDayUsage(0)
@@ -161,7 +166,8 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
    *
    */
   fun addPoints(timeInMillis: Long, usage: Usage) {
-    val observable = Observable.combineLatest(goalRepository.goal(timeInMillis), streakRepository.currentStreak(), BiFunction { goal: Goal, streak: Long ->
+    val observable = Observable.combineLatest(goalRepository.goal(timeInMillis).firstElement().toObservable(),
+            streakRepository.currentStreak(), BiFunction { goal: Goal, streak: Long ->
       // Default points
       var pointsAmt = 0
       var extraPoints = 0.0
@@ -185,11 +191,11 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       return@BiFunction point
     })
 
-    observable.flatMapCompletable { point ->
+    observable.flatMapCompletable { point: Point ->
       return@flatMapCompletable pointsRepository.save(point)
-    }.subscribe({
+    }.subscribeOn(Schedulers.io()).subscribe({
     }, { error ->
-      error.printStackTrace()
+      Timber.e(error)
     })
   }
 

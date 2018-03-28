@@ -12,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
+import org.mockito.Mockito.timeout
 import org.mockito.MockitoAnnotations
 import shaishav.com.bebetter.data.database.GoalDatabaseManager
 import shaishav.com.bebetter.data.models.Goal
@@ -33,14 +34,15 @@ class GoalRepositoryUTest {
 
   @Ignore @Test fun testCloneGoal() {
     val goal = Goal(id = 0, date = Date().time,goal = 220 * 1000 * 60)
-    whenever(databaseManager.goalOnDay(Date().time)).thenReturn(Observable.just(goal))
+    val time = Date().time
+    whenever(databaseManager.goalOnDay(time)).thenReturn(Observable.just(goal))
     whenever(databaseManager.saveGoal(any())).thenReturn(Completable.complete())
 
-    goalRepository.cloneGoal(Date().time)
+    goalRepository.cloneGoal(time, Date().time)
             .test()
             .assertNoErrors()
 
-    verify(databaseManager).saveGoal(any())
+    verify(databaseManager, timeout(200)).saveGoal(any())
   }
 
   @Test fun testIsSameDay_sameDay_returnsTrue() {
