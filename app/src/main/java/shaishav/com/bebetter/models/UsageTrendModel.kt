@@ -42,8 +42,8 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
     data.add(yAxes)
     data.add(threshold)
 
-    binding.usageChart.setBottomTextList(xAxes)
-    binding.usageChart.setDataList(data)
+    binding?.usageChart?.setBottomTextList(xAxes)
+    binding?.usageChart?.setDataList(data)
   }
 
   override fun getDefaultLayout(): Int {
