@@ -10,7 +10,7 @@ import shaishav.com.bebetter.databinding.ListItemUsageTrendBinding
  */
 class UsageTrendViewHolder: EpoxyHolder() {
 
-    lateinit var binding: ListItemUsageTrendBinding
+    var binding: ListItemUsageTrendBinding? = null
 
     override fun bindView(itemView: View) {
         binding = DataBindingUtil.bind(itemView)

@@ -11,6 +11,7 @@ import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -194,7 +195,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       return@flatMapCompletable pointsRepository.save(point)
     }.subscribeOn(Schedulers.io()).subscribe({
     }, { error ->
-      error.printStackTrace()
+      Timber.e(error)
     })
   }
 

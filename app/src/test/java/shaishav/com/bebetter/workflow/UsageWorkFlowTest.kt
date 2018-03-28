@@ -11,6 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
+import org.mockito.Mockito.timeout
 import org.mockito.MockitoAnnotations
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Point
@@ -73,7 +74,7 @@ class UsageWorkFlowTest {
     workflow.addPoints(currentTime, usage)
 
 
-    verify(pointsRepository).save(point)
+    verify(pointsRepository, timeout(200)).save(point)
   }
 
   @Test fun testAddPointsWithAchievedGoalWithStreak() {
@@ -95,7 +96,7 @@ class UsageWorkFlowTest {
 
     workflow.addPoints(currentTime, usage)
 
-    verify(pointsRepository).save(point)
+    verify(pointsRepository, timeout(200)).save(point)
   }
 
   @Test fun testAddPointsWithAlmostAchievedGoalWithStreak() {
@@ -117,7 +118,7 @@ class UsageWorkFlowTest {
 
     workflow.addPoints(currentTime, usage)
 
-    verify(pointsRepository).save(point)
+    verify(pointsRepository, timeout(200)).save(point)
   }
 
   @Test fun testAddPointsWithNotAchievedGoal() {
@@ -134,6 +135,6 @@ class UsageWorkFlowTest {
 
     workflow.addPoints(currentTime, usage)
 
-    verify(pointsRepository).save(point)
+    verify(pointsRepository, timeout(200)).save(point)
   }
 }

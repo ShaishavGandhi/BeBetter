@@ -75,7 +75,7 @@ dependencies {
     implementation rootProject.ext.rxAndroid
     implementation rootProject.ext.conductor
     kapt rootProject.ext.daggerCompiler
-    kapt 'com.android.databinding:compiler:3.0.1'
+    kapt 'com.android.databinding:compiler:3.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation rootProject.ext.sqlbrite
     implementation rootProject.ext.rxPreferences

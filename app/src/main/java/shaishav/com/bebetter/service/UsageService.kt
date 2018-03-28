@@ -48,6 +48,7 @@ class UsageService : Service() {
             .subscribe { stat ->
               val notification = notificationHelper.createNotification(stat.usage, stat.goal)
               notificationHelper.updateNotification(notification)
+              disposables.dispose()
             }
 
     disposables.add(disposable)

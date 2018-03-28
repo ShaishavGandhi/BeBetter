@@ -22,7 +22,7 @@ import java.util.*
     val yAxes = ArrayList<Int>()
 
 
-    for (point in points) {
+    for (point in points.reversed()) {
       val date = Date(point.date)
       xAxes.add(Constants.getFormattedDate(date))
       yAxes.add(point.points)
@@ -31,8 +31,8 @@ import java.util.*
     val data = ArrayList<ArrayList<Int>>()
     data.add(yAxes)
 
-    binding.pointsChart.setBottomTextList(xAxes)
-    binding.pointsChart.setDataList(data)
+    binding?.pointsChart?.setBottomTextList(xAxes)
+    binding?.pointsChart?.setDataList(data)
   }
 
   override fun getDefaultLayout(): Int {
