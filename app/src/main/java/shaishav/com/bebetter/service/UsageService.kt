@@ -57,6 +57,10 @@ class UsageService : Service() {
     startForeground(1337, notification)
   }
 
+  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    return START_STICKY
+  }
+
   override fun onDestroy() {
     stopForeground(true)
     disposables.dispose()
