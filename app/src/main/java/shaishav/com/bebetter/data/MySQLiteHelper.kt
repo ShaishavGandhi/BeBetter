@@ -38,10 +38,8 @@ class MySQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
   }
 
   companion object {
-
-
-    private val DATABASE_NAME = "bebetter.db"
-    private val DATABASE_VERSION = 1
+    val DATABASE_NAME = "bebetter.db"
+    val DATABASE_VERSION = 1
   }
 
 }
