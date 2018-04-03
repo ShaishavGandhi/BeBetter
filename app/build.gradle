@@ -44,6 +44,8 @@ android {
         targetSdkVersion 26
         versionCode 6
         versionName "0.1.5"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     lintOptions {
@@ -110,9 +112,12 @@ dependencies {
         transitive = true;
     }
 
-    testImplementation 'org.mockito:mockito-core:2.15.0'
-    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
-    testImplementation "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
+    testImplementation rootProject.ext.mockito_core
+    testImplementation rootProject.ext.mockito_kotlin
+    testImplementation rootProject.ext.mockito_kotlin_1_5
+
+    androidTestImplementation rootProject.ext.mockito_core
+    androidTestImplementation rootProject.ext.espresso_core
 
 }
 
