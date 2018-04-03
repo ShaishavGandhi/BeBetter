@@ -71,10 +71,7 @@ class EditGoalController: Controller(), PickGoalContract {
   }
 
   override fun homeScreen() {
-    router.pushController(
-            RouterTransaction.with(SummaryController())
-                    .pushChangeHandler(AutoTransitionChangeHandler())
-                    .popChangeHandler(AutoTransitionChangeHandler()))
+    router.popCurrentController()
   }
 
   override fun error() {
