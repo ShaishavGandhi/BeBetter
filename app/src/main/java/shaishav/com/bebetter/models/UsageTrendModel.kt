@@ -41,16 +41,16 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
 
 
     for (index in usages.size - 1 downTo 0) {
-      if (index >= usages.size || index > goals.size - 1) {
-        break
-      }
       val usage = usages[index]
+      yAxes.add(usage.usage.toInt() / (1000 * 60))
+    }
+
+    for (index in goals.size - 1 downTo 0) {
       val goal = goals[index]
 
-      val date = Date(usage.date)
+      val date = Date(goal.date)
       xAxes.add(Constants.getFormattedDate(date))
       threshold.add(goal.goal.toInt() / (1000 * 60))
-      yAxes.add(usage.usage.toInt() / (1000 * 60))
     }
 
     val data = ArrayList<ArrayList<Int>>()
