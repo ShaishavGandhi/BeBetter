@@ -36,7 +36,8 @@ interface UsageDatabaseManager {
 
   /**
    * Returns a hot observable of the list
-   * of all Usage in user's history.
+   * of all Usage in user's history from
+   * latest -> earliest.
    *
    * @return Observable<List<Usage>>
    */
