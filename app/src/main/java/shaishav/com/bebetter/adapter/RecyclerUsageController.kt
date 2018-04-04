@@ -182,7 +182,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
 
   private fun addUsageTrend() {
     if (usages.isNotEmpty() && goals.isNotEmpty()) {
-      UsageTrendModel_(usages, goals)
+      UsageTrendModel_(usages, goals.asReversed())
               .id("usage_trend")
               .addTo(this)
     }
