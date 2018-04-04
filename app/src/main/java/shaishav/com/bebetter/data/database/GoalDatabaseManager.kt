@@ -27,7 +27,7 @@ interface GoalDatabaseManager {
 
   /**
    * Returns a hot observable of the user's
-   * entire Goal history
+   * entire Goal history from earliest to latest
    *
    * @return Observable<List<Goal>>
    */
