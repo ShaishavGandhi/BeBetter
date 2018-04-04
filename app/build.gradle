@@ -42,7 +42,7 @@ android {
         applicationId "shaishav.com.bebetter"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 7
+        versionCode 8
         versionName "0.1.6"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
