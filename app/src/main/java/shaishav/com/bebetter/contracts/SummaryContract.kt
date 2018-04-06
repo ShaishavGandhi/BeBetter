@@ -35,8 +35,6 @@ interface SummaryContract {
   fun setCurrentStreak(currentStreak: Long)
   fun setTotalPoints(totalPoints: Long)
   fun setPoints(points: List<Point>)
-  fun setLevel(level: Level) {
-
-  }
+  fun setLevel(level: Level)
 
 }
