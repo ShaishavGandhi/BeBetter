@@ -18,6 +18,7 @@ package shaishav.com.bebetter.data.repository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import shaishav.com.bebetter.data.database.PointsDatabaseManager
+import shaishav.com.bebetter.data.models.Level
 import shaishav.com.bebetter.data.models.Point
 import javax.inject.Inject
 
@@ -36,6 +37,25 @@ class PointsRepository @Inject constructor(private val databaseManager: PointsDa
 
   fun save(point: Point): Completable {
     return databaseManager.savePoint(point)
+  }
+
+  fun level(): Observable<Level> {
+    return databaseManager.totalPoints()
+            .flatMap { points ->
+              return@flatMap when(points) {
+                in 0..999 -> Observable.just(Level.BEGINNER)
+                in 1000..2499 -> Observable.just(Level.APPRENTICE)
+                in 2499..4999 -> Observable.just(Level.INTERMEDIATE)
+                in 5000..7499 -> Observable.just(Level.PRO)
+                in 7500..9999 -> Observable.just(Level.EXPERT)
+                in 10000..19999 -> Observable.just(Level.MASTER)
+                in 20000..49999 -> Observable.just(Level.LEGEND)
+                in 50000..9999999999 -> Observable.just(Level.ULTRA_LEGEND)
+                else -> {
+                  Observable.just(Level.BEGINNER)
+                }
+              }
+            }
   }
 
 }
