@@ -47,6 +47,21 @@ class SummaryPresenter @Inject constructor(
     usageTrend()
     pointsTrend()
     currentGoal()
+    level()
+  }
+
+  fun level() {
+    val disposable = pointsRepository
+            .level()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({level ->
+              view?.setLevel(level)
+            }, { error ->
+              Timber.e(error)
+            })
+
+    disposables.add(disposable)
   }
 
 
