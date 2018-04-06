@@ -19,6 +19,7 @@ import android.content.Context
 import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Goal
+import shaishav.com.bebetter.data.models.Level
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.listener.SummaryListener
@@ -89,6 +90,12 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     requestModelBuild()
   }
 
+  var level: Level? = null
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
     addCurrentSessionModel()
     addDailyUsage()
@@ -96,6 +103,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     addUsageTrend()
     addCurrentStreak()
     addTotalPoints()
+    addLevel()
     addPointsStreak()
     addAverageDailyUsage()
     addTotalUsage()
@@ -178,6 +186,10 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
               .id("total_points")
               .addTo(this)
     }
+  }
+
+  private fun addLevel() {
+
   }
 
   private fun addUsageTrend() {
