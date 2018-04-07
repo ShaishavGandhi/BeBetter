@@ -45,6 +45,7 @@ android {
         versionCode 9
         versionName "0.1.6"
 
+        resConfigs "en"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -62,7 +63,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.prod
         }
@@ -88,7 +91,6 @@ dependencies {
     implementation rootProject.ext.cardView
     implementation rootProject.ext.recyclerView
     implementation rootProject.ext.gson
-    implementation rootProject.ext.picasso
     implementation rootProject.ext.stetho
     testImplementation rootProject.ext.junit
     implementation rootProject.ext.dagger
