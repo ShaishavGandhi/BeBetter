@@ -15,3 +15,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn android.support.**
+-dontwarn com.google.code.**
+-dontwarn shaishav.com.**
+
+-keep class shaishav.com.bebetter.** { *; }
+-keep class javax.**  { public *; }
+-keep class com.airbnb.epoxy.** { *; }
+-keep interface com.airbnb.epoxy.** { *; }
+-keep class kotlin.jvm.internal.** { *; }
+-dontwarn kotlin.reflect.jvm.internal.**
