@@ -13,16 +13,17 @@
  *  and limitations under the License.
  */
 
-package shaishav.com.bebetter;
+package shaishav.com.bebetter.data.models
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+enum class Level {
 
-/**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
- */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
-    }
+  BEGINNER,
+  APPRENTICE,
+  INTERMEDIATE,
+  PRO,
+  EXPERT,
+  MASTER,
+  LEGEND,
+  ULTRA_LEGEND
+
 }
