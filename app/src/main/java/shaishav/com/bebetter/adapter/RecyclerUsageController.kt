@@ -23,6 +23,7 @@ import shaishav.com.bebetter.data.models.Level
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.listener.SummaryListener
+import shaishav.com.bebetter.models.LevelModel_
 import shaishav.com.bebetter.models.PointsTrendModel_
 import shaishav.com.bebetter.models.UsageCardModel_
 import shaishav.com.bebetter.models.UsageTrendModel_
@@ -189,7 +190,11 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
   }
 
   private fun addLevel() {
-
+    level?.let { level ->
+      LevelModel_(level)
+              .id("level_$level")
+              .addTo(this)
+    }
   }
 
   private fun addUsageTrend() {

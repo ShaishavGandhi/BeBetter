@@ -39,9 +39,17 @@
     <string name="goal_error">Please enter a goal in minutes</string>
     <string name="usage_trend">Usage Trend</string>
     <string name="points_trend">Points Trend</string>
+    <string name="level_heading">Experience Level</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank controller</string>
+    <string name="beginner">Beginner</string>
+    <string name="apprentice">Apprentice</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="pro">Pro</string>
+    <string name="expert">Expert</string>
+    <string name="master">Master</string>
+    <string name="legend">Legend</string>
+    <string name="ultra_legend">Ultra Legend</string>
+
     <string name="title_activity_settings">Settings</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
