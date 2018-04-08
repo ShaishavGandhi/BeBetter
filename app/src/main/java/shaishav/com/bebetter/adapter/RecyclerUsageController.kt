@@ -15,7 +15,6 @@
 
 package shaishav.com.bebetter.adapter
 
-import android.content.Context
 import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Goal
@@ -184,7 +183,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
 
     if (totalPoints > -1) {
       UsageCardModel_(header, totalPoints, footer)
-              .id("total_points")
+              .id("total_points_$totalPoints")
               .addTo(this)
     }
   }
@@ -200,7 +199,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
   private fun addUsageTrend() {
     if (usages.isNotEmpty() && goals.isNotEmpty()) {
       UsageTrendModel_(usages, goals.asReversed())
-              .id("usage_trend")
+              .id("usage_trend${usages.size}_${goals.size}")
               .addTo(this)
     }
   }
@@ -208,7 +207,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
   private fun addPointsStreak() {
     if (points.isNotEmpty()) {
       PointsTrendModel_(points)
-              .id("points_trend")
+              .id("points_trend_${points.size}")
               .addTo(this)
     }
   }
