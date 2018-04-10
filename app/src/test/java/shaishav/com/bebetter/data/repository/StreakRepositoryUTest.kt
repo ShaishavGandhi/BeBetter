@@ -89,7 +89,7 @@ class StreakRepositoryUTest {
   }
 
   @Test fun testCurrentStreak_twoStreak() {
-    val goals = GoalSampleData.getSampleGoals(2)
+    val goals = GoalSampleData.getSampleGoals(3)
     whenever(goalRepository.goals()).thenReturn(Observable.just(goals))
 
     val calendar = Calendar.getInstance()
