@@ -47,7 +47,7 @@ public class GoalProvider extends ContentProvider {
   static final String URL = "content://" + PROVIDER_NAME + "/" + GoalContract.TABLE_GOAL;
   public static final Uri CONTENT_URI = Uri.parse(URL);
 
-  public static String QUERY_SORT_ORDER = GoalContract.COLUMN_DATE + " ASC";
+  public static String QUERY_SORT_ORDER = GoalContract.COLUMN_DATE + " DESC";
   public static String QUERY_SELECTION_ARGS_GOAL_RANGE = GoalContract.COLUMN_DATE + " > ? AND " + GoalContract.COLUMN_DATE +
           " < ?";
 
