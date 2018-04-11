@@ -82,16 +82,12 @@ class SummaryController : Controller(), SummaryContract, SummaryListener {
   override fun onEditGoal() {
     router.pushController(
             RouterTransaction.with(EditGoalController())
-                    .pushChangeHandler(AutoTransitionChangeHandler())
-                    .popChangeHandler(AutoTransitionChangeHandler()))
+                    .pushChangeHandler(FadeChangeHandler())
+                    .popChangeHandler(FadeChangeHandler()))
   }
 
   override fun setAverageDaiyUsage(usage: Long) {
     adapter.averageDailyUsage = usage
-  }
-
-  override fun setCurrentSession(usage: Long) {
-    adapter.currentUsage = usage
   }
 
   override fun setDailyUsage(usage: Long) {

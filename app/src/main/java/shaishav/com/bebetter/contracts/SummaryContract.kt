@@ -27,7 +27,6 @@ interface SummaryContract {
 
   fun setAverageDaiyUsage(usage: Long)
   fun setDailyUsage(usage: Long)
-  fun setCurrentSession(usage: Long)
   fun setTotalUsage(usage: Long)
   fun setGoals(goals: List<Goal>)
   fun setUsages(usages: List<Usage>)
