@@ -118,7 +118,7 @@ class PickGoalController: Controller(), PickGoalContract {
   }
 
   override fun homeScreen() {
-    router.pushController(
+    router.setRoot(
             RouterTransaction.with(SummaryController())
                     .pushChangeHandler(FadeChangeHandler())
                     .popChangeHandler(FadeChangeHandler()))
