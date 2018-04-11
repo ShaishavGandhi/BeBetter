@@ -38,7 +38,6 @@ class SummaryPresenter @Inject constructor(
         val disposables: CompositeDisposable) {
 
   init {
-    currentSession()
     dailyUsage()
     averageDailyUsage()
     currentStreak()
@@ -61,18 +60,6 @@ class SummaryPresenter @Inject constructor(
               Timber.e(error)
             })
 
-    disposables.add(disposable)
-  }
-
-
-  fun currentSession() {
-    val disposable = usageRepository
-            .currentSession()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-              view?.setCurrentSession(it)
-            }
     disposables.add(disposable)
   }
 

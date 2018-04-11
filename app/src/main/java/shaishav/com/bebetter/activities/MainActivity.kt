@@ -22,10 +22,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.bluelinelabs.conductor.Conductor
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.Router
-import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.*
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.controller.PickGoalController
 import shaishav.com.bebetter.controller.SummaryController
@@ -64,6 +61,26 @@ class MainActivity : AppCompatActivity() {
     if (!router.hasRootController()) {
       router.setRoot(RouterTransaction.with(rootController))
     }
+
+    router.addChangeListener(object : ControllerChangeHandler.ControllerChangeListener {
+      override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
+      }
+
+      override fun onChangeCompleted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
+        showBackButtonIfNecessary()
+      }
+
+    })
+  }
+
+  fun showBackButtonIfNecessary() {
+    if (router.backstackSize > 1) {
+      supportActionBar?.setDisplayHomeAsUpEnabled(true)
+      supportActionBar?.setDisplayShowHomeEnabled(true)
+    } else {
+      supportActionBar?.setDisplayHomeAsUpEnabled(false)
+      supportActionBar?.setDisplayShowHomeEnabled(false)
+    }
   }
 
   override fun onResume() {
@@ -79,6 +96,7 @@ class MainActivity : AppCompatActivity() {
     if (!router.handleBack()) {
       super.onBackPressed()
     }
+    showBackButtonIfNecessary()
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -87,6 +105,10 @@ class MainActivity : AppCompatActivity() {
     // as you specify a parent activity in AndroidManifest.xml.
     val id = item.itemId
 
+    if (id == android.R.id.home) {
+      onBackPressed()
+      return true
+    }
 
     return if (id == R.id.action_settings) {
       true
