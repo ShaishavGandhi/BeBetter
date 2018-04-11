@@ -97,7 +97,6 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
   }
 
   override fun buildModels() {
-    addCurrentSessionModel()
     addDailyUsage()
     addCurrentGoal()
     addUsageTrend()
@@ -107,17 +106,6 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     addPointsStreak()
     addAverageDailyUsage()
     addTotalUsage()
-  }
-
-  private fun addCurrentSessionModel() {
-    val header = resourceManager.getString(R.string.current_session)
-    val footer = resourceManager.getString(R.string.minute)
-
-    if (currentUsage > -1) {
-      UsageCardModel_(header, currentUsage, footer)
-              .id("current_usage_$currentUsage")
-              .addTo(this)
-    }
   }
 
   private fun addCurrentStreak() {
