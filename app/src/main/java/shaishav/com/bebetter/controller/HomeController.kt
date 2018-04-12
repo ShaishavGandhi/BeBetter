@@ -48,6 +48,10 @@ class HomeController : Controller(), HomeContract, SummaryListener {
   lateinit var recyclerView: EpoxyRecyclerView
   lateinit var adapter: RecyclerUsageController
 
+  companion object {
+    val KEY = "HomeController"
+  }
+
   @Inject lateinit var presenter: HomePresenter
   @Inject lateinit var resources: ResourceManager
 
