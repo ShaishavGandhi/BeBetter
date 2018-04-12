@@ -25,6 +25,7 @@ import android.support.v4.app.NotificationCompat
 import android.widget.RemoteViews
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
+import shaishav.com.bebetter.controller.HomeController
 import javax.inject.Inject
 
 /**
@@ -36,7 +37,7 @@ class NotificationHelper @Inject constructor(val context: Context) {
     val channelId = "be_better"
   }
 
-  fun createNotification(usage: Long, goal: Long): Notification {
+  fun createUsageNotification(usage: Long, goal: Long): Notification {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       registerNotificationChannel()
     }
@@ -63,7 +64,28 @@ class NotificationHelper @Inject constructor(val context: Context) {
             .setCustomContentView(mContentView)
             .setCustomBigContentView(mContentView)
             .setContentIntent(pendingIntent).build()
+  }
 
+  fun createDailySummaryNotification() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      registerNotificationChannel()
+    }
+
+    val notificationIntent = Intent(context, MainActivity::class.java)
+    notificationIntent.putExtra(Constants.SCREEN_NAME, HomeController.KEY)
+
+    val pendingIntent = PendingIntent.getActivity(context, 0,
+            notificationIntent, 0)
+
+    val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.notif)
+            .setContentTitle(context.getString(R.string.usage_summary))
+            .setContentText(context.getString(R.string.yesterday_summary))
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent).build()
+
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    notificationManager.notify(1338, notification)
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)

@@ -26,6 +26,7 @@ import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
+import shaishav.com.bebetter.utils.NotificationHelper
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -36,7 +37,8 @@ import javax.inject.Inject
 class UsageWorkflow @Inject constructor(private val usageRepository: UsageRepository,
                                         private val goalRepository: GoalRepository,
                                         private val pointsRepository: PointsRepository,
-                                        private val streakRepository: StreakRepository) {
+                                        private val streakRepository: StreakRepository,
+                                        private val notificationHelper: NotificationHelper) {
 
   /**
    * Workflow to go through when a phone is locked.
@@ -101,7 +103,8 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // Store the session
         usageRepository.storeCurrentDayUsage(currentSessionTime)
 
-
+        // Show notification to give them summary
+        notificationHelper.createDailySummaryNotification()
       }
       else -> {
         // Still the same day. Just store the session time
@@ -167,6 +170,9 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
 
       // Reset session data to zero
       usageRepository.storeCurrentDayUsage(0)
+
+      // Show notification to give them summary
+      notificationHelper.createDailySummaryNotification()
     }
 
     // Store the unlock time
