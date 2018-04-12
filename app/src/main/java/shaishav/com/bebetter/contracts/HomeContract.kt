@@ -23,7 +23,7 @@ import shaishav.com.bebetter.data.models.Usage
 /**
  * Created by shaishav.gandhi on 12/17/17.
  */
-interface SummaryContract {
+interface HomeContract {
 
   fun setAverageDaiyUsage(usage: Long)
   fun setDailyUsage(usage: Long)

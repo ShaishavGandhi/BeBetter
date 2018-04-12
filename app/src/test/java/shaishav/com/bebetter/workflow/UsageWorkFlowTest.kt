@@ -35,6 +35,7 @@ import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
+import shaishav.com.bebetter.utils.NotificationHelper
 import java.util.*
 
 /**
@@ -47,11 +48,12 @@ class UsageWorkFlowTest {
   @Mock lateinit var goalRepository: GoalRepository
   @Mock lateinit var pointsRepository: PointsRepository
   @Mock lateinit var streakRepository: StreakRepository
+  @Mock lateinit var notificationHelper: NotificationHelper
   lateinit var workflow: UsageWorkflow
 
   @Before @Throws fun setup() {
     MockitoAnnotations.initMocks(this)
-    workflow = UsageWorkflow(usageRepository, goalRepository, pointsRepository, streakRepository)
+    workflow = UsageWorkflow(usageRepository, goalRepository, pointsRepository, streakRepository, notificationHelper)
   }
 
   @Test fun testHasDayChangedWithChangedDate() {

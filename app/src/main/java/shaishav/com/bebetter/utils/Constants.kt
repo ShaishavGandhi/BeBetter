@@ -26,6 +26,7 @@ class Constants {
   companion object {
     @JvmField val PACKAGE = "shaishav.com.bebetter"
     @JvmField val PREFERENCES = "com.bebetter.com"
+    val SCREEN_NAME = "screen_name"
 
     @JvmStatic fun getFormattedDate(date: Date): String {
       val dateFormat = SimpleDateFormat("MMM dd")

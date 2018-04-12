@@ -58,7 +58,7 @@ class WorkflowService : Service() {
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe({ stat ->
-                notificationHelper.updateNotification(notificationHelper.createNotification(stat.usage, stat.goal))
+                notificationHelper.updateNotification(notificationHelper.createUsageNotification(stat.usage, stat.goal))
                 this@WorkflowService.stopSelf()
               }, { error ->
                 Timber.e(error)

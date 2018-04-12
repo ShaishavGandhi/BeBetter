@@ -21,9 +21,7 @@ import android.content.IntentFilter
 import android.os.IBinder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import shaishav.com.bebetter.data.models.Stat
 import shaishav.com.bebetter.data.repository.StatsRepository
 import shaishav.com.bebetter.receiver.PhoneUnlockedReceiver
 import shaishav.com.bebetter.utils.BBApplication
@@ -58,14 +56,14 @@ class UsageService : Service() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { stat ->
-              val notification = notificationHelper.createNotification(stat.usage, stat.goal)
+              val notification = notificationHelper.createUsageNotification(stat.usage, stat.goal)
               notificationHelper.updateNotification(notification)
               disposables.dispose()
             }
 
     disposables.add(disposable)
 
-    val notification = notificationHelper.createNotification(0, 200)
+    val notification = notificationHelper.createUsageNotification(0, 200)
     startForeground(1337, notification)
   }
 

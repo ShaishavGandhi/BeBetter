@@ -28,10 +28,8 @@ import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.DependencyGraph
-import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.presenter.PickGoalPresenter
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_pick_goal.*
 import shaishav.com.bebetter.extensions.getCenter
 import java.util.*
 
@@ -119,7 +117,7 @@ class PickGoalController: Controller(), PickGoalContract {
 
   override fun homeScreen() {
     router.setRoot(
-            RouterTransaction.with(SummaryController())
+            RouterTransaction.with(HomeController())
                     .pushChangeHandler(FadeChangeHandler())
                     .popChangeHandler(FadeChangeHandler()))
   }
