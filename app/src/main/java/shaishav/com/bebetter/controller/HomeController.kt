@@ -23,12 +23,11 @@ import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.AutoTransitionChangeHandler
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.adapter.RecyclerUsageController
-import shaishav.com.bebetter.contracts.SummaryContract
+import shaishav.com.bebetter.contracts.HomeContract
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Level
 import shaishav.com.bebetter.data.models.Point
@@ -36,20 +35,24 @@ import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.listener.SummaryListener
-import shaishav.com.bebetter.presenter.SummaryPresenter
+import shaishav.com.bebetter.presenter.HomePresenter
 import shaishav.com.bebetter.utils.ResourceManager
 import javax.inject.Inject
 
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class SummaryController : Controller(), SummaryContract, SummaryListener {
+class HomeController : Controller(), HomeContract, SummaryListener {
 
   lateinit var rootView: View
   lateinit var recyclerView: EpoxyRecyclerView
   lateinit var adapter: RecyclerUsageController
 
-  @Inject lateinit var presenter: SummaryPresenter
+  companion object {
+    val KEY = "HomeController"
+  }
+
+  @Inject lateinit var presenter: HomePresenter
   @Inject lateinit var resources: ResourceManager
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {

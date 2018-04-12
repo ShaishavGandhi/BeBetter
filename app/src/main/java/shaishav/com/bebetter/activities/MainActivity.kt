@@ -25,7 +25,7 @@ import android.widget.FrameLayout
 import com.bluelinelabs.conductor.*
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.controller.PickGoalController
-import shaishav.com.bebetter.controller.SummaryController
+import shaishav.com.bebetter.controller.HomeController
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.utils.BBApplication
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
   private val rootController: Controller
     get() = if (preferenceDataStore.hasUserOnBoarded()) {
-      SummaryController()
+      HomeController()
     } else PickGoalController()
 
   override fun onCreate(savedInstanceState: Bundle?) {
