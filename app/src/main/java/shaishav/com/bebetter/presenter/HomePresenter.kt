@@ -18,7 +18,7 @@ package shaishav.com.bebetter.presenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import shaishav.com.bebetter.contracts.SummaryContract
+import shaishav.com.bebetter.contracts.HomeContract
 import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
@@ -29,8 +29,8 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 12/17/17.
  */
-class SummaryPresenter @Inject constructor(
-        var view: SummaryContract?,
+class HomePresenter @Inject constructor(
+        var view: HomeContract?,
         val usageRepository: UsageRepository,
         val goalRepository: GoalRepository,
         val streakRepository: StreakRepository,

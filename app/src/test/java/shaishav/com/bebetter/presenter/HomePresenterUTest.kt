@@ -23,7 +23,7 @@ import org.junit.Ignore
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
-import shaishav.com.bebetter.contracts.SummaryContract
+import shaishav.com.bebetter.contracts.HomeContract
 import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
@@ -34,7 +34,7 @@ import shaishav.com.bebetter.data.repository.UsageRepository
  */
 @RunWith(JUnit4::class)
 @Ignore("Fix later")
-class SummaryPresenterUTest {
+class HomePresenterUTest {
 
   companion object {
     val currentSession = 1000 * 10 * 20L
@@ -42,18 +42,18 @@ class SummaryPresenterUTest {
     val averageDailyUsage = 1000 * 60 * 35L
   }
 
-  @Mock lateinit var view: SummaryContract
+  @Mock lateinit var view: HomeContract
   @Mock lateinit var usageRepository: UsageRepository
   @Mock lateinit var goalRepository: GoalRepository
   @Mock lateinit var streakRepository: StreakRepository
   @Mock lateinit var pointsRepository: PointsRepository
-  lateinit var presenter: SummaryPresenter
+  lateinit var presenter: HomePresenter
 
   @Before
   @Throws
   fun setUp() {
     setupData()
-    presenter = SummaryPresenter(view, usageRepository, goalRepository, streakRepository, pointsRepository, CompositeDisposable())
+    presenter = HomePresenter(view, usageRepository, goalRepository, streakRepository, pointsRepository, CompositeDisposable())
   }
 
   fun setupData() {
