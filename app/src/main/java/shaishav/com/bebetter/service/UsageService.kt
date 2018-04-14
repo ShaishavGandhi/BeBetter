@@ -63,7 +63,7 @@ class UsageService : Service() {
 
     disposables.add(disposable)
 
-    val notification = notificationHelper.createUsageNotification(0, 200)
+    val notification = notificationHelper.createUsageNotification(0, 200 * 1000 * 60)
     startForeground(1337, notification)
   }
 

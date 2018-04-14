@@ -26,6 +26,7 @@ import android.widget.RemoteViews
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.controller.HomeController
+import shaishav.com.bebetter.extensions.toFormattedTime
 import javax.inject.Inject
 
 /**
@@ -56,8 +57,8 @@ class NotificationHelper @Inject constructor(val context: Context) {
       mContentView.setTextColor(R.id.notiftext, Color.RED)
     }
 
-    mContentView.setTextViewText(R.id.notiftext, "Your mobile usage is " + usage + " min. " +
-            "Usage goal : " + goal + " min.")
+    mContentView.setTextViewText(R.id.notiftext, "Your mobile usage is " + usage.toFormattedTime() + ". " +
+            "Usage goal : " + goal.toFormattedTime() + ".")
 
     return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.notif)
