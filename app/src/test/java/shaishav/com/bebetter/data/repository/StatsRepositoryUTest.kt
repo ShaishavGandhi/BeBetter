@@ -52,7 +52,7 @@ class StatsRepositoryUTest {
             .test()
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValueAt(0, { it.goal == goal.goal / (1000 * 60) })
+            .assertValueAt(0, { it.goal == goal.goal})
   }
 
 }
