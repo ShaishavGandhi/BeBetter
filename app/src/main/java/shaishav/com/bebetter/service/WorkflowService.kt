@@ -54,20 +54,20 @@ class WorkflowService : Service() {
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     if (intent?.action == ACTION_OFF) {
       workflow.phoneLocked(Date().time)
-      val disposable = statsRepository.getStat()
-              .subscribeOn(Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribe({ stat ->
-                notificationHelper.updateNotification(notificationHelper.createUsageNotification(stat.usage, stat.goal))
-                this@WorkflowService.stopSelf()
-              }, { error ->
-                Timber.e(error)
-                this@WorkflowService.stopSelf()
-              })
-      disposables.add(disposable)
     } else if (intent?.action == ACTION_ON) {
       workflow.phoneUnlocked(Date().time)
     }
+    val disposable = statsRepository.getStat()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ stat ->
+              notificationHelper.updateNotification(notificationHelper.createUsageNotification(stat.usage, stat.goal))
+              this@WorkflowService.stopSelf()
+            }, { error ->
+              Timber.e(error)
+              this@WorkflowService.stopSelf()
+            })
+    disposables.add(disposable)
     return super.onStartCommand(intent, flags, startId)
   }
 
