@@ -19,6 +19,7 @@ import android.content.SharedPreferences
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.utils.Constants
 import java.util.*
 
@@ -44,7 +45,7 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: 
                 return@map it
               }
               return@map (Date().time - it) / (1000 * 60)
-            }
+            }.subscribeOn(Schedulers.io())
   }
 
   override fun dailyUsageSoFar(): Observable<Long> {
@@ -62,6 +63,7 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: 
     return preferences
             .getLong(KEY_CURRENT_DAILY_SESSION)
             .asObservable()
+            .subscribeOn(Schedulers.io())
             .map {
               return@map it / (1000 * 60)
             }
