@@ -48,4 +48,13 @@ interface PointsDatabaseManager {
    * @return Completable
    */
   fun savePoint(point: Point): Completable
+
+  /**
+   * Returns points earned by user
+   * on given date
+   *
+   * @param date
+   * @return Observable<Point>
+   */
+  fun point(date: Long): Observable<Point>
 }

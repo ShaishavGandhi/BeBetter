@@ -61,4 +61,13 @@ interface UsageDatabaseManager {
    * to a Completable TODO
    */
   fun insertSession(usage: Usage): Long
+
+  /**
+   * Returns the usage of the user on
+   * any given day
+   *
+   * @param date
+   * @return Observable<Usage>
+   */
+  fun usage(date: Long): Observable<Usage>
 }

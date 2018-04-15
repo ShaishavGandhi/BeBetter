@@ -22,6 +22,7 @@ import io.reactivex.Observable
 import shaishav.com.bebetter.data.contracts.PointContract
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.providers.PointsProvider
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -36,6 +37,25 @@ class PointsDatabaseManagerImpl @Inject constructor(private val contentResolver:
             .mapToList {
               return@mapToList PointsProvider.cursorToPoints(it)
             }
+  }
+
+  override fun point(date: Long): Observable<Point> {
+    val currentDate = Calendar.getInstance()
+    currentDate.timeInMillis = date
+    currentDate.set(Calendar.HOUR_OF_DAY, 0)
+    currentDate.set(Calendar.MINUTE, 0)
+    val lower = currentDate.timeInMillis
+
+    currentDate.set(Calendar.HOUR_OF_DAY, 23)
+    currentDate.set(Calendar.MINUTE, 59)
+    currentDate.set(Calendar.SECOND, 59)
+    val higher = currentDate.timeInMillis
+
+    return database.createQuery(PointContract.TABLE_POINTS, "select * from ${PointContract.TABLE_POINTS} where " +
+    " ${PointContract.COLUMN_DATE} > $lower AND ${PointContract.COLUMN_DATE} < $higher")
+            .mapToOneOrDefault({ cursor ->
+              return@mapToOneOrDefault PointsProvider.cursorToPoints(cursor)
+            }, Point(id = 0, date = date, points = 0))
   }
 
   override fun totalPoints(): Observable<Long> {

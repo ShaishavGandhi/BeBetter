@@ -117,6 +117,24 @@ import java.util.concurrent.TimeUnit
     assertEquals(1, testObserver.values()[0].size)
   }
 
+  @Test fun usageYesterdayReturnsSuccessfully() {
+    databaseHelper.writableDatabase.delete(UsageContract.TABLE_USAGE, null, null)
+    val currentDate = Calendar.getInstance()
+    currentDate.set(Calendar.DAY_OF_YEAR, currentDate.get(Calendar.DAY_OF_YEAR) - 1)
+
+    val usage = Usage(id = 0, date = currentDate.timeInMillis, usage = 100 * 1000 * 60)
+    databaseManager.insertSession(usage)
+    currentDate.set(Calendar.DAY_OF_YEAR, currentDate.get(Calendar.DAY_OF_YEAR) - 1)
+    val usage2 = Usage(id = 0, date = currentDate.timeInMillis, usage = 120 * 1000 * 60)
+    databaseManager.insertSession(usage2)
+
+    val testObserver = databaseManager.usage(currentDate.timeInMillis).test()
+    testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
+    testObserver.assertNoErrors()
+    testObserver.assertValueCount(1)
+    assertEquals(120 * 1000 * 60, testObserver.values()[0].usage)
+  }
+
   @After @Throws fun tearDown() {
     databaseHelper.writableDatabase.close()
   }
