@@ -103,7 +103,7 @@ class UsageRepositoryUTest {
         val testObserver = TestObserver<Long>()
 
         val sampleSession = 1000 * 60 * 75L
-        whenever(repository.dailyUsage()).thenReturn(Observable.just(sampleSession))
+        whenever(preferenceStore.dailyUsageSoFar()).thenReturn(Observable.just(sampleSession))
 
         repository.dailyUsage().subscribe(testObserver)
 
@@ -121,7 +121,7 @@ class UsageRepositoryUTest {
         val testObserver = TestObserver<Long>()
 
         val sampleSession = 1000 * 60 * 75L
-        whenever(repository.averageDailyUsage()).thenReturn(Observable.just(sampleSession))
+        whenever(databaseManager.averageDailyUsage()).thenReturn(Observable.just(sampleSession))
 
         repository.averageDailyUsage().subscribe(testObserver)
 
