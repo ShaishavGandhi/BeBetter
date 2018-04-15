@@ -31,15 +31,15 @@ import javax.inject.Inject
 class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseManager, val preferenceStore: PreferenceDataStore) {
 
   fun usages(): Observable<List<Usage>> {
-    return databaseManager.usages()
+    return databaseManager.usages().subscribeOn(Schedulers.io())
   }
 
   fun currentSession(): Observable<Long> {
-    return preferenceStore.currentSession(Date().time)
+    return preferenceStore.currentSession(Date().time).subscribeOn(Schedulers.io())
   }
 
   fun dailyUsage(): Observable<Long> {
-    return preferenceStore.dailyUsageSoFar()
+    return preferenceStore.dailyUsageSoFar().subscribeOn(Schedulers.io())
   }
 
   fun rawDailyUsage(): Long {
@@ -47,7 +47,7 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
   }
 
   fun averageDailyUsage(): Observable<Long> {
-    return databaseManager.averageDailyUsage()
+    return databaseManager.averageDailyUsage().subscribeOn(Schedulers.io())
   }
 
   fun totalUsage(): Observable<Long> {
@@ -76,6 +76,20 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
 
   fun storeCurrentDayUsage(sessionTime: Long) {
     preferenceStore.storeCurrentDayUsage(sessionTime)
+  }
+
+  fun usage(date: Long): Observable<Usage> {
+    val currentDate = Calendar.getInstance()
+    val givenDate = Calendar.getInstance()
+    givenDate.timeInMillis = date
+
+    if (currentDate.get(Calendar.DAY_OF_YEAR) == givenDate.get(Calendar.DAY_OF_YEAR)) {
+      return dailyUsage().map { usageToday ->
+        return@map Usage(id = 0, date = givenDate.timeInMillis, usage = usageToday)
+      }
+    }
+
+    return databaseManager.usage(date).subscribeOn(Schedulers.io())
   }
 
 

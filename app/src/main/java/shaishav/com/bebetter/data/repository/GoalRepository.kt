@@ -30,15 +30,15 @@ import javax.inject.Inject
 @ApplicationScope class GoalRepository @Inject constructor(private val databaseManager: GoalDatabaseManager) {
 
   fun goals(): Observable<List<Goal>> {
-    return databaseManager.goals()
+    return databaseManager.goals().subscribeOn(Schedulers.io())
   }
 
   fun currentGoal(): Observable<Goal> {
-    return databaseManager.goalOnDay(Date().time)
+    return databaseManager.goalOnDay(Date().time).subscribeOn(Schedulers.io())
   }
 
   fun goal(time: Long): Observable<Goal> {
-    return databaseManager.goalOnDay(time)
+    return databaseManager.goalOnDay(time).subscribeOn(Schedulers.io())
   }
 
   fun cloneGoal(previousDate: Long, date: Long): Completable {
@@ -54,7 +54,7 @@ import javax.inject.Inject
   }
 
   fun saveGoal(goal: Goal): Completable {
-    return databaseManager.saveGoal(goal)
+    return databaseManager.saveGoal(goal).subscribeOn(Schedulers.io())
   }
 
   fun isSameDay(day1: Long, day2: Long): Boolean {

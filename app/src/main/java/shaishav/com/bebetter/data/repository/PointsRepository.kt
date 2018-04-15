@@ -17,6 +17,7 @@ package shaishav.com.bebetter.data.repository
 
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.data.database.PointsDatabaseManager
 import shaishav.com.bebetter.data.models.Level
 import shaishav.com.bebetter.data.models.Point
@@ -28,15 +29,19 @@ import javax.inject.Inject
 class PointsRepository @Inject constructor(private val databaseManager: PointsDatabaseManager) {
 
   fun points(): Observable<List<Point>> {
-    return databaseManager.points()
+    return databaseManager.points().subscribeOn(Schedulers.io())
   }
 
   fun totalPoints(): Observable<Long> {
-    return databaseManager.totalPoints()
+    return databaseManager.totalPoints().subscribeOn(Schedulers.io())
   }
 
   fun save(point: Point): Completable {
-    return databaseManager.savePoint(point)
+    return databaseManager.savePoint(point).subscribeOn(Schedulers.io())
+  }
+
+  fun point(date: Long): Observable<Point> {
+    return databaseManager.point(date)
   }
 
   fun level(): Observable<Level> {

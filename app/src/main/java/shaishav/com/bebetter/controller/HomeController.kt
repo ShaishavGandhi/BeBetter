@@ -59,7 +59,7 @@ class HomeController : Controller(), HomeContract, SummaryListener {
     if (activity?.application is DependencyGraph) {
       (activity?.application as DependencyGraph).addSummaryComponent(SummaryModule(this)).inject(this)
     }
-    rootView = inflater.inflate(R.layout.fragment_day_summary, container, false)
+    rootView = inflater.inflate(R.layout.controller_home, container, false)
     presenter.view = this
     initViews(rootView.context)
 

@@ -91,6 +91,32 @@ import java.util.concurrent.TimeUnit
     assertEquals(54, reader.values()[0][0].points)
   }
 
+  @Test fun pointsOnYesterday() {
+    databaseHelper.writableDatabase.delete(PointContract.TABLE_POINTS, null, null)
+
+    val currentDate = Calendar.getInstance()
+    currentDate.set(Calendar.DAY_OF_YEAR, currentDate.get(Calendar.DAY_OF_YEAR) - 1)
+    val point = Point(id = 0, date = currentDate.timeInMillis, points = 54)
+
+    databaseManager.savePoint(point).test()
+
+    val testObserver = databaseManager.point(currentDate.timeInMillis).test()
+
+    testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
+    testObserver.assertNoErrors()
+    assertEquals(54, testObserver.values()[0].points)
+  }
+
+  @Test fun pointsWithDefaultData() {
+    databaseHelper.writableDatabase.delete(PointContract.TABLE_POINTS, null, null)
+
+    val testObserver = databaseManager.point(Date().time).test()
+
+    testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
+    testObserver.assertNoErrors()
+    assertEquals(0, testObserver.values()[0].points)
+  }
+
   @After @Throws fun cleanUp() {
     databaseHelper.writableDatabase.close()
   }
