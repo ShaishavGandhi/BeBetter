@@ -24,6 +24,7 @@ import shaishav.com.bebetter.data.contracts.UsageContract
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.data.providers.UsageProvider
 import shaishav.com.bebetter.di.scopes.ApplicationScope
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -70,5 +71,22 @@ import javax.inject.Inject
     contentValues.put(UsageContract.COLUMN_USAGE, usage.usage)
 
     return database.insert(UsageContract.TABLE_USAGE, contentValues)
+  }
+
+  override fun usage(date: Long): Observable<Usage> {
+    val currentDate = Calendar.getInstance()
+    currentDate.timeInMillis = date
+    currentDate.set(Calendar.HOUR_OF_DAY, 0)
+    currentDate.set(Calendar.MINUTE, 0)
+    val lower = currentDate.timeInMillis
+
+    currentDate.set(Calendar.HOUR_OF_DAY, 23)
+    currentDate.set(Calendar.MINUTE, 59)
+    currentDate.set(Calendar.SECOND, 59)
+    val higher = currentDate.timeInMillis
+
+    return database.createQuery(UsageContract.TABLE_USAGE, "select * from ${UsageContract.TABLE_USAGE} where " +
+            "${UsageContract.COLUMN_DATE} > $lower AND ${UsageContract.COLUMN_DATE} < $higher")
+            .mapToOne { return@mapToOne UsageProvider.cursorToUsage(it) }
   }
 }
