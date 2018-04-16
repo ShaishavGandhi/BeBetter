@@ -20,6 +20,7 @@ import android.content.Intent
 import android.os.Build
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
 import shaishav.com.bebetter.BuildConfig
 import shaishav.com.bebetter.contracts.PickGoalContract
@@ -41,6 +42,7 @@ class BBApplication : Application(), DependencyGraph {
   private var homeComponent: HomeComponent? = null
   private var serviceComponent: ServiceComponent? = null
   private var pickGoalComponent: PickGoalComponent? = null
+  lateinit var analytics: FirebaseAnalytics
 
   override fun onCreate() {
     super.onCreate()
@@ -51,6 +53,7 @@ class BBApplication : Application(), DependencyGraph {
 
     Stetho.initializeWithDefaults(this)
     initCrashlytics()
+    initAnalytics()
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
@@ -65,6 +68,10 @@ class BBApplication : Application(), DependencyGraph {
       startService(Intent(applicationContext, UsageService::class.java))
     }
 
+  }
+
+  fun initAnalytics() {
+    analytics = FirebaseAnalytics.getInstance(applicationContext)
   }
 
   fun initCrashlytics() {
