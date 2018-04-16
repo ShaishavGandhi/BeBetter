@@ -16,12 +16,14 @@
 package shaishav.com.bebetter.di.components
 
 import dagger.Subcomponent
-import shaishav.com.bebetter.controller.SummaryController
-import shaishav.com.bebetter.di.modules.SummaryModule
+import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.di.scopes.ActivityScope
+import shaishav.com.bebetter.controller.HomeController
 
-@Subcomponent(modules = arrayOf(SummaryModule::class))
-@ActivityScope interface SummaryComponent {
+/**
+ * Created by shaishav.gandhi on 12/24/17.
+ */
+@Subcomponent(modules = [(HomeModule::class)]) @ActivityScope interface HomeComponent {
 
-  fun inject(controller: SummaryController)
+    fun inject(controller: HomeController)
 }

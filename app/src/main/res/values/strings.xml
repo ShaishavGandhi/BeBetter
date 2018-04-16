@@ -42,6 +42,8 @@
     <string name="level_heading">Experience Level</string>
     <string name="usage_summary">Usage Summary</string>
     <string name="yesterday_summary">See how you did yesterday!</string>
+    <string name="edit_goal">Edit Goal</string>
+    <string name="home">Home</string>
 
     <string name="beginner">Beginner</string>
     <string name="apprentice">Apprentice</string>

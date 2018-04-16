@@ -27,7 +27,7 @@ import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.components.*
 import shaishav.com.bebetter.di.modules.AppModule
 import shaishav.com.bebetter.di.modules.PickGoalModule
-import shaishav.com.bebetter.di.modules.SummaryModule
+import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.logging.ReleaseTree
 import shaishav.com.bebetter.service.UsageService
 import timber.log.Timber
@@ -38,7 +38,7 @@ import timber.log.Timber
 class BBApplication : Application(), DependencyGraph {
 
   lateinit var appComponent: AppComponent
-  private var summaryComponent: SummaryComponent? = null
+  private var homeComponent: HomeComponent? = null
   private var serviceComponent: ServiceComponent? = null
   private var pickGoalComponent: PickGoalComponent? = null
 
@@ -71,15 +71,15 @@ class BBApplication : Application(), DependencyGraph {
     Fabric.with(this, Crashlytics())
   }
 
-  override fun addSummaryComponent(module: SummaryModule): SummaryComponent {
-    if (summaryComponent == null) {
-      summaryComponent = appComponent.addSummaryComponent(module)
+  override fun addSummaryComponent(module: HomeModule): HomeComponent {
+    if (homeComponent == null) {
+      homeComponent = appComponent.addHomeComponent(module)
     }
-    return summaryComponent as SummaryComponent
+    return homeComponent as HomeComponent
   }
 
   override fun removeSummaryComponent() {
-    summaryComponent = null
+    homeComponent = null
   }
 
   override fun addServiceComponent(): ServiceComponent {

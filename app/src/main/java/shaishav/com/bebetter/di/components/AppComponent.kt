@@ -28,9 +28,10 @@ import shaishav.com.bebetter.di.scopes.ApplicationScope
 interface AppComponent {
 
   fun getApplication(): Application
-  fun addSummaryComponent(module: SummaryModule): SummaryComponent
+  fun addHomeComponent(module: HomeModule): HomeComponent
   fun addServiceComponent(): ServiceComponent
   fun addPickGoalComponent(module: PickGoalModule): PickGoalComponent
+  fun addSummaryComponent(module: SummaryModule): SummaryComponent
 
   fun inject(activity: MainActivity)
 

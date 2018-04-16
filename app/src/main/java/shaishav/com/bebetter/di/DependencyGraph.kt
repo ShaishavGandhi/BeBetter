@@ -18,15 +18,15 @@ package shaishav.com.bebetter.di
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.components.PickGoalComponent
 import shaishav.com.bebetter.di.components.ServiceComponent
-import shaishav.com.bebetter.di.components.SummaryComponent
-import shaishav.com.bebetter.di.modules.SummaryModule
+import shaishav.com.bebetter.di.components.HomeComponent
+import shaishav.com.bebetter.di.modules.HomeModule
 
 /**
  * Created by shaishav.gandhi on 12/17/17.
  */
 interface DependencyGraph {
 
-  fun addSummaryComponent(module: SummaryModule): SummaryComponent
+  fun addSummaryComponent(module: HomeModule): HomeComponent
   fun removeSummaryComponent()
 
   fun addPickGoalComponent(view: PickGoalContract): PickGoalComponent

@@ -26,6 +26,7 @@ import android.widget.RemoteViews
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.controller.HomeController
+import shaishav.com.bebetter.controller.SummaryController
 import shaishav.com.bebetter.extensions.toFormattedTime
 import javax.inject.Inject
 
@@ -73,10 +74,11 @@ class NotificationHelper @Inject constructor(val context: Context) {
     }
 
     val notificationIntent = Intent(context, MainActivity::class.java)
-    notificationIntent.putExtra(Constants.SCREEN_NAME, HomeController.KEY)
+    notificationIntent.putExtra(Constants.SCREEN_NAME, SummaryController.KEY)
+    notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
     val pendingIntent = PendingIntent.getActivity(context, 0,
-            notificationIntent, 0)
+            notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
     val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.notif)
