@@ -13,15 +13,19 @@
  *  and limitations under the License.
  */
 
-package shaishav.com.bebetter.di.components
+package shaishav.com.bebetter.di.modules
 
-import dagger.Subcomponent
-import shaishav.com.bebetter.controller.SummaryController
-import shaishav.com.bebetter.di.modules.SummaryModule
+import dagger.Module
+import dagger.Provides
+import shaishav.com.bebetter.contracts.HomeContract
 import shaishav.com.bebetter.di.scopes.ActivityScope
 
-@Subcomponent(modules = arrayOf(SummaryModule::class))
-@ActivityScope interface SummaryComponent {
+/**
+ * Created by shaishav.gandhi on 12/24/17.
+ */
+@Module class HomeModule(val view: HomeContract) {
 
-  fun inject(controller: SummaryController)
+    @Provides @ActivityScope fun providesView(): HomeContract {
+        return view
+    }
 }

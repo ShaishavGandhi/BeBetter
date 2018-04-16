@@ -26,6 +26,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.adapter.RecyclerUsageController
 import shaishav.com.bebetter.contracts.HomeContract
 import shaishav.com.bebetter.data.models.Goal
@@ -33,7 +34,7 @@ import shaishav.com.bebetter.data.models.Level
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.di.DependencyGraph
-import shaishav.com.bebetter.di.modules.SummaryModule
+import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.listener.SummaryListener
 import shaishav.com.bebetter.presenter.HomePresenter
 import shaishav.com.bebetter.utils.ResourceManager
@@ -57,7 +58,7 @@ class HomeController : Controller(), HomeContract, SummaryListener {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     if (activity?.application is DependencyGraph) {
-      (activity?.application as DependencyGraph).addSummaryComponent(SummaryModule(this)).inject(this)
+      (activity?.application as DependencyGraph).addSummaryComponent(HomeModule(this)).inject(this)
     }
     rootView = inflater.inflate(R.layout.controller_home, container, false)
     presenter.view = this
@@ -66,6 +67,7 @@ class HomeController : Controller(), HomeContract, SummaryListener {
     adapter = RecyclerUsageController(resources, this)
     recyclerView.itemAnimator = SlideInUpAnimator()
     recyclerView.setController(adapter)
+    (activity as MainActivity).setToolbarTitle(activity?.resources?.getString(R.string.home)!!)
     return rootView
   }
 

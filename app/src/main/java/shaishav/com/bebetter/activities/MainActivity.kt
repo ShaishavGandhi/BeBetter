@@ -23,12 +23,17 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.bluelinelabs.conductor.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.controller.PickGoalController
 import shaishav.com.bebetter.controller.HomeController
+import shaishav.com.bebetter.controller.SummaryController
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.di.DependencyGraph
+import shaishav.com.bebetter.extensions.yesterday
 import shaishav.com.bebetter.utils.BBApplication
+import shaishav.com.bebetter.utils.Constants
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -38,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
 
   private lateinit var router: Router
+  private lateinit var toolbar: Toolbar
   @Inject lateinit var preferenceDataStore: PreferenceDataStore
 
   private val rootController: Controller
@@ -51,12 +57,19 @@ class MainActivity : AppCompatActivity() {
     if (application is DependencyGraph) {
       (application as BBApplication).appComponent.inject(this)
     }
-    val toolbar = findViewById<Toolbar>(R.id.toolbar) as Toolbar
+    toolbar = findViewById(R.id.toolbar)
     setSupportActionBar(toolbar)
 
     val container = findViewById<FrameLayout>(R.id.container_body)
 
     router = Conductor.attachRouter(this, container, savedInstanceState)
+
+    if (intent.hasExtra(Constants.SCREEN_NAME)) {
+      router.pushController(RouterTransaction.with(getController(intent.getStringExtra(Constants.SCREEN_NAME))))
+      router.setRoot(RouterTransaction.with(rootController))
+      return
+    }
+
     val rootController = rootController
     if (!router.hasRootController()) {
       router.setRoot(RouterTransaction.with(rootController))
@@ -69,8 +82,15 @@ class MainActivity : AppCompatActivity() {
       override fun onChangeCompleted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
         showBackButtonIfNecessary()
       }
-
     })
+  }
+
+  private fun getController(screenName: String): Controller {
+    if (screenName == SummaryController.KEY) {
+      val calendar = Calendar.getInstance().yesterday()
+      return SummaryController(calendar.timeInMillis)
+    }
+    return HomeController()
   }
 
   fun showBackButtonIfNecessary() {
@@ -81,10 +101,6 @@ class MainActivity : AppCompatActivity() {
       supportActionBar?.setDisplayHomeAsUpEnabled(false)
       supportActionBar?.setDisplayShowHomeEnabled(false)
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -113,6 +129,10 @@ class MainActivity : AppCompatActivity() {
     return if (id == R.id.action_settings) {
       true
     } else super.onOptionsItemSelected(item)
+  }
+
+  fun setToolbarTitle(title: String) {
+    supportActionBar?.title = title
   }
 
 }

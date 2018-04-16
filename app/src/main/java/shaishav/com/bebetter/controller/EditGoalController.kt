@@ -26,6 +26,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.AutoTransitionChangeHandler
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.presenter.PickGoalPresenter
@@ -46,6 +47,7 @@ class EditGoalController: Controller(), PickGoalContract {
     if (activity?.application is DependencyGraph) {
       (activity?.application as DependencyGraph).addPickGoalComponent(this).inject(this)
     }
+    (activity as MainActivity).setToolbarTitle(activity?.resources?.getString(R.string.edit_goal)!!)
     rootView = inflater.inflate(R.layout.fragment_edit_goal, container, false)
     initViews(rootView)
     initListeners()

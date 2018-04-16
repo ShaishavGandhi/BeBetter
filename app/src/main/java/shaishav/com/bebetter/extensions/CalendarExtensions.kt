@@ -13,15 +13,16 @@
  *  and limitations under the License.
  */
 
-package shaishav.com.bebetter.di.components
+package shaishav.com.bebetter.extensions
 
-import dagger.Subcomponent
-import shaishav.com.bebetter.controller.SummaryController
-import shaishav.com.bebetter.di.modules.SummaryModule
-import shaishav.com.bebetter.di.scopes.ActivityScope
+import java.util.*
 
-@Subcomponent(modules = arrayOf(SummaryModule::class))
-@ActivityScope interface SummaryComponent {
+fun Calendar.yesterday(): Calendar {
+  this.set(Calendar.DAY_OF_YEAR, this.get(Calendar.DAY_OF_YEAR) - 1)
+  return this
+}
 
-  fun inject(controller: SummaryController)
+fun Calendar.tomorrow(): Calendar {
+  this.set(Calendar.DAY_OF_YEAR, this.get(Calendar.DAY_OF_YEAR) + 1)
+  return this
 }

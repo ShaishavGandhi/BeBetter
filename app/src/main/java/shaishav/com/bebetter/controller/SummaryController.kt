@@ -20,13 +20,22 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.extensions.yesterday
+import java.util.*
 
-class SummaryController: Controller() {
+class SummaryController(val date: Long): Controller() {
+
+  constructor() : this(Calendar.getInstance().yesterday().timeInMillis)
+
+  companion object {
+    val KEY = "summaryScreen"
+  }
 
   lateinit var rootView: View
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     rootView = inflater.inflate(R.layout.controller_home, container, false)
+
     return rootView
   }
 
