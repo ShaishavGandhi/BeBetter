@@ -12,17 +12,10 @@
  *  See the License for the specific language governing permissions
  *  and limitations under the License.
  */
+package shaishav.com.bebetter.contracts
 
-package shaishav.com.bebetter.di.modules
+import shaishav.com.bebetter.data.models.Summary
 
-import dagger.Module
-import dagger.Provides
-import shaishav.com.bebetter.contracts.SummaryContract
-import shaishav.com.bebetter.di.scopes.ActivityScope
-
-@Module class SummaryModule(val view: SummaryContract) {
-
-  @Provides @ActivityScope fun providesSummaryView(): SummaryContract {
-    return view
-  }
+interface SummaryContract {
+  fun setSummary(summary: Summary)
 }
