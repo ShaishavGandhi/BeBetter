@@ -58,7 +58,7 @@ class HomeController : Controller(), HomeContract, SummaryListener {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     if (activity?.application is DependencyGraph) {
-      (activity?.application as DependencyGraph).addSummaryComponent(HomeModule(this)).inject(this)
+      (activity?.application as DependencyGraph).addHomeComponent(HomeModule(this)).inject(this)
     }
     rootView = inflater.inflate(R.layout.controller_home, container, false)
     presenter.view = this
@@ -79,7 +79,7 @@ class HomeController : Controller(), HomeContract, SummaryListener {
   override fun onDestroy() {
     super.onDestroy()
     if (activity?.application is DependencyGraph) {
-      (activity?.application as DependencyGraph).removeSummaryComponent()
+      (activity?.application as DependencyGraph).removeHomeComponent()
     }
     presenter.unsubscribe()
   }
