@@ -24,11 +24,13 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
 import shaishav.com.bebetter.BuildConfig
 import shaishav.com.bebetter.contracts.PickGoalContract
+import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.components.*
 import shaishav.com.bebetter.di.modules.AppModule
 import shaishav.com.bebetter.di.modules.PickGoalModule
 import shaishav.com.bebetter.di.modules.HomeModule
+import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.logging.ReleaseTree
 import shaishav.com.bebetter.service.UsageService
 import timber.log.Timber
@@ -42,6 +44,7 @@ class BBApplication : Application(), DependencyGraph {
   private var homeComponent: HomeComponent? = null
   private var serviceComponent: ServiceComponent? = null
   private var pickGoalComponent: PickGoalComponent? = null
+  private var summaryComponent: SummaryComponent? = null
   lateinit var analytics: FirebaseAnalytics
 
   override fun onCreate() {
@@ -78,14 +81,14 @@ class BBApplication : Application(), DependencyGraph {
     Fabric.with(this, Crashlytics())
   }
 
-  override fun addSummaryComponent(module: HomeModule): HomeComponent {
+  override fun addHomeComponent(module: HomeModule): HomeComponent {
     if (homeComponent == null) {
       homeComponent = appComponent.addHomeComponent(module)
     }
     return homeComponent as HomeComponent
   }
 
-  override fun removeSummaryComponent() {
+  override fun removeHomeComponent() {
     homeComponent = null
   }
 
@@ -109,5 +112,16 @@ class BBApplication : Application(), DependencyGraph {
 
   override fun removeServiceComponent() {
     serviceComponent = null
+  }
+
+  override fun addSummaryComponent(view: SummaryContract): SummaryComponent {
+    if (summaryComponent == null) {
+      summaryComponent = appComponent.addSummaryComponent(SummaryModule(view))
+    }
+    return summaryComponent!!
+  }
+
+  override fun removeSummaryComponent() {
+    summaryComponent = null
   }
 }
