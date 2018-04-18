@@ -15,13 +15,17 @@
 
 package shaishav.com.bebetter.controller
 
+import android.content.Context
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bluelinelabs.conductor.Controller
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
+import shaishav.com.bebetter.adapter.RecyclerSummaryController
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.models.Summary
 import shaishav.com.bebetter.di.DependencyGraph
@@ -39,6 +43,8 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
   }
 
   lateinit var rootView: View
+  lateinit var recyclerView: EpoxyRecyclerView
+  lateinit var adapter: RecyclerSummaryController
   @Inject lateinit var presenter: SummaryPresenter
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -46,10 +52,21 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
       (activity?.application as DependencyGraph).addSummaryComponent(this).inject(this)
     }
     (activity as MainActivity).setToolbarTitle("Summary")
-    rootView = inflater.inflate(R.layout.controller_home, container, false)
-    presenter.start()
+    rootView = inflater.inflate(R.layout.controller_summary, container, false)
+    initViews(rootView.context)
+
+    adapter = RecyclerSummaryController()
+    recyclerView.itemAnimator = SlideInUpAnimator()
+    recyclerView.setController(adapter)
+
+    presenter.start(date)
 
     return rootView
+  }
+
+  private fun initViews(context: Context) {
+    recyclerView = rootView.findViewById(R.id.recyclerView)
+    recyclerView.layoutManager = LinearLayoutManager(context)
   }
 
   override fun onDestroy() {
@@ -59,7 +76,7 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
   }
 
   override fun setSummary(summary: Summary) {
-    Toast.makeText(activity, summary.usage.usage.toString(), Toast.LENGTH_SHORT).show()
+    adapter.summary = summary
   }
 
 }

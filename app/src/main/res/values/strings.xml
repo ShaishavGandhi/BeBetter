@@ -26,7 +26,7 @@
 
     <string name="current_session">Current Session</string>
     <string name="minute">min</string>
-    <string name="points">points</string>
+    <string name="points">Points</string>
     <string name="daily_usage">Usage Today</string>
     <string name="average_daily_usage">Average Daily Usage</string>
     <string name="total_usage">Total Usage</string>
@@ -44,6 +44,8 @@
     <string name="yesterday_summary">See how you did yesterday!</string>
     <string name="edit_goal">Edit Goal</string>
     <string name="home">Home</string>
+    <string name="usage">Usage</string>
+    <string name="goal">Goal</string>
 
     <string name="beginner">Beginner</string>
     <string name="apprentice">Apprentice</string>
