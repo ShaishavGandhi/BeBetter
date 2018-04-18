@@ -19,17 +19,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable
-            name="title"
-            type="String"/>
-
-        <variable
-            name="usage"
-            type="String"/>
-
-        <variable
-            name="footer"
-            type="String"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -63,8 +52,7 @@
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/image"
                 android:textAlignment="center"
-                android:text="@{title}"
-                tools:text="Today"
+                android:text="Yesterday"
                 android:textColor="@color/white"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:textSize="24sp"/>
@@ -77,19 +65,23 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image"
                 android:layout_marginTop="@dimen/margin_base"
-                app:layout_constraintRight_toLeftOf="@+id/value"
+                app:layout_constraintRight_toLeftOf="@+id/usageValue"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 android:textSize="18sp"
+                android:capitalize="words"
+                android:textColor="#404040"
+                android:text="@string/usage"
                 tools:text="Usage"/>
 
             <com.robinhood.ticker.TickerView
-                android:id="@+id/value"
+                android:id="@+id/usageValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_base"
                 app:layout_constraintLeft_toRightOf="@+id/usageLabel"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/usageLabel"
+                android:textColor="#404040"
                 tools:text="34 min"
                 android:text="0"
                 android:textSize="18sp"
@@ -106,14 +98,17 @@
                 app:layout_constraintRight_toLeftOf="@+id/goal_value"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 android:textSize="18sp"
-                tools:text="Goal"/>
+                android:capitalize="words"
+                android:textColor="#404040"
+                android:text="@string/goal"/>
 
             <com.robinhood.ticker.TickerView
                 android:id="@+id/goal_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#404040"
                 app:layout_constraintLeft_toRightOf="@+id/goalLabel"
-                app:layout_constraintRight_toRightOf="@+id/value"
+                app:layout_constraintRight_toRightOf="@+id/usageValue"
                 app:layout_constraintTop_toTopOf="@+id/goalLabel"
                 tools:text="2 hr 34 min"
                 android:text="0"
@@ -125,20 +120,23 @@
                 android:id="@+id/pointsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#404040"
+                android:capitalize="words"
                 app:layout_constraintLeft_toLeftOf="@+id/goalLabel"
                 app:layout_constraintTop_toBottomOf="@+id/goalLabel"
                 android:layout_marginTop="@dimen/margin_base"
                 app:layout_constraintRight_toLeftOf="@+id/points_value"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 android:textSize="18sp"
-                tools:text="Points"/>
+                android:text="@string/points"/>
 
             <com.robinhood.ticker.TickerView
                 android:id="@+id/points_value"
                 android:layout_width="wrap_content"
+                android:textColor="#404040"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toRightOf="@+id/pointsLabel"
-                app:layout_constraintRight_toRightOf="@+id/value"
+                app:layout_constraintRight_toRightOf="@+id/usageValue"
                 app:layout_constraintTop_toTopOf="@+id/pointsLabel"
                 tools:text="54"
                 android:text="0"

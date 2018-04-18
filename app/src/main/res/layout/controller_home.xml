@@ -24,7 +24,7 @@
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        tools:listitem="@layout/scratch"
+        tools:listitem="@layout/list_item_summary"
         android:layout_height="match_parent"/>
 
 

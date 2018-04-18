@@ -17,23 +17,21 @@ package shaishav.com.bebetter.presenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.repository.SummaryRepository
 import shaishav.com.bebetter.extensions.yesterday
-import shaishav.com.bebetter.viewstate.ViewState
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 class SummaryPresenter @Inject constructor(
         var view: SummaryContract?,
-        val summaryRepository: SummaryRepository,
+        private val summaryRepository: SummaryRepository,
         val disposables: CompositeDisposable
 ) {
 
-  fun start() {
-    val disposable = summaryRepository.summary(Calendar.getInstance().yesterday().timeInMillis)
+  fun start(date: Long) {
+    val disposable = summaryRepository.summary(date)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ summary ->
