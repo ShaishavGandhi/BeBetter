@@ -33,6 +33,7 @@ import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.extensions.yesterday
 import shaishav.com.bebetter.utils.BBApplication
 import shaishav.com.bebetter.utils.Constants
+import shaishav.com.bebetter.utils.NotificationHelper
 import java.util.*
 import javax.inject.Inject
 
@@ -63,18 +64,6 @@ class MainActivity : AppCompatActivity() {
     val container = findViewById<FrameLayout>(R.id.container_body)
 
     router = Conductor.attachRouter(this, container, savedInstanceState)
-
-    if (intent.hasExtra(Constants.SCREEN_NAME)) {
-      router.pushController(RouterTransaction.with(getController(intent.getStringExtra(Constants.SCREEN_NAME))))
-      router.setRoot(RouterTransaction.with(rootController))
-      return
-    }
-
-    val rootController = rootController
-    if (!router.hasRootController()) {
-      router.setRoot(RouterTransaction.with(rootController))
-    }
-
     router.addChangeListener(object : ControllerChangeHandler.ControllerChangeListener {
       override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
       }
@@ -83,12 +72,23 @@ class MainActivity : AppCompatActivity() {
         showBackButtonIfNecessary()
       }
     })
+
+    if (intent.hasExtra(Constants.SCREEN_NAME)) {
+      router.setRoot(RouterTransaction.with(rootController))
+      router.pushController(RouterTransaction.with(getController(intent.getStringExtra(Constants.SCREEN_NAME))))
+      return
+    }
+
+    val rootController = rootController
+    if (!router.hasRootController()) {
+      router.setRoot(RouterTransaction.with(rootController))
+    }
+    
   }
 
   private fun getController(screenName: String): Controller {
     if (screenName == SummaryController.KEY) {
-      val calendar = Calendar.getInstance().yesterday()
-      return SummaryController(calendar.timeInMillis)
+      return SummaryController(Calendar.getInstance().yesterday().timeInMillis)
     }
     return HomeController()
   }

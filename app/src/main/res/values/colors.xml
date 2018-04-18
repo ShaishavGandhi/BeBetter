@@ -20,4 +20,5 @@
     <color name="colorAccent">#C96AAC</color>
 
     <color name="white">#ffffff</color>
+    <color name="font_body">#404040</color>
 </resources>
