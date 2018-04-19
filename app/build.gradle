@@ -110,8 +110,9 @@ dependencies {
     implementation rootProject.ext.timber
     implementation rootProject.ext.ticker
     implementation rootProject.ext.spark
+    implementation rootProject.ext.confetti
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-        transitive = true;
+        transitive = true
     }
 
     testImplementation rootProject.ext.mockito_core

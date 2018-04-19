@@ -18,6 +18,7 @@ package shaishav.com.bebetter.adapter
 
 import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.data.models.Summary
+import shaishav.com.bebetter.models.GoalAchievedModel_
 import shaishav.com.bebetter.models.SummaryModel_
 
 class RecyclerSummaryController: EpoxyController() {
@@ -28,8 +29,21 @@ class RecyclerSummaryController: EpoxyController() {
     requestModelBuild()
   }
 
+  var goalAchieved = false
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
+    addGoalAchievedModel()
     addSummaryModel()
+  }
+
+  private fun addGoalAchievedModel() {
+    GoalAchievedModel_()
+            .id("achieved_$goalAchieved")
+            .addIf(goalAchieved, this)
   }
 
   private fun addSummaryModel() {

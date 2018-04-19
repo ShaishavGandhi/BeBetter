@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity() {
     if (!router.hasRootController()) {
       router.setRoot(RouterTransaction.with(rootController))
     }
-    
   }
 
   private fun getController(screenName: String): Controller {
