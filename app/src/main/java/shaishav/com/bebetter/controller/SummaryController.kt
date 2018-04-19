@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bluelinelabs.conductor.Controller
+import com.github.jinatonic.confetti.CommonConfetti
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
@@ -77,6 +78,14 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
 
   override fun setSummary(summary: Summary) {
     adapter.summary = summary
+  }
+
+  override fun setGoalAchieved() {
+    adapter.goalAchieved = true
+    resources?.let {
+      CommonConfetti.rainingConfetti(rootView as ViewGroup, intArrayOf(it.getColor(R.color.colorPrimary)))
+              .stream(6000)
+    }
   }
 
 }

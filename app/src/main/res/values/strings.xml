@@ -46,6 +46,7 @@
     <string name="home">Home</string>
     <string name="usage">Usage</string>
     <string name="goal">Goal</string>
+    <string name="hit_your_goal">Awesome! You hit your goal!</string>
 
     <string name="beginner">Beginner</string>
     <string name="apprentice">Apprentice</string>
