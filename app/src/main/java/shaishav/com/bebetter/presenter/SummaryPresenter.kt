@@ -36,6 +36,9 @@ class SummaryPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ summary ->
               view?.setSummary(summary)
+              if (summary.goal.goal > summary.usage.usage) {
+                view?.setGoalAchieved()
+              }
             }, { error ->
               Timber.e(error)
             })

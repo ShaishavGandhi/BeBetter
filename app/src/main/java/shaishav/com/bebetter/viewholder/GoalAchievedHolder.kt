@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Shaishav Gandhi
+ *  Copyright (c) 2018 Shaishav Gandhi
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  You may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -11,12 +11,17 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions
  *  and limitations under the License.
+ *
  */
-package shaishav.com.bebetter.contracts
 
-import shaishav.com.bebetter.data.models.Summary
+package shaishav.com.bebetter.viewholder
 
-interface SummaryContract {
-  fun setSummary(summary: Summary)
-  fun setGoalAchieved()
+import android.view.View
+import com.airbnb.epoxy.EpoxyHolder
+
+class GoalAchievedHolder: EpoxyHolder() {
+
+  override fun bindView(itemView: View?) {
+
+  }
 }
