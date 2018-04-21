@@ -15,6 +15,7 @@
 
 package shaishav.com.bebetter.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -74,8 +75,7 @@ class MainActivity : AppCompatActivity() {
     })
 
     if (intent.hasExtra(Constants.SCREEN_NAME)) {
-      router.setRoot(RouterTransaction.with(rootController))
-      router.pushController(RouterTransaction.with(getController(intent.getStringExtra(Constants.SCREEN_NAME))))
+      summaryScreen(intent)
       return
     }
 
@@ -83,6 +83,21 @@ class MainActivity : AppCompatActivity() {
     if (!router.hasRootController()) {
       router.setRoot(RouterTransaction.with(rootController))
     }
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    intent?.let {
+      if (it.hasExtra(Constants.SCREEN_NAME)) {
+        summaryScreen(it)
+      }
+    }
+  }
+
+  fun summaryScreen(intent: Intent) {
+    router.setRoot(RouterTransaction.with(rootController))
+    router.pushController(RouterTransaction.with(getController(intent.getStringExtra(Constants.SCREEN_NAME))))
+    intent.removeExtra(Constants.SCREEN_NAME)
   }
 
   private fun getController(screenName: String): Controller {
