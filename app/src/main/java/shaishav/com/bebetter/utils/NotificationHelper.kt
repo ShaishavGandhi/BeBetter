@@ -46,8 +46,8 @@ class NotificationHelper @Inject constructor(val context: Context) {
 
     val notificationIntent = Intent(context, MainActivity::class.java)
 
-    val pendingIntent = PendingIntent.getActivity(context, 0,
-            notificationIntent, 0)
+    val pendingIntent = PendingIntent.getActivity(context, 1,
+            notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
     val mContentView = RemoteViews(context.packageName, R.layout.notification)
     mContentView.setImageViewResource(R.id.notifimage, R.drawable.logo)
