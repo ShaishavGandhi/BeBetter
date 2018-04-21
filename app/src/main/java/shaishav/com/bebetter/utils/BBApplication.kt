@@ -45,7 +45,6 @@ class BBApplication : Application(), DependencyGraph {
   private var serviceComponent: ServiceComponent? = null
   private var pickGoalComponent: PickGoalComponent? = null
   private var summaryComponent: SummaryComponent? = null
-  lateinit var analytics: FirebaseAnalytics
 
   override fun onCreate() {
     super.onCreate()
@@ -56,7 +55,6 @@ class BBApplication : Application(), DependencyGraph {
 
     Stetho.initializeWithDefaults(this)
     initCrashlytics()
-    initAnalytics()
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
@@ -71,10 +69,6 @@ class BBApplication : Application(), DependencyGraph {
       startService(Intent(applicationContext, UsageService::class.java))
     }
 
-  }
-
-  fun initAnalytics() {
-    analytics = FirebaseAnalytics.getInstance(applicationContext)
   }
 
   fun initCrashlytics() {
