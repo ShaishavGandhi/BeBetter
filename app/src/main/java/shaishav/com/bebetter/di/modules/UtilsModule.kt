@@ -21,6 +21,7 @@ import dagger.Provides
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import shaishav.com.bebetter.analytics.Analytics
 import shaishav.com.bebetter.di.scopes.ApplicationScope
 import shaishav.com.bebetter.utils.ResourceManager
 
@@ -40,6 +41,10 @@ class UtilsModule {
 
   @Provides @ApplicationScope fun providesResource(application: Application): ResourceManager {
     return ResourceManager(application.resources)
+  }
+
+  @Provides @ApplicationScope fun providesAnalytics(application: Application): Analytics {
+    return Analytics(application)
   }
 
 
