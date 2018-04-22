@@ -19,4 +19,5 @@ import shaishav.com.bebetter.data.models.Summary
 interface SummaryContract {
   fun setSummary(summary: Summary)
   fun setGoalAchieved()
+  fun setAverageUsage(averageUsage: Long)
 }

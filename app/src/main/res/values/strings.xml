@@ -56,6 +56,9 @@
     <string name="master">Master</string>
     <string name="legend">Legend</string>
     <string name="ultra_legend">Ultra Legend</string>
+    <string name="average_summary_over">Your usage of %1$s was %2$s higher than your average usage of %3$s.</string>
+    <string name="average_summary_under">Your usage of %1$s was %2$s lesser than your average usage of %3$s.</string>
+    <string name="highlight">Highlights</string>
 
     <string name="title_activity_settings">Settings</string>
     <string name="appwidget_text">EXAMPLE</string>

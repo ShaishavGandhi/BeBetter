@@ -18,10 +18,12 @@ package shaishav.com.bebetter.adapter
 
 import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.data.models.Summary
+import shaishav.com.bebetter.models.AverageUsageModel_
 import shaishav.com.bebetter.models.GoalAchievedModel_
 import shaishav.com.bebetter.models.SummaryModel_
+import shaishav.com.bebetter.utils.ResourceManager
 
-class RecyclerSummaryController: EpoxyController() {
+class RecyclerSummaryController(private val resourceManager: ResourceManager): EpoxyController() {
 
   var summary: Summary? = null
   set(value) {
@@ -35,9 +37,16 @@ class RecyclerSummaryController: EpoxyController() {
     requestModelBuild()
   }
 
+  var averageUsage: Long = 0
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
     addGoalAchievedModel()
     addSummaryModel()
+    addAverageUsageModel()
   }
 
   private fun addGoalAchievedModel() {
@@ -51,6 +60,17 @@ class RecyclerSummaryController: EpoxyController() {
       SummaryModel_(summary)
               .id("${summary.goal.goal}_${summary.point.points}_${summary.usage.usage}")
               .addTo(this)
+    }
+  }
+
+  private fun addAverageUsageModel() {
+    if (averageUsage > 0) {
+      summary?.let { summary ->
+        val usage = summary.usage
+        AverageUsageModel_(usage, averageUsage, resourceManager)
+                .id("${averageUsage}_${usage.usage}")
+                .addTo(this)
+      }
     }
   }
 }
