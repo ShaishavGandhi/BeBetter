@@ -90,7 +90,7 @@ class SummaryPresenterUTest {
 
     presenter.averageUsage()
 
-    verify(view).setAverageUsage(usage)
+    verify(view, timeout(100)).setAverageUsage(usage)
   }
 
   @Test fun testAveragePoints() {
@@ -99,6 +99,6 @@ class SummaryPresenterUTest {
 
     presenter.averagePoints()
 
-    verify(view).setAveragePoints(points)
+    verify(view, timeout(100)).setAveragePoints(points)
   }
 }
