@@ -83,4 +83,22 @@ class SummaryPresenterUTest {
 
     verify(view, timeout(100)).setSummary(summary)
   }
+
+  @Test fun testAverageUsage() {
+    val usage = 100 * 1000 * 60L
+    whenever(usageRepository.averageDailyUsage()).thenReturn(Observable.just(usage))
+
+    presenter.averageUsage()
+
+    verify(view).setAverageUsage(usage)
+  }
+
+  @Test fun testAveragePoints() {
+    val points = 54
+    whenever(pointsRepository.averagePoints()).thenReturn(Observable.just(points))
+
+    presenter.averagePoints()
+
+    verify(view).setAveragePoints(points)
+  }
 }
