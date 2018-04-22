@@ -15,6 +15,7 @@
 
 package shaishav.com.bebetter.data.database
 
+import android.database.Cursor
 import com.squareup.sqlbrite2.BriteContentResolver
 import com.squareup.sqlbrite2.BriteDatabase
 import io.reactivex.Completable
@@ -56,6 +57,15 @@ class PointsDatabaseManagerImpl @Inject constructor(private val contentResolver:
             .mapToOneOrDefault({ cursor ->
               return@mapToOneOrDefault PointsProvider.cursorToPoints(cursor)
             }, Point(id = 0, date = date, points = 0))
+  }
+
+  override fun averagePoints(): Observable<Int> {
+    return database.createQuery(PointContract.TABLE_POINTS, "SELECT AVG(${PointContract.COLUMN_POINTS}) " +
+            "from ${PointContract.TABLE_POINTS}")
+            .mapToOneOrDefault({ cursor: Cursor ->
+              return@mapToOneOrDefault cursor.getInt(0)
+            }, 0)
+
   }
 
   override fun totalPoints(): Observable<Long> {

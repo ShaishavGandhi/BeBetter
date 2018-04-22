@@ -30,6 +30,7 @@ import org.junit.runner.RunWith
 import shaishav.com.bebetter.data.MySQLiteHelper
 import shaishav.com.bebetter.data.contracts.PointContract
 import shaishav.com.bebetter.data.models.Point
+import shaishav.com.bebetter.extensions.yesterday
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -115,6 +116,34 @@ import java.util.concurrent.TimeUnit
     testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
     testObserver.assertNoErrors()
     assertEquals(0, testObserver.values()[0].points)
+  }
+
+  @Test fun averagePointsWithNoValues() {
+    databaseHelper.writableDatabase.delete(PointContract.TABLE_POINTS, null, null)
+
+    val testObserver = databaseManager.averagePoints().test()
+
+    testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
+    testObserver.assertNoErrors()
+    assertEquals(0, testObserver.values()[0])
+  }
+
+  @Test fun averagePointsWithAverage() {
+    databaseHelper.writableDatabase.delete(PointContract.TABLE_POINTS, null, null)
+
+    val currentDate = Calendar.getInstance()
+    currentDate.set(Calendar.DAY_OF_YEAR, currentDate.get(Calendar.DAY_OF_YEAR) - 1)
+    val point = Point(id = 0, date = currentDate.timeInMillis, points = 54)
+    val point2 = Point(id = 1, date = currentDate.yesterday().timeInMillis, points = 46)
+
+    databaseManager.savePoint(point).test()
+    databaseManager.savePoint(point2).test()
+
+    val testObserver = databaseManager.averagePoints().test()
+
+    testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
+    testObserver.assertNoErrors()
+    assertEquals(50, testObserver.values()[0])
   }
 
   @After @Throws fun cleanUp() {
