@@ -34,6 +34,7 @@ import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Summary
 import shaishav.com.bebetter.data.models.Usage
+import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.SummaryRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
 import shaishav.com.bebetter.extensions.yesterday
@@ -45,12 +46,13 @@ class SummaryPresenterUTest {
   @Mock lateinit var view: SummaryContract
   lateinit var presenter: SummaryPresenter
   @Mock lateinit var summaryRepository: SummaryRepository
+  @Mock lateinit var pointsRepository: PointsRepository
   @Mock lateinit var usageRepository: UsageRepository
 
   @Before @Throws fun setUp() {
     RxAndroidPlugins.setInitMainThreadSchedulerHandler({ Schedulers.trampoline() })
     MockitoAnnotations.initMocks(this)
-    presenter = SummaryPresenter(view, summaryRepository, usageRepository, CompositeDisposable())
+    presenter = SummaryPresenter(view, summaryRepository, usageRepository, pointsRepository, CompositeDisposable())
   }
 
   @Test fun testStartReturns() {

@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
       router.setRoot(RouterTransaction.with(rootController))
     }
 
-    NotificationHelper(this).createDailySummaryNotification()
   }
 
   override fun onNewIntent(intent: Intent?) {
