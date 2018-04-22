@@ -32,6 +32,7 @@ import shaishav.com.bebetter.data.models.Summary
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.extensions.yesterday
 import shaishav.com.bebetter.presenter.SummaryPresenter
+import shaishav.com.bebetter.utils.ResourceManager
 import java.util.*
 import javax.inject.Inject
 
@@ -47,6 +48,7 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
   lateinit var recyclerView: EpoxyRecyclerView
   lateinit var adapter: RecyclerSummaryController
   @Inject lateinit var presenter: SummaryPresenter
+  @Inject lateinit var resourceManager: ResourceManager
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     if (activity?.application is DependencyGraph) {
@@ -56,11 +58,12 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
     rootView = inflater.inflate(R.layout.controller_summary, container, false)
     initViews(rootView.context)
 
-    adapter = RecyclerSummaryController()
+    adapter = RecyclerSummaryController(resourceManager)
     recyclerView.itemAnimator = SlideInUpAnimator()
     recyclerView.setController(adapter)
 
     presenter.start(date)
+    presenter.averageUsage()
 
     return rootView
   }
@@ -86,6 +89,11 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
       CommonConfetti.rainingConfetti(rootView as ViewGroup, intArrayOf(it.getColor(R.color.colorPrimary)))
               .stream(6000)
     }
+  }
+
+  override fun setAverageUsage(averageUsage: Long) {
+    // TODO: Remove multiplication after all calls to it are refactored
+    adapter.averageUsage = averageUsage * 1000 * 60
   }
 
 }
