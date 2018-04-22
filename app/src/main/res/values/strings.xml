@@ -56,8 +56,10 @@
     <string name="master">Master</string>
     <string name="legend">Legend</string>
     <string name="ultra_legend">Ultra Legend</string>
-    <string name="average_summary_over">Your usage of %1$s was %2$s higher than your average usage of %3$s.</string>
-    <string name="average_summary_under">Your usage of %1$s was %2$s lesser than your average usage of %3$s.</string>
+    <string name="average_summary_over">You used your phone %1$s more than your average of %2$s.</string>
+    <string name="average_summary_under">Nice going! You used your phone %1$s less than your average of %2$s.</string>
+    <string name="average_points_over">Woo! You earned %1$s more points than average of %2$s</string>
+    <string name="average_points_under">Drats! You earned %1$s less points than average of %2$s</string>
     <string name="highlight">Highlights</string>
 
     <string name="title_activity_settings">Settings</string>

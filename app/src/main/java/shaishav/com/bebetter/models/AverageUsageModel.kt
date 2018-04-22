@@ -19,34 +19,52 @@ package shaishav.com.bebetter.models
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.data.models.Summary
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.extensions.toFormattedTime
 import shaishav.com.bebetter.utils.ResourceManager
 import shaishav.com.bebetter.viewholder.AverageUsageHolder
 
-@EpoxyModelClass abstract class AverageUsageModel(val usage: Usage,
-                                                  val averageUsage: Long,
+@EpoxyModelClass abstract class AverageUsageModel(val summary: Summary,
+                                                  private val averageUsage: Long,
+                                                  private val averagePoints: Int,
                                                   val resourceManager: ResourceManager): EpoxyModelWithHolder<AverageUsageHolder>() {
 
 
   override fun bind(holder: AverageUsageHolder?) {
     super.bind(holder)
 
+    val usage = summary.usage
+    val points = summary.point
     if (usage.usage > averageUsage) {
       // User spent more time than average.
       val delta = usage.usage - averageUsage
       val stringRes = resourceManager.resources.getString(R.string.average_summary_over)
-      val message = String.format(stringRes, usage.usage.toFormattedTime(), delta.toFormattedTime(),
-              averageUsage.toFormattedTime())
+      val message = String.format(stringRes, delta.toFormattedTime(), averageUsage.toFormattedTime())
       holder?.setUsageHighlight(message)
 
     } else {
       // User spent less time than average.
       val delta = averageUsage - usage.usage
       val stringRes = resourceManager.resources.getString(R.string.average_summary_under)
-      val message = String.format(stringRes, usage.usage.toFormattedTime(), delta.toFormattedTime(),
-              averageUsage.toFormattedTime())
+      val message = String.format(stringRes, delta.toFormattedTime(), averageUsage.toFormattedTime())
       holder?.setUsageHighlight(message)
+    }
+
+    if (averagePoints > -1) {
+      if (points.points > averagePoints) {
+        // User earned more points than average. This is good!
+        val delta = points.points - averagePoints
+        val stringRes = resourceManager.getString(R.string.average_points_over)
+        val message = String.format(stringRes, delta, averagePoints)
+        holder?.setPointsHighlight(message)
+      } else {
+        // User earned less points than average
+        val delta = averagePoints - points.points
+        val stringRes = resourceManager.getString(R.string.average_points_under)
+        val message = String.format(stringRes, delta, averagePoints)
+        holder?.setPointsHighlight(message)
+      }
     }
 
   }

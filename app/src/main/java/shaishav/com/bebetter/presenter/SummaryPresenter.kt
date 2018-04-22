@@ -18,6 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.contracts.SummaryContract
+import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.SummaryRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
 import shaishav.com.bebetter.extensions.yesterday
@@ -29,6 +30,7 @@ class SummaryPresenter @Inject constructor(
         var view: SummaryContract?,
         private val summaryRepository: SummaryRepository,
         private val usageRepository: UsageRepository,
+        private val pointsRepository: PointsRepository,
         val disposables: CompositeDisposable
 ) {
 
@@ -58,6 +60,18 @@ class SummaryPresenter @Inject constructor(
               Timber.e(error)
             })
 
+    disposables.add(disposable)
+  }
+
+  fun averagePoints() {
+    val disposable = pointsRepository.averagePoints()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ averagePoints ->
+              view?.setAveragePoints(averagePoints)
+            }, { error ->
+              Timber.e(error)
+            })
     disposables.add(disposable)
   }
 

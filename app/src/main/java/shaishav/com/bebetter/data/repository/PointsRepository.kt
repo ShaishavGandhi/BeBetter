@@ -63,4 +63,8 @@ class PointsRepository @Inject constructor(private val databaseManager: PointsDa
             }
   }
 
+  fun averagePoints(): Observable<Int> {
+    return databaseManager.averagePoints()
+  }
+
 }
