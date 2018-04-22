@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
     if (!router.hasRootController()) {
       router.setRoot(RouterTransaction.with(rootController))
     }
+
   }
 
   override fun onNewIntent(intent: Intent?) {

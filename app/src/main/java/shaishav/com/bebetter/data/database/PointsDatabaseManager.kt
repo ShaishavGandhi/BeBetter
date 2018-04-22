@@ -57,4 +57,6 @@ interface PointsDatabaseManager {
    * @return Observable<Point>
    */
   fun point(date: Long): Observable<Point>
+
+  fun averagePoints(): Observable<Int>
 }
