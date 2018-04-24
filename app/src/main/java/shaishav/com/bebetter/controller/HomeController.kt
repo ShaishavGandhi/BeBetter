@@ -29,10 +29,7 @@ import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.adapter.RecyclerUsageController
 import shaishav.com.bebetter.contracts.HomeContract
-import shaishav.com.bebetter.data.models.Goal
-import shaishav.com.bebetter.data.models.Level
-import shaishav.com.bebetter.data.models.Point
-import shaishav.com.bebetter.data.models.Usage
+import shaishav.com.bebetter.data.models.*
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.listener.SummaryListener
@@ -129,5 +126,9 @@ class HomeController : Controller(), HomeContract, SummaryListener {
 
   override fun setLevel(level: Level) {
     adapter.level = level
+  }
+
+  override fun setSummary(summary: Summary) {
+    adapter.summary = summary
   }
 }

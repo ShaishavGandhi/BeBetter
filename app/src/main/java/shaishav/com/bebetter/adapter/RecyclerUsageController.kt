@@ -17,15 +17,9 @@ package shaishav.com.bebetter.adapter
 
 import com.airbnb.epoxy.EpoxyController
 import shaishav.com.bebetter.R
-import shaishav.com.bebetter.data.models.Goal
-import shaishav.com.bebetter.data.models.Level
-import shaishav.com.bebetter.data.models.Point
-import shaishav.com.bebetter.data.models.Usage
+import shaishav.com.bebetter.data.models.*
 import shaishav.com.bebetter.listener.SummaryListener
-import shaishav.com.bebetter.models.LevelModel_
-import shaishav.com.bebetter.models.PointsTrendModel_
-import shaishav.com.bebetter.models.UsageCardModel_
-import shaishav.com.bebetter.models.UsageTrendModel_
+import shaishav.com.bebetter.models.*
 import shaishav.com.bebetter.utils.ResourceManager
 
 /**
@@ -96,7 +90,14 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     requestModelBuild()
   }
 
+  var summary: Summary? = null
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
+    addSummary()
     addDailyUsage()
     addCurrentGoal()
     addUsageTrend()
@@ -106,6 +107,14 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     addPointsStreak()
     addAverageDailyUsage()
     addTotalUsage()
+  }
+
+  private fun addSummary() {
+    summary?.let { summary ->
+      SummaryModel_(summary)
+              .id("whatever")
+              .addTo(this)
+    }
   }
 
   private fun addCurrentStreak() {
