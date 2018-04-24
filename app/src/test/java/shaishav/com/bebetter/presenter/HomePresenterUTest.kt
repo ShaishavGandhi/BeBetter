@@ -24,10 +24,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import shaishav.com.bebetter.contracts.HomeContract
-import shaishav.com.bebetter.data.repository.GoalRepository
-import shaishav.com.bebetter.data.repository.PointsRepository
-import shaishav.com.bebetter.data.repository.StreakRepository
-import shaishav.com.bebetter.data.repository.UsageRepository
+import shaishav.com.bebetter.data.repository.*
 
 /**
  * Created by shaishav.gandhi on 2/15/18.
@@ -47,13 +44,14 @@ class HomePresenterUTest {
   @Mock lateinit var goalRepository: GoalRepository
   @Mock lateinit var streakRepository: StreakRepository
   @Mock lateinit var pointsRepository: PointsRepository
+  @Mock lateinit var summaryRepository: SummaryRepository
   lateinit var presenter: HomePresenter
 
   @Before
   @Throws
   fun setUp() {
     setupData()
-    presenter = HomePresenter(view, usageRepository, goalRepository, streakRepository, pointsRepository, CompositeDisposable())
+    presenter = HomePresenter(view, usageRepository, goalRepository, streakRepository, pointsRepository, summaryRepository, CompositeDisposable())
   }
 
   fun setupData() {

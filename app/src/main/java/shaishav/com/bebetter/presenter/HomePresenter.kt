@@ -19,11 +19,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.contracts.HomeContract
-import shaishav.com.bebetter.data.repository.GoalRepository
-import shaishav.com.bebetter.data.repository.PointsRepository
-import shaishav.com.bebetter.data.repository.StreakRepository
-import shaishav.com.bebetter.data.repository.UsageRepository
+import shaishav.com.bebetter.data.repository.*
+import shaishav.com.bebetter.extensions.yesterday
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -35,6 +34,7 @@ class HomePresenter @Inject constructor(
         val goalRepository: GoalRepository,
         val streakRepository: StreakRepository,
         val pointsRepository: PointsRepository,
+        val summaryRepository: SummaryRepository,
         val disposables: CompositeDisposable) {
 
   init {
@@ -47,6 +47,20 @@ class HomePresenter @Inject constructor(
     pointsTrend()
     currentGoal()
     level()
+    lastThreeDaysData()
+  }
+
+  fun lastThreeDaysData() {
+    val calendar = Calendar.getInstance()
+    val disposable = summaryRepository.summary(calendar.timeInMillis)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ summary ->
+              view?.setSummary(summary)
+            }, { error ->
+              Timber.e(error)
+            })
+    disposables.add(disposable)
   }
 
   fun level() {
