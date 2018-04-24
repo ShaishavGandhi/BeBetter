@@ -85,7 +85,7 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
 
     if (currentDate.get(Calendar.DAY_OF_YEAR) == givenDate.get(Calendar.DAY_OF_YEAR)) {
       return dailyUsage().map { usageToday ->
-        return@map Usage(id = 0, date = givenDate.timeInMillis, usage = usageToday)
+        return@map Usage(id = 0, date = givenDate.timeInMillis, usage = usageToday * 1000 * 60)
       }
     }
 
