@@ -21,4 +21,5 @@ interface SummaryContract {
   fun setGoalAchieved()
   fun setAverageUsage(averageUsage: Long)
   fun setAveragePoints(averagePoints: Int)
+  fun setStreak(streak: Long)
 }

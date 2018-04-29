@@ -28,6 +28,7 @@ import shaishav.com.bebetter.viewholder.AverageUsageHolder
 @EpoxyModelClass abstract class AverageUsageModel(val summary: Summary,
                                                   private val averageUsage: Long,
                                                   private val averagePoints: Int,
+                                                  private val streak: Long,
                                                   val resourceManager: ResourceManager): EpoxyModelWithHolder<AverageUsageHolder>() {
 
 
@@ -64,6 +65,16 @@ import shaishav.com.bebetter.viewholder.AverageUsageHolder
         val stringRes = resourceManager.getString(R.string.average_points_under)
         val message = String.format(stringRes, delta, averagePoints)
         holder?.setPointsHighlight(message)
+      }
+    }
+
+    if (streak > -1) {
+      if (streak > 0) {
+        val stringRes = resourceManager.getString(R.string.extended_streak)
+        val message = String.format(stringRes, streak)
+        holder?.setStreakHighlight(message)
+      } else {
+        holder?.setStreakHighlight(resourceManager.getString(R.string.snapped_streak))
       }
     }
 

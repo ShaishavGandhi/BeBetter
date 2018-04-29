@@ -65,6 +65,7 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
     presenter.start(date)
     presenter.averageUsage()
     presenter.averagePoints()
+    presenter.streak()
 
     return rootView
   }
@@ -90,6 +91,10 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
       CommonConfetti.rainingConfetti(rootView as ViewGroup, intArrayOf(it.getColor(R.color.colorPrimary)))
               .stream(6000)
     }
+  }
+
+  override fun setStreak(streak: Long) {
+    adapter.streak = streak
   }
 
   override fun setAverageUsage(averageUsage: Long) {
