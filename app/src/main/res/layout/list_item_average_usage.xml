@@ -120,6 +120,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"/>
 
+            <android.support.constraint.Group
+                    android:id="@+id/streakGroup"
+                    app:constraint_referenced_ids="streakHighlight,divider3"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/streakHighlight"
+                    android:layout_marginStart="@dimen/margin_base"
+                    android:layout_marginEnd="@dimen/margin_base"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="@dimen/margin_small"
+                    app:layout_constraintTop_toBottomOf="@+id/divider2"
+                    android:textColor="#404040"
+                    android:textSize="16sp"
+                    tools:text="Your extended your streak to 7 days!"/>
+
+            <View
+                    android:id="@+id/divider3"
+                    app:layout_constraintTop_toBottomOf="@+id/streakHighlight"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:background="@android:color/darker_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"/>
+
         </android.support.constraint.ConstraintLayout>
 
 

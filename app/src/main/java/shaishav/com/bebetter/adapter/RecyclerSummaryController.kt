@@ -49,6 +49,12 @@ class RecyclerSummaryController(private val resourceManager: ResourceManager): E
     requestModelBuild()
   }
 
+  var streak: Long = -1
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
     addGoalAchievedModel()
     addSummaryModel()
@@ -73,8 +79,8 @@ class RecyclerSummaryController(private val resourceManager: ResourceManager): E
     if (averageUsage > 0) {
       summary?.let { summary ->
         val usage = summary.usage
-        AverageUsageModel_(summary, averageUsage, averagePoints, resourceManager)
-                .id("${averageUsage}_${usage.usage}_$averagePoints")
+        AverageUsageModel_(summary, averageUsage, averagePoints, streak, resourceManager)
+                .id("${averageUsage}_${usage.usage}_${averagePoints}_$streak")
                 .addTo(this)
       }
     }

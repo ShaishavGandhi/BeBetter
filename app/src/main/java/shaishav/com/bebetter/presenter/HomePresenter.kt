@@ -47,7 +47,7 @@ class HomePresenter @Inject constructor(
     pointsTrend()
     currentGoal()
     level()
-    lastThreeDaysData()
+//    lastThreeDaysData()
   }
 
   fun lastThreeDaysData() {

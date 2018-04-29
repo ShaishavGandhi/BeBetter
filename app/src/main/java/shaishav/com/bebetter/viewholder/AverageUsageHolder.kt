@@ -39,5 +39,10 @@ class AverageUsageHolder: EpoxyHolder() {
     binding?.pointsHighlight?.text = highlight
   }
 
+  fun setStreakHighlight(highlight: String) {
+    binding?.streakGroup?.visibility = View.VISIBLE
+    binding?.streakHighlight?.text = highlight
+  }
+
 
 }

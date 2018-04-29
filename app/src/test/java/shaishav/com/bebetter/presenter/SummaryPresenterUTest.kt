@@ -35,6 +35,7 @@ import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Summary
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.data.repository.PointsRepository
+import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.SummaryRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
 import shaishav.com.bebetter.extensions.yesterday
@@ -48,11 +49,13 @@ class SummaryPresenterUTest {
   @Mock lateinit var summaryRepository: SummaryRepository
   @Mock lateinit var pointsRepository: PointsRepository
   @Mock lateinit var usageRepository: UsageRepository
+  @Mock lateinit var streakRepository: StreakRepository
 
   @Before @Throws fun setUp() {
     RxAndroidPlugins.setInitMainThreadSchedulerHandler({ Schedulers.trampoline() })
     MockitoAnnotations.initMocks(this)
-    presenter = SummaryPresenter(view, summaryRepository, usageRepository, pointsRepository, CompositeDisposable())
+    presenter = SummaryPresenter(view, summaryRepository, usageRepository, pointsRepository, streakRepository,
+            CompositeDisposable())
   }
 
   @Test fun testStartReturns() {
@@ -100,5 +103,14 @@ class SummaryPresenterUTest {
     presenter.averagePoints()
 
     verify(view, timeout(100)).setAveragePoints(points)
+  }
+
+  @Test fun testStreak() {
+    val streak = 1L
+    whenever(streakRepository.currentStreak()).thenReturn(Observable.just(streak))
+
+    presenter.streak()
+
+    verify(view, timeout(100)).setStreak(streak)
   }
 }
