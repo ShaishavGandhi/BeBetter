@@ -17,6 +17,7 @@ package shaishav.com.bebetter.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -24,7 +25,6 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.bluelinelabs.conductor.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.controller.PickGoalController
 import shaishav.com.bebetter.controller.HomeController

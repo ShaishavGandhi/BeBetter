@@ -32,6 +32,7 @@ import shaishav.com.bebetter.di.modules.PickGoalModule
 import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.logging.ReleaseTree
+import shaishav.com.bebetter.service.ServiceRestarter
 import shaishav.com.bebetter.service.UsageService
 import timber.log.Timber
 
@@ -48,6 +49,7 @@ class BBApplication : Application(), DependencyGraph {
 
   override fun onCreate() {
     super.onCreate()
+    Thread.setDefaultUncaughtExceptionHandler(ServiceRestarter(this))
     appComponent = DaggerAppComponent
             .builder()
             .appModule(AppModule(this))
