@@ -87,4 +87,22 @@ interface PreferenceDataStore {
    * Set value for whether user has onboarded
    */
   fun setUserHasOnboarded()
+
+  /**
+   * Increment lock counter by one
+   */
+  fun incrementUnlockCounter()
+
+  /**
+   * Reset lock counter. Should be
+   * called while resetting user's data
+   * or when day has changed
+   */
+  fun resetUnlockCounter()
+
+  /**
+   * Hot observable that tells you the number
+   * of unlocks in a day
+   */
+  fun totalUnlocks(): Observable<Int>
 }

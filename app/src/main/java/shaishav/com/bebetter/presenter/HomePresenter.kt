@@ -41,6 +41,7 @@ class HomePresenter @Inject constructor(
     dailyUsage()
     averageDailyUsage()
     currentStreak()
+    totalUnlocks()
     totalUsage()
     totalPoints()
     usageTrend()
@@ -61,6 +62,17 @@ class HomePresenter @Inject constructor(
               Timber.e(error)
             })
     disposables.add(disposable)
+  }
+
+  fun totalUnlocks() {
+    val disposable = usageRepository.totalUnlocks()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ unlocks ->
+              view?.setTotalUnlocks(unlocks)
+            }, {
+              Timber.e(it)
+            })
   }
 
   fun level() {

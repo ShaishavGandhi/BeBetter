@@ -22,6 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.data.models.Usage
+import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
@@ -156,6 +157,10 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       val currentSession = usageRepository.rawDailyUsage()
       val usage = Usage(0, lastUnlockedTime, currentSession)
 
+      // Reset phone unlock count and increment
+      usageRepository.resetUnlockCounter()
+      usageRepository.incrementUnlockCounter()
+
       // Add points
       addPoints(lastUnlockedTime, usage)
 
@@ -174,6 +179,9 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       // Show notification to give them summary
       notificationHelper.createDailySummaryNotification()
     }
+
+    // Increment unlock counter
+    usageRepository.incrementUnlockCounter()
 
     // Store the unlock time
     usageRepository.storePhoneUnlockedTime(unlockTime)

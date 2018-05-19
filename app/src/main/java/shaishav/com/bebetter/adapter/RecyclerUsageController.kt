@@ -96,10 +96,17 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     requestModelBuild()
   }
 
+  var totalUnlocks: Int? = null
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
     addSummary()
     addDailyUsage()
     addCurrentGoal()
+    addTotalUnlocks()
     addUsageTrend()
     addCurrentStreak()
     addTotalPoints()
@@ -113,6 +120,15 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     summary?.let { summary ->
       SummaryModel_(summary)
               .id("whatever")
+              .addTo(this)
+    }
+  }
+
+  private fun addTotalUnlocks() {
+    val header = resourceManager.getString(R.string.unlocks_today)
+    totalUnlocks?.let {
+      UsageCardModel_(header, it.toLong(), "")
+              .id("unlocks_$totalUnlocks")
               .addTo(this)
     }
   }

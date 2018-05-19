@@ -92,5 +92,17 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
     return databaseManager.usage(date).subscribeOn(Schedulers.io())
   }
 
+  fun totalUnlocks(): Observable<Int> {
+    return preferenceStore.totalUnlocks()
+  }
+
+  fun incrementUnlockCounter() {
+    preferenceStore.incrementUnlockCounter()
+  }
+
+  fun resetUnlockCounter() {
+    preferenceStore.resetUnlockCounter()
+  }
+
 
 }

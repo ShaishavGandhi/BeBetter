@@ -16,6 +16,7 @@
 package shaishav.com.bebetter.controller
 
 import android.content.Context
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -130,5 +131,9 @@ class HomeController : Controller(), HomeContract, SummaryListener {
 
   override fun setSummary(summary: Summary) {
     adapter.summary = summary
+  }
+
+  override fun setTotalUnlocks(unlocks: Int) {
+    adapter.totalUnlocks = unlocks
   }
 }
