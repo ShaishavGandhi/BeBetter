@@ -33,5 +33,6 @@ interface HomeContract {
   fun setPoints(points: List<Point>)
   fun setLevel(level: Level)
   fun setSummary(summary: Summary)
+  fun setTotalUnlocks(unlocks: Int)
 
 }
