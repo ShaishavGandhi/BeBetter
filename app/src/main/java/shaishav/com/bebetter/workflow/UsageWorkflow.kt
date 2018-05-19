@@ -65,6 +65,9 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
                 .subscribeOn(Schedulers.io())
                 .subscribe({}, { _ -> })
 
+        // Reset unlock counter
+        usageRepository.resetUnlockCounter()
+
         // Construct the last minute of yesterday
         val previousDay = Calendar.getInstance()
         previousDay.timeInMillis = unlockTime
