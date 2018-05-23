@@ -98,8 +98,7 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
   }
 
   override fun setAverageUsage(averageUsage: Long) {
-    // TODO: Remove multiplication after all calls to it are refactored
-    adapter.averageUsage = averageUsage * 1000 * 60
+    adapter.averageUsage = averageUsage
   }
 
   override fun setAveragePoints(averagePoints: Int) {

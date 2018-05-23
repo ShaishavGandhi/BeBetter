@@ -146,7 +146,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
 
   private fun addDailyUsage() {
     val header = resourceManager.getString(R.string.daily_usage)
-    val footer = resourceManager.getString(R.string.minute)
+    val footer = ""
 
     if (dailyUsage > -1) {
       UsageCardModel_(header, dailyUsage, footer)
@@ -157,7 +157,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
 
   private fun addAverageDailyUsage() {
     val header = resourceManager.getString(R.string.average_daily_usage)
-    val footer = resourceManager.getString(R.string.minute)
+    val footer = ""
 
     if (averageDailyUsage > -1) {
       UsageCardModel_(header, averageDailyUsage, footer)
@@ -168,7 +168,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
 
   private fun addCurrentGoal() {
     val header = resourceManager.getString(R.string.current_goal)
-    val footer = resourceManager.getString(R.string.minute)
+    val footer = ""
 
     if (currentGoal > -1) {
       UsageCardModel_(header, currentGoal, footer)
@@ -181,7 +181,7 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
 
   private fun addTotalUsage() {
     val header = resourceManager.getString(R.string.total_usage)
-    val footer = resourceManager.getString(R.string.minute)
+    val footer = ""
 
     if (totalUsage > -1) {
       UsageCardModel_(header, totalUsage, footer)

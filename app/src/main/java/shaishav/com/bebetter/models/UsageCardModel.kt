@@ -22,6 +22,7 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.robinhood.ticker.TickerUtils
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.extensions.toFormattedTime
 import shaishav.com.bebetter.listener.SummaryListener
 import shaishav.com.bebetter.viewholder.UsageViewHolder
 
@@ -40,7 +41,7 @@ abstract class UsageCardModel(val header: String, val usage: Long, val footer: S
     binding?.let { binding ->
       with(binding) {
         title = header
-        this.usage = this@UsageCardModel.usage.toString()
+        this.usage = if (this@UsageCardModel.footer.isEmpty()) this@UsageCardModel.usage.toFormattedTime() else this@UsageCardModel.usage.toString()
         this.footer = this@UsageCardModel.footer
       }
     }
@@ -50,7 +51,7 @@ abstract class UsageCardModel(val header: String, val usage: Long, val footer: S
     holder.binding?.value?.apply {
       setCharacterList(TickerUtils.getDefaultNumberList())
       animationDuration = 800
-      text = usage.toString()
+      text = if (this@UsageCardModel.footer.isEmpty()) this@UsageCardModel.usage.toFormattedTime() else this@UsageCardModel.usage.toString()
       typeface = exoFont
     }
 
