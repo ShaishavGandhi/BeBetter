@@ -41,11 +41,10 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: 
             .getLong(KEY_UNLOCKED)
             .asObservable()
             .map {
-              // TODO: Replace with all the minutes and hours from preferences
               if (it == 0L) {
                 return@map it
               }
-              return@map (Date().time - it) / (1000 * 60)
+              return@map (Date().time - it)
             }.subscribeOn(Schedulers.io())
   }
 
@@ -66,7 +65,7 @@ class PreferenceDataStoreImpl(val preferences: RxSharedPreferences, val editor: 
             .asObservable()
             .subscribeOn(Schedulers.io())
             .map {
-              return@map it / (1000 * 60)
+              return@map it
             }
   }
 

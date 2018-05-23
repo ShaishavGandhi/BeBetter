@@ -39,7 +39,7 @@ import javax.inject.Inject
             arrayOf("AVG(" + UsageContract.COLUMN_USAGE + ") "), null, null, null, false)
             .mapToOne {
               // TODO : Replace with preference
-              return@mapToOne it.getInt(0).toLong() / (1000 * 60)
+              return@mapToOne it.getInt(0).toLong()
             }
   }
 
@@ -60,8 +60,7 @@ import javax.inject.Inject
     return contentResolver.createQuery(UsageProvider.CONTENT_URI,
             arrayOf("SUM(" + UsageContract.COLUMN_USAGE + ") "), null, null, null, false)
             .mapToOne {
-              // TODO : Replace with preference instead of static 1000 * 60
-              return@mapToOne it.getInt(0).toLong() / (1000 * 60)
+              return@mapToOne it.getInt(0).toLong()
             }
   }
 
