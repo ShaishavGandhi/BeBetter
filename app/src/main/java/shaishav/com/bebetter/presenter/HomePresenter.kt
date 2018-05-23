@@ -41,7 +41,7 @@ class HomePresenter @Inject constructor(
     dailyUsage()
     averageDailyUsage()
     currentStreak()
-    totalUnlocks()
+//    totalUnlocks()
     totalUsage()
     totalPoints()
     usageTrend()
@@ -73,6 +73,8 @@ class HomePresenter @Inject constructor(
             }, {
               Timber.e(it)
             })
+
+    disposables.add(disposable)
   }
 
   fun level() {
