@@ -18,14 +18,14 @@ package shaishav.com.bebetter.extensions
 fun Long.toFormattedTime(): String {
   val minutes = this / (1000 * 60)
   return if (minutes < 60) {
-    "$minutes min"
+    "${minutes}m"
   } else {
     val hour = minutes / 60
     val remainder = minutes % 60
     if (remainder == 0L) {
-      "$hour hr"
+      "${hour}hr"
     } else {
-      "$hour hr $remainder min"
+      "${hour}hr ${remainder}m"
     }
   }
 }

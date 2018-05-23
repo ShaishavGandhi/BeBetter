@@ -22,21 +22,21 @@ class TimeExtensionUTest {
 
   @Test fun testFormatTimeBelowHour() {
     val time = 1000 * 60 * 17L
-    assertEquals("17 min", time.toFormattedTime())
+    assertEquals("17m", time.toFormattedTime())
   }
 
   @Test fun testFormatTimeWithZero() {
     val time = 965 * 60 * 0L
-    assertEquals("0 min", time.toFormattedTime())
+    assertEquals("0m", time.toFormattedTime())
   }
 
   @Test fun testFormatTimeAboveHour() {
     val time = 1000 * 60 * 235L
-    assertEquals("3 hr 55 min", time.toFormattedTime())
+    assertEquals("3hr 55m", time.toFormattedTime())
   }
 
   @Test fun testFormatTimeExactHour() {
     val time = 1000 * 60 * 240L
-    assertEquals("4 hr", time.toFormattedTime())
+    assertEquals("4hr", time.toFormattedTime())
   }
 }
