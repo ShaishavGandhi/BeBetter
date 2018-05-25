@@ -42,7 +42,7 @@ android {
         applicationId "shaishav.com.bebetter"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 20
+        versionCode 21
         versionName "0.1.11-dev"
 
         resConfigs "en"
