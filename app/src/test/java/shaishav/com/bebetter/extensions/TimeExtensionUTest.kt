@@ -39,4 +39,14 @@ class TimeExtensionUTest {
     val time = 1000 * 60 * 240L
     assertEquals("4hr", time.toFormattedTime())
   }
+
+  @Test fun testFormatTimeDays() {
+    val time = 1000 * 60 * 60 * 24 * 6L
+    assertEquals("6 days", time.toFormattedTime())
+  }
+
+  @Test fun testFormatTimeWeeks() {
+    val time = 1000 * 60 * 60 * 24 * 43L
+    assertEquals("6 weeks", time.toFormattedTime())
+  }
 }
