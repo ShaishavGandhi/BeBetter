@@ -17,6 +17,7 @@
 package shaishav.com.bebetter.viewholder
 
 import android.databinding.DataBindingUtil
+import android.text.Spannable
 import android.view.View
 import com.airbnb.epoxy.EpoxyHolder
 import shaishav.com.bebetter.databinding.ListItemAverageUsageBinding
@@ -29,14 +30,19 @@ class AverageUsageHolder: EpoxyHolder() {
     binding = DataBindingUtil.bind(itemView)
   }
 
-  fun setUsageHighlight(highlight: String) {
+  fun setUsageHighlight(highlight: Spannable) {
     binding?.usageGroup?.visibility = View.VISIBLE
     binding?.usageHighlight?.text = highlight
   }
 
-  fun setPointsHighlight(highlight: String) {
+  fun setPointsHighlight(highlight: Spannable) {
     binding?.pointsGroup?.visibility = View.VISIBLE
     binding?.pointsHighlight?.text = highlight
+  }
+
+  fun setStreakHighlight(highlight: Spannable) {
+    binding?.streakGroup?.visibility = View.VISIBLE
+    binding?.streakHighlight?.text = highlight
   }
 
   fun setStreakHighlight(highlight: String) {
