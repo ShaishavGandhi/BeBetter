@@ -16,6 +16,10 @@
 
 package shaishav.com.bebetter.models
 
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import shaishav.com.bebetter.R
@@ -42,14 +46,15 @@ import shaishav.com.bebetter.viewholder.AverageUsageHolder
       val delta = usage.usage - averageUsage
       val stringRes = resourceManager.resources.getString(R.string.average_summary_over)
       val message = String.format(stringRes, delta.toFormattedTime(), averageUsage.toFormattedTime())
-      holder?.setUsageHighlight(message)
+
+      holder?.setUsageHighlight(getFormattedString(message, delta.toFormattedTime(), averageUsage.toFormattedTime()))
 
     } else {
       // User spent less time than average.
       val delta = averageUsage - usage.usage
       val stringRes = resourceManager.resources.getString(R.string.average_summary_under)
       val message = String.format(stringRes, delta.toFormattedTime(), averageUsage.toFormattedTime())
-      holder?.setUsageHighlight(message)
+      holder?.setUsageHighlight(getFormattedString(message, delta.toFormattedTime(), averageUsage.toFormattedTime()))
     }
 
     if (averagePoints > -1) {
@@ -58,13 +63,13 @@ import shaishav.com.bebetter.viewholder.AverageUsageHolder
         val delta = points.points - averagePoints
         val stringRes = resourceManager.getString(R.string.average_points_over)
         val message = String.format(stringRes, delta, averagePoints)
-        holder?.setPointsHighlight(message)
+        holder?.setPointsHighlight(getFormattedString(message, delta.toString(), averagePoints.toString()))
       } else {
         // User earned less points than average
         val delta = averagePoints - points.points
         val stringRes = resourceManager.getString(R.string.average_points_under)
         val message = String.format(stringRes, delta, averagePoints)
-        holder?.setPointsHighlight(message)
+        holder?.setPointsHighlight(getFormattedString(message, delta.toString(), averagePoints.toString()))
       }
     }
 
@@ -72,12 +77,30 @@ import shaishav.com.bebetter.viewholder.AverageUsageHolder
       if (streak > 0) {
         val stringRes = resourceManager.getString(R.string.extended_streak)
         val message = String.format(stringRes, streak)
-        holder?.setStreakHighlight(message)
+
+        val spannable = SpannableString(message).apply {
+          val index = indexOf(streak.toString())
+          setSpan(StyleSpan(Typeface.BOLD), index, index + streak.toString().length, 0)
+        }
+        holder?.setStreakHighlight(spannable)
       } else {
         holder?.setStreakHighlight(resourceManager.getString(R.string.snapped_streak))
       }
     }
 
+  }
+
+  fun getFormattedString(message: String, first: String, second: String): Spannable {
+    val spannable = SpannableString(message)
+    val firstStart = message.indexOf(first)
+    val firstEnd = firstStart + first.length
+
+    val secondStart = message.indexOf(second)
+    val secondEnd = secondStart + second.length
+    spannable.setSpan(StyleSpan(Typeface.BOLD), firstStart, firstEnd, 0)
+    spannable.setSpan(StyleSpan(Typeface.BOLD), secondStart, secondEnd, 0)
+
+    return spannable
   }
 
   override fun getDefaultLayout(): Int {
