@@ -21,11 +21,21 @@ fun Long.toFormattedTime(): String {
     "${minutes}m"
   } else {
     val hour = minutes / 60
-    val remainder = minutes % 60
-    if (remainder == 0L) {
-      "${hour}hr"
+    if (hour < 24) {
+      val remainder = minutes % 60
+      if (remainder == 0L) {
+        "${hour}hr"
+      } else {
+        "${hour}hr ${remainder}m"
+      }
     } else {
-      "${hour}hr ${remainder}m"
+      val days = hour / 24
+      if (days < 7) {
+        "$days days"
+      } else {
+        val weeks = days / 7
+        return "$weeks weeks"
+      }
     }
   }
 }
