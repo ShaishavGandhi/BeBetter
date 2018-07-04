@@ -16,6 +16,7 @@
 package shaishav.com.bebetter.presenter
 
 import com.nhaarman.mockito_kotlin.whenever
+import com.uber.autodispose.TestLifecycleScopeProvider
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.junit.Before
@@ -46,12 +47,15 @@ class HomePresenterUTest {
   @Mock lateinit var pointsRepository: PointsRepository
   @Mock lateinit var summaryRepository: SummaryRepository
   lateinit var presenter: HomePresenter
+  lateinit var scopeProvider: TestLifecycleScopeProvider
 
   @Before
   @Throws
   fun setUp() {
     setupData()
-    presenter = HomePresenter(view, usageRepository, goalRepository, streakRepository, pointsRepository, summaryRepository, CompositeDisposable())
+    scopeProvider = TestLifecycleScopeProvider.create()
+    scopeProvider.start()
+    presenter = HomePresenter(view, usageRepository, goalRepository, streakRepository, pointsRepository, summaryRepository, scopeProvider)
   }
 
   fun setupData() {

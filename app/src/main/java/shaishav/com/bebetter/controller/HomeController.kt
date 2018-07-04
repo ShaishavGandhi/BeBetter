@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.autodispose.ControllerScopeProvider
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
@@ -56,7 +57,9 @@ class HomeController : Controller(), HomeContract, SummaryListener {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     if (activity?.application is DependencyGraph) {
-      (activity?.application as DependencyGraph).addHomeComponent(HomeModule(this)).inject(this)
+      (activity?.application as DependencyGraph).addHomeComponent(
+              HomeModule(this, ControllerScopeProvider.from(this))
+      ).inject(this)
     }
     rootView = inflater.inflate(R.layout.controller_home, container, false)
     presenter.view = this
