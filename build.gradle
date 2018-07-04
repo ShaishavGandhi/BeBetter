@@ -72,6 +72,8 @@ ext {
     constraintLayout = "com.android.support.constraint:constraint-layout:1.1.0"
     recyclerViewAnimators = "jp.wasabeef:recyclerview-animators:2.2.7"
     confetti = "com.github.jinatonic.confetti:confetti:1.1.1"
+    conductorAutodispose = "com.bluelinelabs:conductor-autodispose:2.1.4"
+    autodispose = "com.uber.autodispose:autodispose-kotlin:0.8.0"
 
     firebaseAnalytics = "com.google.firebase:firebase-core:$playServicesVersion"
 
@@ -87,8 +89,8 @@ ext {
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 }
