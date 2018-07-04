@@ -21,6 +21,7 @@ import android.os.Build
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.uber.autodispose.LifecycleScopeProvider
 import io.fabric.sdk.android.Fabric
 import shaishav.com.bebetter.BuildConfig
 import shaishav.com.bebetter.contracts.PickGoalContract
@@ -95,9 +96,9 @@ class BBApplication : Application(), DependencyGraph {
     return serviceComponent as ServiceComponent
   }
 
-  override fun addPickGoalComponent(view: PickGoalContract): PickGoalComponent {
+  override fun addPickGoalComponent(view: PickGoalContract, lifecycleScopeProvider: LifecycleScopeProvider<*>): PickGoalComponent {
     if (pickGoalComponent == null) {
-      pickGoalComponent = appComponent.addPickGoalComponent(PickGoalModule(view))
+      pickGoalComponent = appComponent.addPickGoalComponent(PickGoalModule(view, lifecycleScopeProvider))
     }
     return pickGoalComponent as PickGoalComponent
   }
@@ -110,9 +111,9 @@ class BBApplication : Application(), DependencyGraph {
     serviceComponent = null
   }
 
-  override fun addSummaryComponent(view: SummaryContract): SummaryComponent {
+  override fun addSummaryComponent(view: SummaryContract, lifecycleScopeProvider: LifecycleScopeProvider<*>): SummaryComponent {
     if (summaryComponent == null) {
-      summaryComponent = appComponent.addSummaryComponent(SummaryModule(view))
+      summaryComponent = appComponent.addSummaryComponent(SummaryModule(view, lifecycleScopeProvider))
     }
     return summaryComponent!!
   }

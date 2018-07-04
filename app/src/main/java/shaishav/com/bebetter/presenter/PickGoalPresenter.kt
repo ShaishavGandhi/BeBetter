@@ -15,6 +15,8 @@
 
 package shaishav.com.bebetter.presenter
 
+import com.uber.autodispose.LifecycleScopeProvider
+import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableCompletableObserver
@@ -29,26 +31,24 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 3/1/18.
  */
-class PickGoalPresenter @Inject constructor(private var view: PickGoalContract?,
-                                            private val goalRepository: GoalRepository,
-                                            private val preferenceDataStore: PreferenceDataStore,
-                                            val disposables: CompositeDisposable) {
+class PickGoalPresenter @Inject constructor(
+        private var view: PickGoalContract?,
+        private val goalRepository: GoalRepository,
+        private val preferenceDataStore: PreferenceDataStore,
+        private val lifecycleScopeProvider: LifecycleScopeProvider<*>,
+        val disposables: CompositeDisposable) {
 
   fun saveGoal(day: Long, minutes: Int) {
     val goal = Goal(0, date = day, goal = minutes * 1000 * 60L)
     goalRepository.saveGoal(goal)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableCompletableObserver() {
-              override fun onComplete() {
+            .autoDisposable(lifecycleScopeProvider)
+            .subscribe({
                 preferenceDataStore.setUserHasOnboarded()
                 view?.homeScreen()
-              }
-
-              override fun onError(e: Throwable) {
+              }, {
                 view?.error()
-              }
-
             })
   }
 

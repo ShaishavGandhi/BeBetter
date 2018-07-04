@@ -14,6 +14,8 @@
  */
 package shaishav.com.bebetter.presenter
 
+import com.uber.autodispose.LifecycleScopeProvider
+import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -33,13 +35,14 @@ class SummaryPresenter @Inject constructor(
         private val usageRepository: UsageRepository,
         private val pointsRepository: PointsRepository,
         private val streakRepository: StreakRepository,
-        val disposables: CompositeDisposable
+        private val lifecycleScopeProvider: LifecycleScopeProvider<*>
 ) {
 
   fun start(date: Long) {
-    val disposable = summaryRepository.summary(date)
+    summaryRepository.summary(date)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ summary ->
               view?.setSummary(summary)
               if (summary.goal.goal > summary.usage.usage) {
@@ -48,51 +51,47 @@ class SummaryPresenter @Inject constructor(
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun averageUsage() {
-    val disposable = usageRepository.averageDailyUsage()
+    usageRepository.averageDailyUsage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ averageUsage ->
               view?.setAverageUsage(averageUsage)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun averagePoints() {
-    val disposable = pointsRepository.averagePoints()
+    pointsRepository.averagePoints()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ averagePoints ->
               view?.setAveragePoints(averagePoints)
             }, { error ->
               Timber.e(error)
             })
-    disposables.add(disposable)
   }
 
   fun streak() {
-    val disposable = streakRepository.currentStreak()
+    streakRepository.currentStreak()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ streak ->
               view?.setStreak(streak)
             }, { error ->
               Timber.e(error)
             })
 
-    disposables.add(disposable)
   }
 
   fun detach() {
     view = null
-    disposables.dispose()
   }
 
 

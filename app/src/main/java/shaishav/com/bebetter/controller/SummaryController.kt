@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.autodispose.ControllerScopeProvider
 import com.github.jinatonic.confetti.CommonConfetti
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
@@ -52,7 +53,8 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     if (activity?.application is DependencyGraph) {
-      (activity?.application as DependencyGraph).addSummaryComponent(this).inject(this)
+      (activity?.application as DependencyGraph).addSummaryComponent(this,
+              ControllerScopeProvider.from(this)).inject(this)
     }
     (activity as MainActivity).setToolbarTitle("Summary")
     rootView = inflater.inflate(R.layout.controller_summary, container, false)

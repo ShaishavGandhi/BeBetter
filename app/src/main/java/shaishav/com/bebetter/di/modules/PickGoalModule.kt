@@ -15,6 +15,7 @@
 
 package shaishav.com.bebetter.di.modules
 
+import com.uber.autodispose.LifecycleScopeProvider
 import dagger.Module
 import dagger.Provides
 import shaishav.com.bebetter.contracts.PickGoalContract
@@ -23,10 +24,14 @@ import shaishav.com.bebetter.di.scopes.ActivityScope
 /**
  * Created by shaishav.gandhi on 3/1/18.
  */
-@Module class PickGoalModule(val view: PickGoalContract) {
+@Module class PickGoalModule(val view: PickGoalContract, val lifecycleScopeProvider: LifecycleScopeProvider<*>) {
 
   @Provides @ActivityScope fun providesPickGoalModule(): PickGoalContract {
     return view
+  }
+
+  @Provides @ActivityScope fun providesGoalLifecycle(): LifecycleScopeProvider<*> {
+    return lifecycleScopeProvider
   }
 
 }
