@@ -19,6 +19,8 @@ package shaishav.com.bebetter.presenter
 import com.nhaarman.mockito_kotlin.timeout
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import com.uber.autodispose.LifecycleScopeProvider
+import com.uber.autodispose.TestLifecycleScopeProvider
 import io.reactivex.Observable
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.disposables.CompositeDisposable
@@ -50,12 +52,15 @@ class SummaryPresenterUTest {
   @Mock lateinit var pointsRepository: PointsRepository
   @Mock lateinit var usageRepository: UsageRepository
   @Mock lateinit var streakRepository: StreakRepository
+  lateinit var lifecycleProvider: TestLifecycleScopeProvider
 
   @Before @Throws fun setUp() {
     RxAndroidPlugins.setInitMainThreadSchedulerHandler({ Schedulers.trampoline() })
     MockitoAnnotations.initMocks(this)
+    lifecycleProvider = TestLifecycleScopeProvider.create()
+    lifecycleProvider.start()
     presenter = SummaryPresenter(view, summaryRepository, usageRepository, pointsRepository, streakRepository,
-            CompositeDisposable())
+            lifecycleProvider)
   }
 
   @Test fun testStartReturns() {
