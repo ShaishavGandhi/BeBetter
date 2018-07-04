@@ -15,6 +15,8 @@
 
 package shaishav.com.bebetter.presenter
 
+import com.uber.autodispose.LifecycleScopeProvider
+import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -32,10 +34,10 @@ class HomePresenter @Inject constructor(
         var view: HomeContract?,
         val usageRepository: UsageRepository,
         val goalRepository: GoalRepository,
-        val streakRepository: StreakRepository,
-        val pointsRepository: PointsRepository,
-        val summaryRepository: SummaryRepository,
-        val disposables: CompositeDisposable) {
+        private val streakRepository: StreakRepository,
+        private val pointsRepository: PointsRepository,
+        private val summaryRepository: SummaryRepository,
+        private val lifecycleScopeProvider: LifecycleScopeProvider<*>) {
 
   init {
     dailyUsage()
@@ -53,139 +55,132 @@ class HomePresenter @Inject constructor(
 
   fun lastThreeDaysData() {
     val calendar = Calendar.getInstance()
-    val disposable = summaryRepository.summary(calendar.timeInMillis)
+    summaryRepository.summary(calendar.timeInMillis)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ summary ->
               view?.setSummary(summary)
             }, { error ->
               Timber.e(error)
             })
-    disposables.add(disposable)
   }
 
   fun totalUnlocks() {
-    val disposable = usageRepository.totalUnlocks()
+    usageRepository.totalUnlocks()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ unlocks ->
               view?.setTotalUnlocks(unlocks)
             }, {
               Timber.e(it)
             })
-
-    disposables.add(disposable)
   }
 
   fun level() {
-    val disposable = pointsRepository
+    pointsRepository
             .level()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({level ->
+            .autoDisposable(lifecycleScopeProvider)
+            .subscribe({ level ->
               view?.setLevel(level)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun pointsTrend() {
-    val disposable = pointsRepository
+    pointsRepository
             .points()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ points ->
               view?.setPoints(points)
             }, { error ->
               Timber.e(error)
             })
 
-    disposables.add(disposable)
   }
 
   fun totalPoints() {
-    val disposable = pointsRepository
+    pointsRepository
             .totalPoints()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ totalPoints ->
               view?.setTotalPoints(totalPoints)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun currentStreak() {
-    val disposable = streakRepository
+    streakRepository
             .currentStreak()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ currentStreak ->
               view?.setCurrentStreak(currentStreak)
             }, { throwable ->
               Timber.e(throwable)
             })
-    disposables.add(disposable)
   }
 
   fun currentGoal() {
-    val disposable = goalRepository
+    goalRepository
             .currentGoal()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ goal ->
               view?.setCurrentGoal(goal)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun dailyUsage() {
-    val disposable = usageRepository
+    usageRepository
             .dailyUsage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({ dailyUsage ->
               view?.setDailyUsage(dailyUsage)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun averageDailyUsage() {
-    val disposable = usageRepository
+    usageRepository
             .averageDailyUsage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({
               view?.setAverageDaiyUsage(it)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun totalUsage() {
-    val disposable = usageRepository
+    usageRepository
             .totalUsage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({
               view?.setTotalUsage(it)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun usageTrend() {
@@ -194,35 +189,32 @@ class HomePresenter @Inject constructor(
   }
 
   fun usages() {
-    val disposable = usageRepository
+    usageRepository
             .usages()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({
               view?.setUsages(it)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun goals() {
-    val disposable = goalRepository
+    goalRepository
             .goals()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
             .subscribe({
               view?.setGoals(it)
             }, { error ->
               Timber.e(error)
             })
-
-    disposables.add(disposable)
   }
 
   fun unsubscribe() {
-    disposables.dispose()
     view = null
   }
 }
