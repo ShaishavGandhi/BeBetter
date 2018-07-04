@@ -15,14 +15,19 @@
 
 package shaishav.com.bebetter.di.modules
 
+import com.uber.autodispose.LifecycleScopeProvider
 import dagger.Module
 import dagger.Provides
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.di.scopes.ActivityScope
 
-@Module class SummaryModule(val view: SummaryContract) {
+@Module class SummaryModule(val view: SummaryContract, val lifecycleProvider: LifecycleScopeProvider<*>) {
 
   @Provides @ActivityScope fun providesSummaryView(): SummaryContract {
     return view
+  }
+
+  @Provides @ActivityScope fun providesSummaryLifecycle(): LifecycleScopeProvider<*> {
+    return lifecycleProvider
   }
 }

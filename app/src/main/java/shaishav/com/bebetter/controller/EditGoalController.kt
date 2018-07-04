@@ -23,6 +23,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.autodispose.ControllerScopeProvider
 import com.bluelinelabs.conductor.changehandler.AutoTransitionChangeHandler
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import shaishav.com.bebetter.R
@@ -45,7 +46,8 @@ class EditGoalController: Controller(), PickGoalContract {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     if (activity?.application is DependencyGraph) {
-      (activity?.application as DependencyGraph).addPickGoalComponent(this).inject(this)
+      (activity?.application as DependencyGraph).addPickGoalComponent(this,
+              ControllerScopeProvider.from(this)).inject(this)
     }
     (activity as MainActivity).setToolbarTitle(activity?.resources?.getString(R.string.edit_goal)!!)
     rootView = inflater.inflate(R.layout.fragment_edit_goal, container, false)
