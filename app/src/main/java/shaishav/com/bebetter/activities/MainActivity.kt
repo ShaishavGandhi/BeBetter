@@ -35,6 +35,7 @@ import shaishav.com.bebetter.extensions.yesterday
 import shaishav.com.bebetter.utils.BBApplication
 import shaishav.com.bebetter.utils.Constants
 import shaishav.com.bebetter.utils.NotificationHelper
+import shaishav.com.bebetter.utils.getScreenName
 import java.util.*
 import javax.inject.Inject
 
@@ -74,8 +75,9 @@ class MainActivity : AppCompatActivity() {
       }
     })
 
-    if (intent.hasExtra(Constants.SCREEN_NAME)) {
-      summaryScreen(intent)
+    val bundle = intent.extras
+    if (bundle?.getScreenName() != null) {
+      summaryScreen(bundle.getScreenName()!!)
       return
     }
 
@@ -89,16 +91,17 @@ class MainActivity : AppCompatActivity() {
   override fun onNewIntent(intent: Intent?) {
     super.onNewIntent(intent)
     intent?.let {
-      if (it.hasExtra(Constants.SCREEN_NAME)) {
-        summaryScreen(it)
+      val bundle = it.extras
+      if (bundle?.getScreenName() != null) {
+        summaryScreen(bundle.getScreenName()!!)
       }
     }
   }
 
-  fun summaryScreen(intent: Intent) {
+  fun summaryScreen(name: String) {
     router.setRoot(RouterTransaction.with(rootController))
-    router.pushController(RouterTransaction.with(getController(intent.getStringExtra(Constants.SCREEN_NAME))))
-    intent.removeExtra(Constants.SCREEN_NAME)
+    router.pushController(RouterTransaction.with(getController(name)))
+    intent.removeExtra("screen_name")
   }
 
   private fun getController(screenName: String): Controller {

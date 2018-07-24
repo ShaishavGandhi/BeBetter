@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.widget.RemoteViews
@@ -74,7 +75,9 @@ class NotificationHelper @Inject constructor(val context: Context) {
     }
 
     val notificationIntent = Intent(context, MainActivity::class.java)
-    notificationIntent.putExtra(Constants.SCREEN_NAME, SummaryController.KEY)
+    val bundle = Bundle()
+    bundle.putScreenName(SummaryController.KEY)
+    notificationIntent.putExtras(bundle)
     notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
     val pendingIntent = PendingIntent.getActivity(context, 0,
