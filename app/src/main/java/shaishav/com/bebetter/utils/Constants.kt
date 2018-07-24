@@ -15,6 +15,7 @@
 
 package shaishav.com.bebetter.utils
 
+import com.shaishavgandhi.navigator.Extra
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,7 +27,8 @@ class Constants {
   companion object {
     @JvmField val PACKAGE = "shaishav.com.bebetter"
     @JvmField val PREFERENCES = "com.bebetter.com"
-    val SCREEN_NAME = "screen_name"
+    @Extra(key = "screen_name")
+    val screenName: String? = null
 
     @JvmStatic fun getFormattedDate(date: Date): String {
       val dateFormat = SimpleDateFormat("MMM dd")

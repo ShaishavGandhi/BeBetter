@@ -74,6 +74,8 @@ ext {
     confetti = "com.github.jinatonic.confetti:confetti:1.1.1"
     conductorAutodispose = "com.bluelinelabs:conductor-autodispose:2.1.4"
     autodispose = "com.uber.autodispose:autodispose-kotlin:0.8.0"
+    navigatorAnnotations = "com.shaishavgandhi.navigator:navigator-annotations:0.3.1"
+    bundlexCompiler = "com.shaishavgandhi:bundlex-compiler:0.1.0"
 
     firebaseAnalytics = "com.google.firebase:firebase-core:$playServicesVersion"
 
