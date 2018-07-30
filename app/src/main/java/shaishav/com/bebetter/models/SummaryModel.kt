@@ -32,6 +32,4 @@ import shaishav.com.bebetter.viewholder.SummaryHolder
   override fun getDefaultLayout(): Int {
     return R.layout.list_item_summary
   }
-
-
 }
