@@ -43,32 +43,6 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
     super.bind(holder)
 
     val binding = holder.binding
-
-//    val xAxes = ArrayList<String>()
-//    val yAxes = ArrayList<Int>()
-//    val threshold = ArrayList<Int>()
-//
-//
-//    for (index in usages.size - 1 downTo 0) {
-//      val usage = usages[index]
-//      yAxes.add(usage.usage.toInt() / (1000 * 60))
-//    }
-//
-//    for (index in goals.size - 1 downTo 0) {
-//      val goal = goals[index]
-//
-//      val date = Date(goal.date)
-//      xAxes.add(Constants.getFormattedDate(date))
-//      threshold.add(goal.goal.toInt() / (1000 * 60))
-//    }
-//
-//    val data = ArrayList<ArrayList<Int>>()
-//    data.add(yAxes)
-//    data.add(threshold)
-//
-//    binding?.usageChart?.setBottomTextList(xAxes)
-//    binding?.usageChart?.setDataList(data)
-
     binding?.apply {
       val context = root.context
       val redColor = context.resources.getColor(R.color.red)
@@ -76,13 +50,10 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
 
       chart.xAxis.apply {
         setDrawAxisLine(false)
-//        setDrawGridLines(false)
-//        setDrawLabels(false)
       }
 
       chart.axisLeft.apply {
         setDrawAxisLine(false)
-//        setDrawGridLines(false)
         setDrawLabels(false)
       }
 
@@ -110,12 +81,9 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       for ((actualIndex, index) in (goals.size - 1 downTo 0).withIndex()) {
         val goal = goals[index]
 
-        val date = Date(goal.date)
         val entry = Entry(actualIndex.toFloat(), goal.goal.toFloat() / (1000 * 60))
         goalEntries.add(entry)
         labels.add(Constants.getFormattedDate(Date(goal.date)))
-
-//        xAxes.add(Constants.getFormattedDate(date))
       }
 
       chart.xAxis.setValueFormatter { value, _ ->
@@ -149,6 +117,10 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       goalDataSet.circleRadius = 5f
       goalDataSet.setDrawValues(false)
 
+      chart.xAxis.apply {
+        setLabelCount(Math.max(goals.size, usages.size), true)
+      }
+
       val dataSets = ArrayList<ILineDataSet>()
       dataSets.add(usageDataSet) // add the datasets
       dataSets.add(goalDataSet)
@@ -159,7 +131,6 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       // set data
       chart.data = data
     }
-
   }
 
   override fun getDefaultLayout(): Int {

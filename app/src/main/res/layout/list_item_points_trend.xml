@@ -48,19 +48,11 @@
                 android:padding="5dp" />
 
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
-
-                <view
-                    android:id="@+id/pointsChart"
-                    class="im.dacer.androidcharts.LineView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="300dp" />
-
-            </HorizontalScrollView>
+            <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart"
+                    android:layout_marginTop="@dimen/margin_base"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
 
         </LinearLayout>
 
