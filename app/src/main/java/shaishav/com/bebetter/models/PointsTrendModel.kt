@@ -15,8 +15,13 @@
 
 package shaishav.com.bebetter.models
 
+import android.support.v4.content.res.ResourcesCompat
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Point
 import shaishav.com.bebetter.utils.Constants
@@ -32,22 +37,71 @@ import java.util.*
     super.bind(holder)
 
     val binding = holder.binding
+    binding?.apply {
+      val context = root.context
+      val redColor = context.resources.getColor(R.color.red)
 
-    val xAxes = ArrayList<String>()
-    val yAxes = ArrayList<Int>()
+      chart.xAxis.apply {
+        setDrawAxisLine(false)
+      }
 
+      chart.axisLeft.apply {
+        setDrawAxisLine(false)
+        setDrawLabels(false)
+      }
 
-    for (point in points.reversed()) {
-      val date = Date(point.date)
-      xAxes.add(Constants.getFormattedDate(date))
-      yAxes.add(point.points)
+      chart.axisRight.apply {
+        setDrawAxisLine(false)
+        setDrawGridLines(false)
+        setDrawLabels(false)
+      }
+
+      chart.legend.apply {
+        isEnabled = false
+      }
+
+      val pointsEntries = ArrayList<Entry>()
+
+      val labels = arrayListOf<String>()
+
+      for ((index, point) in points.reversed().withIndex()) {
+        val date = Date(point.date)
+        labels.add(Constants.getFormattedDate(date))
+        val entry = Entry(index.toFloat(), point.points.toFloat() / (1000 * 60))
+        pointsEntries.add(entry)
+      }
+
+      chart.xAxis.setValueFormatter { value, _ ->
+        return@setValueFormatter labels[value.toInt()]
+      }
+      chart.xAxis.labelCount = labels.size
+
+      val pointsDataSet: LineDataSet
+      // create a dataset and give it a type
+      pointsDataSet = LineDataSet(pointsEntries, "")
+      pointsDataSet.setDrawIcons(false)
+      pointsDataSet.lineWidth = 2f
+      pointsDataSet.color = redColor
+      pointsDataSet.circleHoleRadius = 2f
+      pointsDataSet.circleRadius = 5f
+      pointsDataSet.setCircleColor(redColor)
+      pointsDataSet.valueTextSize = 12f
+      pointsDataSet.setDrawValues(false)
+      pointsDataSet.valueTypeface = ResourcesCompat.getFont(context, R.font.exo_2)
+
+      chart.xAxis.apply {
+        setLabelCount(points.size, true)
+      }
+
+      val dataSets = ArrayList<ILineDataSet>()
+      dataSets.add(pointsDataSet) // add the datasets
+
+      // create a data object with the datasets
+      val data = LineData(dataSets)
+
+      // set data
+      chart.data = data
     }
-
-    val data = ArrayList<ArrayList<Int>>()
-    data.add(yAxes)
-
-    binding?.pointsChart?.setBottomTextList(xAxes)
-    binding?.pointsChart?.setDataList(data)
   }
 
   override fun getDefaultLayout(): Int {
