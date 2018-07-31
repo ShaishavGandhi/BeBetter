@@ -20,5 +20,7 @@
     <color name="colorAccent">#C96AAC</color>
 
     <color name="white">#ffffff</color>
+    <color name="red">#b71c1c</color>
+    <color name="blue">#0D47A1</color>
     <color name="font_body">#404040</color>
 </resources>
