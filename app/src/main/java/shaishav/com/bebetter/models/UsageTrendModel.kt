@@ -50,6 +50,7 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
 
       chart.xAxis.apply {
         setDrawAxisLine(false)
+        setDrawLabels(false)
       }
 
       chart.axisLeft.apply {
@@ -87,8 +88,12 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       }
 
       chart.xAxis.setValueFormatter { value, _ ->
-        return@setValueFormatter labels[value.toInt()]
+        if (value.toInt() < labels.size) {
+          return@setValueFormatter labels[value.toInt()]
+        }
+        return@setValueFormatter ""
       }
+      chart.description.isEnabled = false
       chart.xAxis.labelCount = labels.size
 
       val usageDataSet: LineDataSet
@@ -130,6 +135,7 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
 
       // set data
       chart.data = data
+      chart.setVisibleXRangeMaximum(6.0f)
     }
   }
 

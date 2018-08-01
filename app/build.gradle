@@ -42,8 +42,8 @@ android {
         applicationId "shaishav.com.bebetter"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 23
-        versionName "0.1.11"
+        versionCode 27
+        versionName "0.1.12-dev"
 
         resConfigs "en"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

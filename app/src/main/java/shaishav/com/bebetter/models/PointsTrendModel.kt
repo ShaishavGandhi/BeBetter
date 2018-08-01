@@ -43,8 +43,10 @@ import java.util.*
 
       chart.xAxis.apply {
         setDrawAxisLine(false)
+        setDrawLabels(false)
       }
 
+      chart.description.isEnabled = false
       chart.axisLeft.apply {
         setDrawAxisLine(false)
         setDrawLabels(false)
@@ -61,7 +63,6 @@ import java.util.*
       }
 
       val pointsEntries = ArrayList<Entry>()
-
       val labels = arrayListOf<String>()
 
       for ((index, point) in points.reversed().withIndex()) {
@@ -72,7 +73,11 @@ import java.util.*
       }
 
       chart.xAxis.setValueFormatter { value, _ ->
-        return@setValueFormatter labels[value.toInt()]
+        if (value.toInt() < labels.size) {
+          return@setValueFormatter labels[value.toInt()]
+        } else {
+          ""
+        }
       }
       chart.xAxis.labelCount = labels.size
 
@@ -101,6 +106,7 @@ import java.util.*
 
       // set data
       chart.data = data
+      chart.setVisibleXRangeMaximum(6.0f)
     }
   }
 
