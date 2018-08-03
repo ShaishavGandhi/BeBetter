@@ -13,4 +13,4 @@
  *  and limitations under the License.
  */
 
-include ':app', ':AndroidCharts'
+include ':app'
