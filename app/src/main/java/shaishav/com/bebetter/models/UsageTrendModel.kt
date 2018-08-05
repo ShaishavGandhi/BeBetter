@@ -136,6 +136,8 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       // set data
       chart.data = data
       chart.setVisibleXRangeMaximum(6.0f)
+      // Scroll to end
+      chart.moveViewToX(Float.MAX_VALUE)
     }
   }
 
