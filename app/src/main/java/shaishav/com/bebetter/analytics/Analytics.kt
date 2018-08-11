@@ -17,11 +17,8 @@
 package shaishav.com.bebetter.analytics
 
 import android.content.Context
-import com.google.firebase.analytics.FirebaseAnalytics
 
 class Analytics(val context: Context) {
-
-  val analytics = FirebaseAnalytics.getInstance(context)
 
   fun trackPageView() {
   }

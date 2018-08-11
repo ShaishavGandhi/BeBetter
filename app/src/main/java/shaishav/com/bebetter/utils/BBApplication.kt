@@ -20,7 +20,6 @@ import android.content.Intent
 import android.os.Build
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.uber.autodispose.LifecycleScopeProvider
 import io.fabric.sdk.android.Fabric
 import shaishav.com.bebetter.BuildConfig
