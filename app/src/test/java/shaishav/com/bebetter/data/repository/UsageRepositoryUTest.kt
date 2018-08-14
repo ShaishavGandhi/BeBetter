@@ -15,6 +15,7 @@
 
 package shaishav.com.bebetter.data.repository
 
+import android.app.usage.UsageStatsManager
 import android.database.sqlite.SQLiteDatabaseLockedException
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
@@ -41,11 +42,12 @@ class UsageRepositoryUTest {
 
     @Mock lateinit var databaseManager: UsageDatabaseManager
     @Mock lateinit var preferenceStore: PreferenceDataStore
+    @Mock lateinit var usageStatsManager: UsageStatsManager
     lateinit var repository: UsageRepository
 
     @Before @Throws fun setUp() {
         MockitoAnnotations.initMocks(this)
-        repository = UsageRepository(databaseManager, preferenceStore)
+        repository = UsageRepository(databaseManager, usageStatsManager, preferenceStore)
     }
 
     @Test fun testUsages_returnsList() {
@@ -97,24 +99,6 @@ class UsageRepositoryUTest {
         testObserver.assertNoErrors()
         // Assert value count
         testObserver.assertValueCount(1)
-    }
-
-    @Test fun testDailyUsage_returnsUsage() {
-        val testObserver = TestObserver<Long>()
-
-        val sampleSession = 1000 * 60 * 75L
-        whenever(preferenceStore.dailyUsageSoFar()).thenReturn(Observable.just(sampleSession))
-
-        repository.dailyUsage().subscribe(testObserver)
-
-        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
-
-        // No errors
-        testObserver.assertNoErrors()
-        // Assert value count
-        testObserver.assertValueCount(1)
-        // Assert value
-        assertEquals(sampleSession, testObserver.values()[0])
     }
 
     @Test fun testAverageDailyUsage_returnsAverageUsage() {
