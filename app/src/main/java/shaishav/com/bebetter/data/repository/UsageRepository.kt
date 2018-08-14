@@ -15,6 +15,7 @@
 
 package shaishav.com.bebetter.data.repository
 
+import android.app.usage.UsageStatsManager
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -28,7 +29,10 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 12/17/17.
  */
-class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseManager, val preferenceStore: PreferenceDataStore) {
+class UsageRepository @Inject constructor(
+        private val databaseManager: UsageDatabaseManager,
+        private val usageStatsManager: UsageStatsManager,
+        private val preferenceStore: PreferenceDataStore) {
 
   fun usages(): Observable<List<Usage>> {
     return databaseManager.usages().subscribeOn(Schedulers.io())
@@ -39,11 +43,21 @@ class UsageRepository @Inject constructor(val databaseManager: UsageDatabaseMana
   }
 
   fun dailyUsage(): Observable<Long> {
-    return preferenceStore.dailyUsageSoFar().subscribeOn(Schedulers.io())
+    return Observable.fromCallable {
+      return@fromCallable rawDailyUsage()
+    }
   }
 
   fun rawDailyUsage(): Long {
-    return preferenceStore.rawDailyUsage()
+    val calendar = Calendar.getInstance()
+    val currentTime = calendar.timeInMillis
+    calendar.set(Calendar.HOUR_OF_DAY, 0)
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    val usages = usageStatsManager.queryAndAggregateUsageStats(calendar.timeInMillis, currentTime)
+    return usages.map { entry ->
+      entry.value.totalTimeInForeground
+    }.sum()
   }
 
   fun averageDailyUsage(): Observable<Long> {

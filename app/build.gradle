@@ -40,7 +40,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "shaishav.com.bebetter"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 28
         versionName "0.1.12-dev"
