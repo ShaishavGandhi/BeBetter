@@ -16,6 +16,8 @@
 package shaishav.com.bebetter.di.modules
 
 import android.app.Application
+import android.app.usage.UsageStatsManager
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
@@ -47,5 +49,8 @@ class UtilsModule {
     return Analytics(application)
   }
 
+  @Provides @ApplicationScope fun provideUsageStatsManager(application: Application): UsageStatsManager {
+    return application.applicationContext.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+  }
 
 }
