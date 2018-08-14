@@ -17,7 +17,6 @@ package shaishav.com.bebetter.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -38,6 +37,11 @@ import shaishav.com.bebetter.utils.NotificationHelper
 import shaishav.com.bebetter.utils.getScreenName
 import java.util.*
 import javax.inject.Inject
+import android.app.AppOpsManager
+import android.content.Context
+import android.content.Context.APP_OPS_SERVICE
+
+
 
 /**
  * Created by shaishav.gandhi on 3/3/18.
@@ -63,6 +67,11 @@ class MainActivity : AppCompatActivity() {
     toolbar = findViewById(R.id.toolbar)
     setSupportActionBar(toolbar)
 
+    if (!hasUsageStatsPermission()) {
+      val intent = Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
+      startActivity(intent)
+    }
+
     val container = findViewById<FrameLayout>(R.id.container_body)
 
     router = Conductor.attachRouter(this, container, savedInstanceState)
@@ -86,6 +95,13 @@ class MainActivity : AppCompatActivity() {
       router.setRoot(RouterTransaction.with(rootController))
     }
 
+  }
+
+  private fun hasUsageStatsPermission(): Boolean {
+    val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+    val mode = appOps.checkOpNoThrow("android:get_usage_stats",
+            android.os.Process.myUid(), packageName)
+    return mode == AppOpsManager.MODE_ALLOWED
   }
 
   override fun onNewIntent(intent: Intent?) {

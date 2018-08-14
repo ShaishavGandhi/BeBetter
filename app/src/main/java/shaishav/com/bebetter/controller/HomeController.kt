@@ -16,7 +16,6 @@
 package shaishav.com.bebetter.controller
 
 import android.content.Context
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
