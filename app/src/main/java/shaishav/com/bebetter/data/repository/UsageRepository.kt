@@ -16,6 +16,7 @@
 package shaishav.com.bebetter.data.repository
 
 import android.app.usage.UsageStatsManager
+import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -23,6 +24,7 @@ import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.data.database.UsageDatabaseManager
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
+import shaishav.com.bebetter.extensions.toFormattedTime
 import java.util.*
 import javax.inject.Inject
 
@@ -53,11 +55,15 @@ class UsageRepository @Inject constructor(
     val currentTime = calendar.timeInMillis
     calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.MINUTE, 0)
-    calendar.set(Calendar.SECOND, 0)
-    val usages = usageStatsManager.queryAndAggregateUsageStats(calendar.timeInMillis, currentTime)
-    return usages.map { entry ->
-      entry.value.totalTimeInForeground
-    }.sum()
+
+    val usages = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, calendar.timeInMillis, currentTime)
+    return usages
+            .distinctBy { it.packageName }
+            .filter { it.totalTimeInForeground > 0 }
+            .filter { !it.packageName.contains("launcher") }
+            .filter { it.lastTimeUsed >= calendar.timeInMillis }
+            .sortedByDescending { it.totalTimeInForeground }
+            .map { entry -> entry.totalTimeInForeground }.sum()
   }
 
   fun averageDailyUsage(): Observable<Long> {
