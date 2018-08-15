@@ -25,6 +25,7 @@ import shaishav.com.bebetter.data.database.UsageDatabaseManager
 import shaishav.com.bebetter.data.models.Usage
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.extensions.toFormattedTime
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -53,17 +54,20 @@ class UsageRepository @Inject constructor(
   fun rawDailyUsage(): Long {
     val calendar = Calendar.getInstance()
     val currentTime = calendar.timeInMillis
-    calendar.set(Calendar.HOUR_OF_DAY, 0)
-    calendar.set(Calendar.MINUTE, 0)
+    calendar.add(Calendar.DATE, -1)
 
-    val usages = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, calendar.timeInMillis, currentTime)
+    Timber.d("Querying with ${calendar.timeInMillis} and $currentTime")
+    val time = System.currentTimeMillis()
+    val usages = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, calendar.timeInMillis, System.currentTimeMillis())
     return usages
-            .distinctBy { it.packageName }
+            .filter { it.firstTimeStamp >= calendar.timeInMillis }
             .filter { it.totalTimeInForeground > 0 }
             .filter { !it.packageName.contains("launcher") }
-            .filter { it.lastTimeUsed >= calendar.timeInMillis }
             .sortedByDescending { it.totalTimeInForeground }
-            .map { entry -> entry.totalTimeInForeground }.sum()
+            .map { entry ->
+              Log.d("BeBetter", "${entry.packageName} with time ${entry.totalTimeInForeground.toFormattedTime()}")
+              entry.totalTimeInForeground
+            }.sum()
   }
 
   fun averageDailyUsage(): Observable<Long> {
