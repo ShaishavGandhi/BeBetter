@@ -15,7 +15,7 @@
 
 package shaishav.com.bebetter.models
 
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.github.mikephil.charting.data.Entry

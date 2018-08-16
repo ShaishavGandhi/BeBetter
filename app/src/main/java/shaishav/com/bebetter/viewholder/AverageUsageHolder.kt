@@ -16,7 +16,7 @@
 
 package shaishav.com.bebetter.viewholder
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.text.Spannable
 import android.view.View
 import com.airbnb.epoxy.EpoxyHolder

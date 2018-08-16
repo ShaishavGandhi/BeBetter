@@ -15,7 +15,7 @@
 
 package shaishav.com.bebetter.models
 
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import android.view.Gravity
 import android.view.View
 import com.airbnb.epoxy.EpoxyModelClass
