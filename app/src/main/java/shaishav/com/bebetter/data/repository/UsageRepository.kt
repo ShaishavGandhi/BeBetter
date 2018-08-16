@@ -57,7 +57,6 @@ class UsageRepository @Inject constructor(
     calendar.add(Calendar.DATE, -1)
 
     Timber.d("Querying with ${calendar.timeInMillis} and $currentTime")
-    val time = System.currentTimeMillis()
     val usages = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, calendar.timeInMillis, System.currentTimeMillis())
     return usages
             .filter { it.firstTimeStamp >= calendar.timeInMillis }
@@ -65,7 +64,7 @@ class UsageRepository @Inject constructor(
             .filter { !it.packageName.contains("launcher") }
             .sortedByDescending { it.totalTimeInForeground }
             .map { entry ->
-              Log.d("BeBetter", "${entry.packageName} with time ${entry.totalTimeInForeground.toFormattedTime()}")
+              Timber.d("${entry.packageName} with time ${entry.totalTimeInForeground.toFormattedTime()}")
               entry.totalTimeInForeground
             }.sum()
   }
