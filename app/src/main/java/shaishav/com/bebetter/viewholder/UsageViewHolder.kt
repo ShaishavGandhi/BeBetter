@@ -15,7 +15,7 @@
 
 package shaishav.com.bebetter.viewholder
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.view.View
 import com.airbnb.epoxy.EpoxyHolder
 import shaishav.com.bebetter.databinding.ListItemUsageCardBinding

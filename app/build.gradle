@@ -37,7 +37,7 @@ android {
             storePassword getPropertyOrEmpty("bebetter_signing_store_password")
         }
     }
-    compileSdkVersion 26
+    compileSdkVersion 28
     defaultConfig {
         applicationId "shaishav.com.bebetter"
         minSdkVersion 23
@@ -46,7 +46,7 @@ android {
         versionName "0.1.12-dev"
 
         resConfigs "en"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     lintOptions {
@@ -95,7 +95,7 @@ dependencies {
     implementation rootProject.rxAndroid
     implementation rootProject.conductor
     kapt rootProject.daggerCompiler
-    kapt 'com.android.databinding:compiler:3.1.4'
+    kapt 'androidx.databinding:databinding-compiler:3.2.0-beta05'
     kapt rootProject.bundlexCompiler
     compileOnly rootProject.navigatorAnnotations
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

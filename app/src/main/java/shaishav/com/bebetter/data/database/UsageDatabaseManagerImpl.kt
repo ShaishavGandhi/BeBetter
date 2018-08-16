@@ -16,7 +16,7 @@
 package shaishav.com.bebetter.data.database
 
 import android.content.ContentValues
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import com.squareup.sqlbrite2.BriteContentResolver
 import com.squareup.sqlbrite2.BriteDatabase
 import io.reactivex.Observable

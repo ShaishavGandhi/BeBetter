@@ -17,6 +17,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.60'
+    ext.gradle_plugin = "3.2.0-beta05"
     repositories {
         jcenter()
         maven {
@@ -27,12 +28,12 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath "com.android.tools.build:gradle:3.2.0-beta05"
         classpath 'com.google.gms:google-services:4.0.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'io.fabric.tools:gradle:1.25.1'
+        classpath 'io.fabric.tools:gradle:1.25.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -64,12 +65,12 @@ ext {
     spark = "com.robinhood.spark:spark:1.2.0"
 
     supportVersion = "26.1.0"
-    appCompat = "com.android.support:appcompat-v7:$supportVersion"
-    design = "com.android.support:design:$supportVersion"
-    v4 = "com.android.support:support-v4:$supportVersion"
-    recyclerView = "com.android.support:recyclerview-v7:$supportVersion"
-    cardView = "com.android.support:cardview-v7:$supportVersion"
-    constraintLayout = "com.android.support.constraint:constraint-layout:1.1.0"
+    appCompat = "androidx.appcompat:appcompat:1.0.0-rc01"
+    design = "com.google.android.material:material:1.0.0-rc01"
+    v4 = "androidx.legacy:legacy-support-v4:1.0.0-rc01"
+    recyclerView = "androidx.recyclerview:recyclerview:1.0.0-rc01"
+    cardView = "androidx.cardview:cardview:1.0.0-rc01"
+    constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-alpha2"
     recyclerViewAnimators = "jp.wasabeef:recyclerview-animators:2.2.7"
     confetti = "com.github.jinatonic.confetti:confetti:1.1.1"
     conductorAutodispose = "com.bluelinelabs:conductor-autodispose:2.1.4"
@@ -87,7 +88,7 @@ ext {
     mockito_core = "org.mockito:mockito-core:2.15.0"
     mockito_kotlin = "com.nhaarman:mockito-kotlin:1.5.0"
     mockito_kotlin_1_5 = "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
-    espresso_core = "com.android.support.test.espresso:espresso-core:3.0.1"
+    espresso_core = "androidx.test.espresso:espresso-core:3.1.0-alpha4"
 }
 
 allprojects {

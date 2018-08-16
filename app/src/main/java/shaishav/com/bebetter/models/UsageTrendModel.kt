@@ -16,7 +16,7 @@
 package shaishav.com.bebetter.models
 
 import android.graphics.Color
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import shaishav.com.bebetter.R
