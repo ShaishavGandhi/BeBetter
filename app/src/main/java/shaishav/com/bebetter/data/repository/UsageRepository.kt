@@ -15,14 +15,15 @@
 
 package shaishav.com.bebetter.data.repository
 
+import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
-import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.data.database.UsageDatabaseManager
 import shaishav.com.bebetter.data.models.Usage
+import shaishav.com.bebetter.data.models.UsageStat
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.extensions.toFormattedTime
 import timber.log.Timber
@@ -51,21 +52,49 @@ class UsageRepository @Inject constructor(
     }
   }
 
+  /**
+   * Gets usage for the current day.
+   *
+   * We go through all the Events that are recorded by the phone and
+   * look for foreground and background events. These are important since
+   * the delta actually tells us the amount of time it's been used.
+   * We construct a map and log the usage and add to it to build a picture of
+   * the day.
+   *
+   * @return usage for current day.
+   */
   fun rawDailyUsage(): Long {
     val calendar = Calendar.getInstance()
     val currentTime = calendar.timeInMillis
-    calendar.add(Calendar.DATE, -1)
+    calendar.set(Calendar.HOUR_OF_DAY, 0)
+    calendar.set(Calendar.MINUTE, 0)
 
     Timber.d("Querying with ${calendar.timeInMillis} and $currentTime")
-    val usages = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, calendar.timeInMillis, System.currentTimeMillis())
-    return usages
-            .filter { it.firstTimeStamp >= calendar.timeInMillis }
-            .filter { it.totalTimeInForeground > 0 }
-            .filter { !it.packageName.contains("launcher") }
-            .sortedByDescending { it.totalTimeInForeground }
+    val events = usageStatsManager.queryEvents(calendar.timeInMillis, System.currentTimeMillis())
+    val map = HashMap<String, UsageStat>()
+
+    var start = 0L
+    while (events.hasNextEvent()) {
+      val event = UsageEvents.Event()
+      events.getNextEvent(event)
+      if (event.timeStamp <= calendar.timeInMillis || event.packageName.contains("launcher")) {
+        continue
+      }
+      if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+        start = event.timeStamp
+      }
+      if (event.eventType == UsageEvents.Event.MOVE_TO_BACKGROUND) {
+        val time = event.timeStamp - start
+        val usageStat = map.getOrElse(event.packageName) { UsageStat(event.packageName, 0) }
+        usageStat.usage = usageStat.usage + time
+        map[event.packageName] = usageStat
+      }
+    }
+    return map.values
+            .sortedByDescending { it.usage }
             .map { entry ->
-              Timber.d("${entry.packageName} with time ${entry.totalTimeInForeground.toFormattedTime()}")
-              entry.totalTimeInForeground
+              Timber.d("${entry.packageName} with time ${entry.usage.toFormattedTime()}")
+              entry.usage
             }.sum()
   }
 
