@@ -155,6 +155,4 @@ class UsageRepository @Inject constructor(
   fun resetUnlockCounter() {
     preferenceStore.resetUnlockCounter()
   }
-
-
 }
