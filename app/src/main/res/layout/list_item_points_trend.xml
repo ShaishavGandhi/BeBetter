@@ -30,7 +30,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -50,6 +53,7 @@
 
             <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/chart"
+                    android:paddingBottom="16dp"
                     android:layout_marginTop="@dimen/margin_base"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"/>
