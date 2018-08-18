@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018 Shaishav Gandhi
+  ~  Copyright (c) 2018 Shaishav Gandhi
   ~  Licensed under the Apache License, Version 2.0 (the "License");
   ~  You may not use this file except in compliance with the License.
   ~  You may obtain a copy of the License at
@@ -12,14 +12,15 @@
   ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~  See the License for the specific language governing permissions
   ~  and limitations under the License.
+  ~
   -->
 
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialKeyguardLayout="@layout/time_widget"
-    android:initialLayout="@layout/time_widget"
-    android:minHeight="110dp"
-    android:minWidth="110dp"
-    android:previewImage="@drawable/example_appwidget_preview"
-    android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="86400000"
-    android:widgetCategory="home_screen"></appwidget-provider>
+<resources>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">0dp</dimen>
+
+</resources>
