@@ -28,6 +28,10 @@ import shaishav.com.bebetter.workflow.UsageWorkflow
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import shaishav.com.bebetter.widget.DailyUsageWidget
+
 
 /**
  * Created by shaishav.gandhi on 3/25/18.
@@ -68,6 +72,13 @@ class WorkflowService : Service() {
               this@WorkflowService.stopSelf()
             })
     disposables.add(disposable)
+
+    // Ask for refresh of widget
+    val widgetIntent = Intent(this, DailyUsageWidget::class.java)
+    widgetIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+    val ids = AppWidgetManager.getInstance(application).getAppWidgetIds((ComponentName(application, DailyUsageWidget::class.java)))
+    widgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+    sendBroadcast(intent)
     return super.onStartCommand(intent, flags, startId)
   }
 
