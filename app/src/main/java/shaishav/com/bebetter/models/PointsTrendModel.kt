@@ -18,6 +18,8 @@ package shaishav.com.bebetter.models
 import androidx.core.content.res.ResourcesCompat
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -43,17 +45,22 @@ import java.util.*
 
       chart.xAxis.apply {
         setDrawAxisLine(false)
-        setDrawLabels(false)
+        setDrawLabels(true)
+        setDrawGridLines(false)
+        position = XAxis.XAxisPosition.BOTTOM
+        textSize = 13f
       }
 
       chart.description.isEnabled = false
       chart.axisLeft.apply {
         setDrawAxisLine(false)
+        setDrawGridLines(false)
         setDrawLabels(false)
       }
 
       chart.axisRight.apply {
         setDrawAxisLine(false)
+        setDrawGridLines(false)
         setDrawGridLines(false)
         setDrawLabels(false)
       }
@@ -68,17 +75,10 @@ import java.util.*
       for ((index, point) in points.reversed().withIndex()) {
         val date = Date(point.date)
         labels.add(Constants.getFormattedDate(date))
-        val entry = Entry(index.toFloat(), point.points.toFloat() / (1000 * 60))
+        val entry = Entry(index.toFloat(), point.points.toFloat())
         pointsEntries.add(entry)
       }
 
-      chart.xAxis.setValueFormatter { value, _ ->
-        if (value.toInt() < labels.size) {
-          return@setValueFormatter labels[value.toInt()]
-        } else {
-          ""
-        }
-      }
       chart.xAxis.labelCount = labels.size
 
       val pointsDataSet: LineDataSet
@@ -90,13 +90,23 @@ import java.util.*
       pointsDataSet.circleHoleRadius = 2f
       pointsDataSet.circleRadius = 5f
       pointsDataSet.setCircleColor(redColor)
-      pointsDataSet.valueTextSize = 12f
-      pointsDataSet.setDrawValues(false)
+      pointsDataSet.valueTextSize = 13f
+      pointsDataSet.axisDependency = YAxis.AxisDependency.LEFT
       pointsDataSet.valueTypeface = ResourcesCompat.getFont(context, R.font.exo_2)
-
-      chart.xAxis.apply {
-        setLabelCount(points.size, true)
+      pointsDataSet.setValueFormatter { value, entry, dataSetIndex, viewPortHandler ->
+        return@setValueFormatter value.toInt().toString()
       }
+      pointsDataSet.isHighlightEnabled = false
+
+      chart.xAxis.granularity = 1f
+      chart.xAxis.setValueFormatter { value, axis ->
+        if (value.toInt() < labels.size) {
+          return@setValueFormatter labels[value.toInt()]
+        } else {
+          ""
+        }
+      }
+
 
       val dataSets = ArrayList<ILineDataSet>()
       dataSets.add(pointsDataSet) // add the datasets
@@ -109,6 +119,8 @@ import java.util.*
       chart.setVisibleXRangeMaximum(6.0f)
       // Scroll to last value
       chart.moveViewToX(Float.MAX_VALUE)
+      chart.setExtraOffsets(20f,20f, 20f, 20f)
+      chart.invalidate()
     }
   }
 

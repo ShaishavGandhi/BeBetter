@@ -19,6 +19,7 @@ import android.graphics.Color
 import androidx.core.content.res.ResourcesCompat
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
+import com.github.mikephil.charting.components.XAxis
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Goal
 import shaishav.com.bebetter.data.models.Usage
@@ -50,18 +51,23 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
 
       chart.xAxis.apply {
         setDrawAxisLine(false)
-        setDrawLabels(false)
+        setDrawLabels(true)
+        setDrawGridLines(false)
+        position = XAxis.XAxisPosition.BOTTOM
+        textSize = 13f
       }
 
       chart.axisLeft.apply {
         setDrawAxisLine(false)
         setDrawLabels(false)
+        setDrawGridLines(false)
       }
 
       chart.axisRight.apply {
         setDrawAxisLine(false)
         setDrawGridLines(false)
         setDrawLabels(false)
+        setDrawGridLines(false)
       }
 
       chart.legend.apply {
@@ -75,14 +81,14 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
 
       for ((actualIndex, index) in (usages.size - 1 downTo 0).withIndex()) {
         val usage = usages[index]
-        val entry = Entry(actualIndex.toFloat(), usage.usage.toFloat() / (1000 * 60))
+        val entry = Entry(actualIndex.toFloat(), usage.usage.toFloat())
         usageEntries.add(entry)
       }
 
       for ((actualIndex, index) in (goals.size - 1 downTo 0).withIndex()) {
         val goal = goals[index]
 
-        val entry = Entry(actualIndex.toFloat(), goal.goal.toFloat() / (1000 * 60))
+        val entry = Entry(actualIndex.toFloat(), goal.goal.toFloat() )
         goalEntries.add(entry)
         labels.add(Constants.getFormattedDate(Date(goal.date)))
       }
@@ -105,9 +111,13 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       usageDataSet.circleHoleRadius = 2f
       usageDataSet.circleRadius = 5f
       usageDataSet.setCircleColor(redColor)
-      usageDataSet.valueTextSize = 12f
-      usageDataSet.setDrawValues(false)
+      usageDataSet.valueTextSize = 13f
+      usageDataSet.setDrawValues(true)
       usageDataSet.valueTypeface = ResourcesCompat.getFont(context, R.font.exo_2)
+      usageDataSet.setValueFormatter { value, entry, dataSetIndex, viewPortHandler ->
+        return@setValueFormatter value.toLong().toFormattedTime()
+      }
+      usageDataSet.isHighlightEnabled = false
 
       val goalDataSet: LineDataSet
       // create a dataset and give it a type
@@ -116,11 +126,15 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       goalDataSet.lineWidth = 2f
       goalDataSet.color = blueColor
       goalDataSet.setCircleColor(blueColor)
-      goalDataSet.valueTextSize = 12f
+      goalDataSet.valueTextSize = 13f
       goalDataSet.valueTypeface = ResourcesCompat.getFont(context, R.font.exo_2)
       goalDataSet.circleHoleRadius = 2f
       goalDataSet.circleRadius = 5f
-      goalDataSet.setDrawValues(false)
+      goalDataSet.setDrawValues(true)
+      goalDataSet.setValueFormatter { value, entry, dataSetIndex, viewPortHandler ->
+        return@setValueFormatter value.toLong().toFormattedTime()
+      }
+      goalDataSet.isHighlightEnabled = false
 
       chart.xAxis.apply {
         setLabelCount(Math.max(goals.size, usages.size), true)
@@ -136,8 +150,10 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
       // set data
       chart.data = data
       chart.setVisibleXRangeMaximum(6.0f)
+      chart.setExtraOffsets(30f,20f, 20f, 30f)
       // Scroll to end
       chart.moveViewToX(Float.MAX_VALUE)
+      chart.invalidate()
     }
   }
 

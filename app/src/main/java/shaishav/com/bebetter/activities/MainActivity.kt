@@ -42,7 +42,6 @@ import android.content.Context
 import android.content.Context.APP_OPS_SERVICE
 
 
-
 /**
  * Created by shaishav.gandhi on 3/3/18.
  */
