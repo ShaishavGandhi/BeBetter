@@ -32,7 +32,12 @@
     <string name="total_usage">Total Usage</string>
     <string name="total_points">Total Points</string>
     <string name="current_goal">Current Goal</string>
-    <string name="set_goal">Set your daily usage goal</string>
+    <string name="set_goal">What is your daily usage goal?</string>
+    <string name="goal_info">Setting a goal has been known to decrease mobile usage</string>
+    <string name="give_permission">Give Permission</string>
+    <string name="need_usage_permission">To function properly, BeBetter needs access to usage statistics.</string>
+    <string name="permission_title">Next we\'ll need permission to get access to your usage statistics</string>
+    <string name="permission_info">This is required so that BeBetter can show you detailed statistics about your usage patterns and help you reduce your mobile consumption</string>
     <string name="current_streak">Current Streak</string>
     <string name="day">days</string>
     <string name="welcome">Welcome To BeBetter</string>

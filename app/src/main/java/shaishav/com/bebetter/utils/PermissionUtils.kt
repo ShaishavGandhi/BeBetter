@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Shaishav Gandhi
+ *  Copyright (c) 2018 Shaishav Gandhi
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  You may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -11,15 +11,20 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions
  *  and limitations under the License.
+ *
  */
 
-package shaishav.com.bebetter.contracts
+package shaishav.com.bebetter.utils
 
-/**
- * Created by shaishav.gandhi on 3/1/18.
- */
-interface PickGoalContract {
-  fun homeScreen()
-  fun error()
-  fun permissionScreen()
+import android.app.AppOpsManager
+import android.content.Context
+
+object PermissionUtils {
+
+  fun hasUsageStatsPermission(context: Context): Boolean {
+    val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+    val mode = appOps.checkOpNoThrow("android:get_usage_stats",
+            android.os.Process.myUid(), context.packageName)
+    return mode == AppOpsManager.MODE_ALLOWED
+  }
 }

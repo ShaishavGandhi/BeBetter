@@ -46,7 +46,7 @@ class PickGoalPresenter @Inject constructor(
             .autoDisposable(lifecycleScopeProvider)
             .subscribe({
                 preferenceDataStore.setUserHasOnboarded()
-                view?.homeScreen()
+                view?.permissionScreen()
               }, {
                 view?.error()
             })

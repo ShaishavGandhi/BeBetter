@@ -74,6 +74,10 @@ class EditGoalController: Controller(), PickGoalContract {
     }
   }
 
+  override fun permissionScreen() {
+    router.popCurrentController()
+  }
+
   override fun homeScreen() {
     router.popCurrentController()
   }
