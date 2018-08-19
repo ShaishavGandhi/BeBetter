@@ -30,8 +30,17 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 12/25/17.
  */
-@ApplicationScope class GoalDatabaseManagerImpl @Inject constructor(val contentResolver: BriteContentResolver, val database: BriteDatabase) : GoalDatabaseManager {
+@ApplicationScope class GoalDatabaseManagerImpl @Inject constructor(
+        private val contentResolver: BriteContentResolver,
+        val database: BriteDatabase
+) : GoalDatabaseManager {
 
+  /**
+   * Returns a hot observable of the user's
+   * entire Goal history from latest to earliest
+   *
+   * @return Observable<List<Goal>>
+   */
   override fun goals(): Observable<List<Goal>> {
     return contentResolver.createQuery(GoalProvider.CONTENT_URI, null, null, null,
             GoalProvider.QUERY_SORT_ORDER, false)
@@ -40,6 +49,14 @@ import javax.inject.Inject
             }
   }
 
+  /**
+   * Returns the goal of a user on given date
+   * The method will filter the goal table
+   * by the current day and return the valid
+   * goal
+   *
+   * @return [Observable]<[Goal]>
+   */
   override fun goalOnDay(day: Long): Observable<Goal> {
     val currentDate = Calendar.getInstance()
     currentDate.timeInMillis = day
@@ -56,6 +73,14 @@ import javax.inject.Inject
             .mapToOne { return@mapToOne GoalProvider.cursorToGoal(it) }
   }
 
+  /**
+   * Method to save a goal to database
+   * given a Goal object. Will check if
+   * a goal already exists for that particular
+   * day and will throw exception if it does
+   *
+   * Completes or errors out
+   */
   override fun saveGoal(goal: Goal): Completable {
     return Completable.fromCallable {
       val currentDate = Calendar.getInstance()
@@ -69,7 +94,7 @@ import javax.inject.Inject
       currentDate.set(Calendar.SECOND, 59)
       val higher = currentDate.timeInMillis
 
-
+      // Check if there's already a goal and error out if there is.
       val cursor = database.query("select * from ${GoalContract.TABLE_GOAL} where " +
       " ${GoalContract.COLUMN_DATE} BETWEEN $lower AND $higher")
       if (cursor.count > 0) {

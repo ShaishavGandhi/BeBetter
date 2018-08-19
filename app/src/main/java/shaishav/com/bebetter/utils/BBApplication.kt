@@ -19,22 +19,27 @@ import android.app.Application
 import android.content.Intent
 import android.os.Build
 import com.crashlytics.android.Crashlytics
+import com.evernote.android.job.JobManager
 import com.facebook.stetho.Stetho
 import com.uber.autodispose.LifecycleScopeProvider
 import io.fabric.sdk.android.Fabric
 import shaishav.com.bebetter.BuildConfig
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.contracts.SummaryContract
+import shaishav.com.bebetter.data.repository.GoalRepository
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.components.*
 import shaishav.com.bebetter.di.modules.AppModule
 import shaishav.com.bebetter.di.modules.PickGoalModule
 import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.di.modules.SummaryModule
+import shaishav.com.bebetter.job.BBJobCreator
+import shaishav.com.bebetter.job.CreateGoalJob
 import shaishav.com.bebetter.logging.ReleaseTree
 import shaishav.com.bebetter.service.ServiceRestarter
 import shaishav.com.bebetter.service.UsageService
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Created by shaishav.gandhi on 2/23/18.
@@ -47,6 +52,8 @@ class BBApplication : Application(), DependencyGraph {
   private var pickGoalComponent: PickGoalComponent? = null
   private var summaryComponent: SummaryComponent? = null
 
+  @Inject lateinit var goalRepository: GoalRepository
+
   override fun onCreate() {
     super.onCreate()
     Thread.setDefaultUncaughtExceptionHandler(ServiceRestarter(this))
@@ -54,6 +61,12 @@ class BBApplication : Application(), DependencyGraph {
             .builder()
             .appModule(AppModule(this))
             .build()
+
+    // Probably not the best way to do this, but will figure out later.
+    appComponent.inject(this)
+
+    JobManager.create(this).addJobCreator(BBJobCreator(goalRepository))
+    CreateGoalJob.scheduleJob()
 
     Stetho.initializeWithDefaults(this)
     initCrashlytics()

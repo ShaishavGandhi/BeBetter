@@ -113,6 +113,7 @@ dependencies {
     implementation rootProject.autodispose
     implementation rootProject.conductorAutodispose
     implementation rootProject.mpAndroid
+    implementation rootProject.androidjob
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
     }

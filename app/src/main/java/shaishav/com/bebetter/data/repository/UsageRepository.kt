@@ -61,15 +61,16 @@ class UsageRepository @Inject constructor(
    * We construct a map and log the usage and add to it to build a picture of
    * the day.
    *
+   * @param time the time since epoch of the day you want usage of. Defaults to current day.
    * @return usage for current day.
    */
-  fun rawDailyUsage(): Long {
+  fun rawDailyUsage(time: Long = System.currentTimeMillis()): Long {
     val calendar = Calendar.getInstance()
-    val currentTime = calendar.timeInMillis
+    calendar.timeInMillis = time
     calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.MINUTE, 0)
 
-    Timber.d("Querying with ${calendar.timeInMillis} and $currentTime")
+    Timber.d("Querying with ${calendar.timeInMillis} and $time")
     val events = usageStatsManager.queryEvents(calendar.timeInMillis, System.currentTimeMillis())
     val map = HashMap<String, UsageStat>()
 

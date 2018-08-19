@@ -20,6 +20,7 @@ import dagger.Component
 import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.di.modules.*
 import shaishav.com.bebetter.di.scopes.ApplicationScope
+import shaishav.com.bebetter.utils.BBApplication
 
 /**
  * Created by shaishav.gandhi on 12/17/17.
@@ -34,5 +35,6 @@ interface AppComponent {
   fun addSummaryComponent(module: SummaryModule): SummaryComponent
 
   fun inject(activity: MainActivity)
+  fun inject(application: BBApplication)
 
 }
