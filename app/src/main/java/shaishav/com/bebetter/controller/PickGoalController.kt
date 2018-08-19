@@ -26,7 +26,9 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.autodispose.ControllerScopeProvider
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.presenter.PickGoalPresenter
@@ -120,13 +122,22 @@ class PickGoalController: Controller(), PickGoalContract {
   override fun homeScreen() {
     router.setRoot(
             RouterTransaction.with(HomeController())
-                    .pushChangeHandler(FadeChangeHandler())
-                    .popChangeHandler(FadeChangeHandler()))
+                    .pushChangeHandler(HorizontalChangeHandler())
+                    .popChangeHandler(HorizontalChangeHandler())
+    )
   }
 
   override fun error() {
     Toast.makeText(activity, "Goal already exists.", Toast.LENGTH_SHORT).show()
     homeScreen()
+  }
+
+  override fun permissionScreen() {
+    router.pushController(
+            RouterTransaction.with(GivePermissionController())
+                    .pushChangeHandler(HorizontalChangeHandler())
+                    .popChangeHandler(HorizontalChangeHandler())
+    )
   }
 
   override fun onDestroyView(view: View) {

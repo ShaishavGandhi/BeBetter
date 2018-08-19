@@ -40,6 +40,9 @@ import javax.inject.Inject
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Context.APP_OPS_SERVICE
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
+import shaishav.com.bebetter.controller.GivePermissionController
+import shaishav.com.bebetter.utils.PermissionUtils.hasUsageStatsPermission
 
 
 /**
@@ -66,11 +69,6 @@ class MainActivity : AppCompatActivity() {
     toolbar = findViewById(R.id.toolbar)
     setSupportActionBar(toolbar)
 
-    if (!hasUsageStatsPermission()) {
-      val intent = Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
-      startActivity(intent)
-    }
-
     val container = findViewById<FrameLayout>(R.id.container_body)
 
     router = Conductor.attachRouter(this, container, savedInstanceState)
@@ -94,13 +92,11 @@ class MainActivity : AppCompatActivity() {
       router.setRoot(RouterTransaction.with(rootController))
     }
 
-  }
-
-  private fun hasUsageStatsPermission(): Boolean {
-    val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-    val mode = appOps.checkOpNoThrow("android:get_usage_stats",
-            android.os.Process.myUid(), packageName)
-    return mode == AppOpsManager.MODE_ALLOWED
+    if (!hasUsageStatsPermission(this)) {
+      router.pushController(RouterTransaction.with(GivePermissionController())
+              .pushChangeHandler(HorizontalChangeHandler())
+              .popChangeHandler(HorizontalChangeHandler()))
+    }
   }
 
   override fun onNewIntent(intent: Intent?) {

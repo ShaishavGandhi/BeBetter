@@ -25,6 +25,7 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.autodispose.ControllerScopeProvider
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
@@ -53,6 +54,11 @@ class HomeController : Controller(), HomeContract, SummaryListener {
 
   @Inject lateinit var presenter: HomePresenter
   @Inject lateinit var resources: ResourceManager
+
+  override fun onAttach(view: View) {
+    super.onAttach(view)
+    presenter?.refresh()
+  }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
     if (activity?.application is DependencyGraph) {
@@ -87,8 +93,8 @@ class HomeController : Controller(), HomeContract, SummaryListener {
   override fun onEditGoal() {
     router.pushController(
             RouterTransaction.with(EditGoalController())
-                    .pushChangeHandler(FadeChangeHandler())
-                    .popChangeHandler(FadeChangeHandler()))
+                    .pushChangeHandler(HorizontalChangeHandler())
+                    .popChangeHandler(HorizontalChangeHandler()))
   }
 
   override fun setAverageDaiyUsage(usage: Long) {

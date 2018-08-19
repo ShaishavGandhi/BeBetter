@@ -40,6 +40,10 @@ class HomePresenter @Inject constructor(
         private val lifecycleScopeProvider: LifecycleScopeProvider<*>) {
 
   init {
+    refresh()
+  }
+
+  fun refresh() {
     dailyUsage()
     averageDailyUsage()
     currentStreak()
