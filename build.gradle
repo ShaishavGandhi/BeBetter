@@ -78,6 +78,7 @@ ext {
     navigatorAnnotations = "com.shaishavgandhi.navigator:navigator-annotations:0.3.1"
     bundlexCompiler = "com.shaishavgandhi:bundlex-compiler:0.1.0"
     mpAndroid = "com.github.PhilJay:MPAndroidChart:v3.0.3"
+    androidjob = "com.evernote:android-job:1.2.6"
 
     firebaseAnalytics = "com.google.firebase:firebase-core:$playServicesVersion"
 

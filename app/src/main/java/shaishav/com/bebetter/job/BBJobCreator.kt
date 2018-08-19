@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Shaishav Gandhi
+ *  Copyright (c) 2018 Shaishav Gandhi
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  You may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -11,23 +11,22 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions
  *  and limitations under the License.
+ *
  */
 
-package shaishav.com.bebetter.data.database
+package shaishav.com.bebetter.job
 
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
-import shaishav.com.bebetter.data.models.Goal
+import com.evernote.android.job.Job
+import com.evernote.android.job.JobCreator
+import shaishav.com.bebetter.data.repository.GoalRepository
 
-/**
- * Created by shaishav.gandhi on 12/25/17.
- */
-interface GoalDatabaseManager {
+class BBJobCreator(val goalRepository: GoalRepository): JobCreator {
 
-  fun goals(): Observable<List<Goal>>
-
-  fun goalOnDay(day: Long): Observable<Goal>
-
-  fun saveGoal(goal: Goal): Completable
+  override fun create(tag: String): Job? {
+    when (tag) {
+      CreateGoalJob.TAG ->
+        return CreateGoalJob(goalRepository)
+    }
+    return null
+  }
 }

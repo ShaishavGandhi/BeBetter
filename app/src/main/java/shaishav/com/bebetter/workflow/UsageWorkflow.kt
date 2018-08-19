@@ -77,7 +77,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
         // Get the last session time
         var currentSessionTime = previousDay.timeInMillis - unlockTime
         // Get the daily usage so far
-        val dayUsage = usageRepository.rawDailyUsage()
+        val dayUsage = usageRepository.rawDailyUsage(unlockTime)
 
         // Add it up to get final daily usage
         val usage = Usage(0, previousDay.timeInMillis, dayUsage + currentSessionTime)
@@ -157,7 +157,7 @@ class UsageWorkflow @Inject constructor(private val usageRepository: UsageReposi
       // The day has changed. i.e User locked the phone before 12am, went
       // to sleep (presumably) and unlocked now. So we need to store
       // the previous session in database
-      val currentSession = usageRepository.rawDailyUsage()
+      val currentSession = usageRepository.rawDailyUsage(lastUnlockedTime)
       val usage = Usage(0, lastUnlockedTime, currentSession)
 
       // Reset phone unlock count and increment
