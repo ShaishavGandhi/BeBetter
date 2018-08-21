@@ -16,6 +16,8 @@
 package shaishav.com.bebetter.controller
 
 import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +38,7 @@ import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.listener.SummaryListener
 import shaishav.com.bebetter.presenter.HomePresenter
+import shaishav.com.bebetter.utils.PermissionUtils
 import shaishav.com.bebetter.utils.ResourceManager
 import javax.inject.Inject
 
@@ -58,6 +61,7 @@ class HomeController : Controller(), HomeContract, SummaryListener {
   override fun onAttach(view: View) {
     super.onAttach(view)
     presenter?.refresh()
+    adapter?.permissionGiven = PermissionUtils.hasUsageStatsPermission(view.context)
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -95,6 +99,11 @@ class HomeController : Controller(), HomeContract, SummaryListener {
             RouterTransaction.with(EditGoalController())
                     .pushChangeHandler(HorizontalChangeHandler())
                     .popChangeHandler(HorizontalChangeHandler()))
+  }
+
+  override fun onGivePermission() {
+    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+    startActivity(intent)
   }
 
   override fun setAverageDaiyUsage(usage: Long) {

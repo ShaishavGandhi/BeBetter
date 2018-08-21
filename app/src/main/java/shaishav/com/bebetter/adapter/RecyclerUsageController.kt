@@ -21,6 +21,7 @@ import shaishav.com.bebetter.data.models.*
 import shaishav.com.bebetter.listener.SummaryListener
 import shaishav.com.bebetter.models.*
 import shaishav.com.bebetter.utils.ResourceManager
+import timber.log.Timber
 
 /**
  * Created by shaishav.gandhi on 12/24/17.
@@ -102,8 +103,15 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     requestModelBuild()
   }
 
+  var permissionGiven: Boolean? = null
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
     addSummary()
+    addGivePermission()
     addDailyUsage()
     addCurrentGoal()
     addTotalUnlocks()
@@ -114,6 +122,17 @@ class RecyclerUsageController(val resourceManager: ResourceManager, val listener
     addPointsStreak()
     addAverageDailyUsage()
     addTotalUsage()
+  }
+
+  private fun addGivePermission() {
+    if (permissionGiven == false) {
+      givePermission {
+        id("give_permission")
+        listener {
+          listener.onGivePermission()
+        }
+      }
+    }
   }
 
   private fun addSummary() {

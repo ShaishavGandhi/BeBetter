@@ -91,12 +91,6 @@ class MainActivity : AppCompatActivity() {
     if (!router.hasRootController()) {
       router.setRoot(RouterTransaction.with(rootController))
     }
-
-    if (!hasUsageStatsPermission(this)) {
-      router.pushController(RouterTransaction.with(GivePermissionController())
-              .pushChangeHandler(HorizontalChangeHandler())
-              .popChangeHandler(HorizontalChangeHandler()))
-    }
   }
 
   override fun onNewIntent(intent: Intent?) {
