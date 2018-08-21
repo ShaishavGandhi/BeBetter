@@ -29,7 +29,7 @@ class RestartServiceJob: Job() {
     const val TAG = "restart-service"
 
     fun scheduleJob() {
-      // Run job every 2 hours or so. Consider increasing this to 4/6 maybe.
+      // Run job every 3 hours or so. Consider increasing this to 4/6 maybe.
       JobRequest.Builder(CreateGoalJob.TAG)
               .setPeriodic(TimeUnit.HOURS.toMillis(3))
               .build()
