@@ -35,6 +35,7 @@ import shaishav.com.bebetter.di.modules.HomeModule
 import shaishav.com.bebetter.di.modules.SummaryModule
 import shaishav.com.bebetter.job.BBJobCreator
 import shaishav.com.bebetter.job.CreateGoalJob
+import shaishav.com.bebetter.job.RestartServiceJob
 import shaishav.com.bebetter.logging.ReleaseTree
 import shaishav.com.bebetter.service.ServiceRestarter
 import shaishav.com.bebetter.service.UsageService
@@ -67,6 +68,7 @@ class BBApplication : Application(), DependencyGraph {
 
     JobManager.create(this).addJobCreator(BBJobCreator(goalRepository))
     CreateGoalJob.scheduleJob()
+    RestartServiceJob.scheduleJob()
 
     Stetho.initializeWithDefaults(this)
     initCrashlytics()
