@@ -36,7 +36,7 @@ import shaishav.com.bebetter.viewholder.AverageUsageHolder
                                                   val resourceManager: ResourceManager): EpoxyModelWithHolder<AverageUsageHolder>() {
 
 
-  override fun bind(holder: AverageUsageHolder?) {
+  override fun bind(holder: AverageUsageHolder) {
     super.bind(holder)
 
     val usage = summary.usage

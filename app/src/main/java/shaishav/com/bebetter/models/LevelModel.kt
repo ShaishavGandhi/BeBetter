@@ -23,7 +23,7 @@ import shaishav.com.bebetter.viewholder.LevelHolder
 
 @EpoxyModelClass abstract class LevelModel(val level: Level): EpoxyModelWithHolder<LevelHolder>() {
 
-  override fun bind(holder: LevelHolder?) {
+  override fun bind(holder: LevelHolder) {
     super.bind(holder)
     holder?.setData(level)
   }

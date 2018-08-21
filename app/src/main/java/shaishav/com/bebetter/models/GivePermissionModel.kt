@@ -16,20 +16,33 @@
 
 package shaishav.com.bebetter.models
 
+import android.view.View
+import androidx.databinding.DataBindingUtil
+import com.airbnb.epoxy.EpoxyAttribute
+import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import shaishav.com.bebetter.R
-import shaishav.com.bebetter.data.models.Summary
-import shaishav.com.bebetter.viewholder.SummaryHolder
+import shaishav.com.bebetter.databinding.ListItemGivePermissionBinding
 
-@EpoxyModelClass abstract class SummaryModel(val summary: Summary): EpoxyModelWithHolder<SummaryHolder>() {
+@EpoxyModelClass(layout = R.layout.list_item_give_permission)
+abstract class GivePermissionModel(): EpoxyModelWithHolder<GivePermissionHolder>()  {
 
-  override fun bind(holder: SummaryHolder) {
+@EpoxyAttribute lateinit var listener: () -> Unit
+
+  override fun bind(holder: GivePermissionHolder) {
     super.bind(holder)
-    holder.setData(summary)
+    holder.binding?.givePermission?.setOnClickListener {
+      listener()
+    }
+  }
+}
+
+class GivePermissionHolder: EpoxyHolder() {
+  var binding: ListItemGivePermissionBinding? = null
+
+  override fun bindView(itemView: View) {
+    binding = DataBindingUtil.bind(itemView)
   }
 
-  override fun getDefaultLayout(): Int {
-    return R.layout.list_item_summary
-  }
 }

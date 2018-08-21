@@ -21,4 +21,5 @@ package shaishav.com.bebetter.listener
 interface SummaryListener {
 
   fun onEditGoal()
+  fun onGivePermission()
 }

@@ -21,7 +21,6 @@ import com.airbnb.epoxy.EpoxyHolder
 
 class GoalAchievedHolder: EpoxyHolder() {
 
-  override fun bindView(itemView: View?) {
-
+  override fun bindView(itemView: View) {
   }
 }
