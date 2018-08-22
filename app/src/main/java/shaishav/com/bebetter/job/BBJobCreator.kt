@@ -26,6 +26,8 @@ class BBJobCreator(val goalRepository: GoalRepository): JobCreator {
     when (tag) {
       CreateGoalJob.TAG ->
         return CreateGoalJob(goalRepository)
+      RestartServiceJob.TAG ->
+        return RestartServiceJob()
     }
     return null
   }
