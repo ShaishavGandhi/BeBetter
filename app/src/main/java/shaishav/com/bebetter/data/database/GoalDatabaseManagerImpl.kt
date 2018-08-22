@@ -69,7 +69,7 @@ import javax.inject.Inject
     currentDate.set(Calendar.SECOND, 59)
     val higher = currentDate.timeInMillis
     return database.createQuery(GoalContract.TABLE_GOAL, "select * from ${GoalContract.TABLE_GOAL} where " +
-            " ${GoalContract.COLUMN_DATE} > $lower AND ${GoalContract.COLUMN_DATE} < $higher")
+            " ${GoalContract.COLUMN_DATE} > $lower AND ${GoalContract.COLUMN_DATE} < $higher LIMIT 1")
             .mapToOne { return@mapToOne GoalProvider.cursorToGoal(it) }
   }
 
