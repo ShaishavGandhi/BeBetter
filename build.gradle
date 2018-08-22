@@ -47,17 +47,17 @@ ext {
     dagger = "com.google.dagger:dagger:$daggerVersion"
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    rxJava = "io.reactivex.rxjava2:rxjava:2.1.5"
-    rxAndroid = "io.reactivex.rxjava2:rxandroid:2.0.1"
+    rxJava = "io.reactivex.rxjava2:rxjava:2.2.0"
+    rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.0"
     sqlbrite = "com.squareup.sqlbrite2:sqlbrite:2.0.0"
     rxPreferences = "com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3"
     rxBinding = "com.jakewharton.rxbinding2:rxbinding:2.0.0"
 
-    conductor = "com.bluelinelabs:conductor:2.1.4"
+    conductor = "com.bluelinelabs:conductor:2.1.5"
 
     epoxyVersion = "2.16.0"
     epoxy = "com.airbnb.android:epoxy:$epoxyVersion"
-    epoxyCompiler = "com.airbnb.android:epoxy-processor:2.8.0"
+    epoxyCompiler = "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
     timber = "com.jakewharton.timber:timber:4.6.0"
 
