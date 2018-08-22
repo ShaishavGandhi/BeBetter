@@ -53,7 +53,7 @@ class PointsDatabaseManagerImpl @Inject constructor(private val contentResolver:
     val higher = currentDate.timeInMillis
 
     return database.createQuery(PointContract.TABLE_POINTS, "select * from ${PointContract.TABLE_POINTS} where " +
-    " ${PointContract.COLUMN_DATE} > $lower AND ${PointContract.COLUMN_DATE} < $higher")
+    " ${PointContract.COLUMN_DATE} > $lower AND ${PointContract.COLUMN_DATE} < $higher LIMIT 1")
             .mapToOneOrDefault({ cursor ->
               return@mapToOneOrDefault PointsProvider.cursorToPoints(cursor)
             }, Point(id = 0, date = date, points = 0))

@@ -19,6 +19,7 @@ package shaishav.com.bebetter.job
 import android.content.Intent
 import android.os.Build
 import com.evernote.android.job.Job
+import com.evernote.android.job.JobManager
 import com.evernote.android.job.JobRequest
 import shaishav.com.bebetter.service.UsageService
 import java.util.concurrent.TimeUnit
@@ -29,11 +30,14 @@ class RestartServiceJob: Job() {
     const val TAG = "restart-service"
 
     fun scheduleJob() {
-      // Run job every 3 hours or so. Consider increasing this to 4/6 maybe.
-      JobRequest.Builder(CreateGoalJob.TAG)
-              .setPeriodic(TimeUnit.HOURS.toMillis(3))
-              .build()
-              .schedule()
+      if (JobManager.instance().getAllJobRequestsForTag(TAG).size < 1) {
+        // Run job every 3 hours or so. Consider increasing this to 4/6 maybe.
+        JobRequest.Builder(CreateGoalJob.TAG)
+                .setPeriodic(TimeUnit.HOURS.toMillis(3))
+                .setUpdateCurrent(true)
+                .build()
+                .schedule()
+      }
     }
   }
 

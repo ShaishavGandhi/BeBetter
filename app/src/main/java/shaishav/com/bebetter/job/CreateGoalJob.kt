@@ -18,6 +18,7 @@ package shaishav.com.bebetter.job
 
 import android.annotation.SuppressLint
 import com.evernote.android.job.Job
+import com.evernote.android.job.JobManager
 import com.evernote.android.job.JobRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -32,11 +33,14 @@ class CreateGoalJob(val goalRepository: GoalRepository): Job() {
     const val TAG = "create_goal-job"
 
     fun scheduleJob() {
-      // Run job every 2 hours or so. Consider increasing this to 4/6 maybe.
-      JobRequest.Builder(CreateGoalJob.TAG)
-              .setPeriodic(TimeUnit.HOURS.toMillis(2))
-              .build()
-              .schedule()
+      if (JobManager.instance().getAllJobRequestsForTag(TAG).size < 1) {
+        // Run job every 2 hours or so. Consider increasing this to 4/6 maybe.
+        JobRequest.Builder(CreateGoalJob.TAG)
+                .setPeriodic(TimeUnit.HOURS.toMillis(2))
+                .setUpdateCurrent(true)
+                .build()
+                .schedule()
+      }
     }
   }
 
