@@ -34,12 +34,13 @@ import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.presenter.PickGoalPresenter
 import javax.inject.Inject
 import shaishav.com.bebetter.extensions.getCenter
+import shaishav.com.bebetter.listener.ActivityInteractor
 import java.util.*
 
 /**
  * Created by shaishav.gandhi on 3/1/18.
  */
-class PickGoalController: Controller(), PickGoalContract {
+class PickGoalController: BaseController(), PickGoalContract {
 
   lateinit var rootView: View
   lateinit var nextButton: Button
@@ -138,6 +139,10 @@ class PickGoalController: Controller(), PickGoalContract {
                     .pushChangeHandler(HorizontalChangeHandler())
                     .popChangeHandler(HorizontalChangeHandler())
     )
+  }
+
+  override fun shouldShowBottomNav(): Boolean {
+    return false
   }
 
   override fun onDestroyView(view: View) {

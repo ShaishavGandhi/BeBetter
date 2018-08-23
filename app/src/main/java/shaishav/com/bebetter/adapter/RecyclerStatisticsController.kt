@@ -14,13 +14,28 @@
  *
  */
 
-package shaishav.com.bebetter.data.models
+package shaishav.com.bebetter.adapter
 
-import android.graphics.drawable.Drawable
+import com.airbnb.epoxy.EpoxyController
+import shaishav.com.bebetter.data.models.UsageStat
+import shaishav.com.bebetter.models.appInfo
 
-data class UsageStat(
-        val packageName: String,
-        val appName: CharSequence,
-        val icon: Drawable,
-        var usage: Long
- )
+class RecyclerStatisticsController: EpoxyController() {
+  var usageStats: List<UsageStat> = emptyList()
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
+  init {
+    setFilterDuplicates(true)
+  }
+
+  override fun buildModels() {
+    for (stat in usageStats) {
+      appInfo(stat) {
+        id(stat.packageName)
+      }
+    }
+  }
+}

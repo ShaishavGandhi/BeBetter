@@ -94,6 +94,7 @@ dependencies {
     implementation rootProject.rxJava
     implementation rootProject.rxAndroid
     implementation rootProject.conductor
+    implementation rootProject.conductorLifecycle
     kapt rootProject.daggerCompiler
     kapt 'androidx.databinding:databinding-compiler:3.2.0-beta05'
     kapt rootProject.bundlexCompiler

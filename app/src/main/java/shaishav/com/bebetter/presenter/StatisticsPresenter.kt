@@ -14,13 +14,20 @@
  *
  */
 
-package shaishav.com.bebetter.data.models
+package shaishav.com.bebetter.presenter
 
-import android.graphics.drawable.Drawable
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import shaishav.com.bebetter.data.models.UsageStat
+import shaishav.com.bebetter.data.repository.UsageRepository
+import javax.inject.Inject
 
-data class UsageStat(
-        val packageName: String,
-        val appName: CharSequence,
-        val icon: Drawable,
-        var usage: Long
- )
+class StatisticsPresenter @Inject constructor(
+        private val usageRepository: UsageRepository
+) {
+
+  fun usageStats(time: Long): Observable<List<UsageStat>> {
+    return usageRepository.usageStats(time)
+            .subscribeOn(Schedulers.io())
+  }
+}

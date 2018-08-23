@@ -32,12 +32,15 @@ import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.models.Summary
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.extensions.yesterday
+import shaishav.com.bebetter.listener.ActivityInteractor
 import shaishav.com.bebetter.presenter.SummaryPresenter
 import shaishav.com.bebetter.utils.ResourceManager
 import java.util.*
 import javax.inject.Inject
 
-class SummaryController(val date: Long): Controller(), SummaryContract {
+class SummaryController(
+        val date: Long
+): BaseController(), SummaryContract {
 
   constructor() : this(Calendar.getInstance().yesterday().timeInMillis)
 
@@ -85,6 +88,10 @@ class SummaryController(val date: Long): Controller(), SummaryContract {
 
   override fun setSummary(summary: Summary) {
     adapter.summary = summary
+  }
+
+  override fun shouldShowBottomNav(): Boolean {
+    return false
   }
 
   override fun setGoalAchieved() {

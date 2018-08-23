@@ -25,9 +25,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.bluelinelabs.conductor.*
 import shaishav.com.bebetter.R
-import shaishav.com.bebetter.controller.PickGoalController
-import shaishav.com.bebetter.controller.HomeController
-import shaishav.com.bebetter.controller.SummaryController
 import shaishav.com.bebetter.data.preferences.PreferenceDataStore
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.extensions.yesterday
@@ -40,19 +37,23 @@ import javax.inject.Inject
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Context.APP_OPS_SERVICE
+import android.view.View
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import shaishav.com.bebetter.controller.GivePermissionController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import shaishav.com.bebetter.controller.*
+import shaishav.com.bebetter.listener.ActivityInteractor
 import shaishav.com.bebetter.utils.PermissionUtils.hasUsageStatsPermission
 
 
 /**
  * Created by shaishav.gandhi on 3/3/18.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ActivityInteractor {
 
 
   private lateinit var router: Router
   private lateinit var toolbar: Toolbar
+  private lateinit var bottomNav: BottomNavigationView
   @Inject lateinit var preferenceDataStore: PreferenceDataStore
 
   private val rootController: Controller
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity() {
       (application as BBApplication).appComponent.inject(this)
     }
     toolbar = findViewById(R.id.toolbar)
+    bottomNav = findViewById(R.id.bottomNav)
     setSupportActionBar(toolbar)
 
     val container = findViewById<FrameLayout>(R.id.container_body)
@@ -90,6 +92,19 @@ class MainActivity : AppCompatActivity() {
     val rootController = rootController
     if (!router.hasRootController()) {
       router.setRoot(RouterTransaction.with(rootController))
+    }
+
+    bottomNav.setOnNavigationItemSelectedListener {
+      when(it.itemId) {
+        R.id.action_statistics -> {
+          router.setRoot(RouterTransaction.with(StatisticsController()))
+          return@setOnNavigationItemSelectedListener true
+        }
+        else -> {
+          router.setRoot(RouterTransaction.with(HomeController()))
+          return@setOnNavigationItemSelectedListener true
+        }
+      }
     }
   }
 
@@ -124,6 +139,14 @@ class MainActivity : AppCompatActivity() {
       supportActionBar?.setDisplayHomeAsUpEnabled(false)
       supportActionBar?.setDisplayShowHomeEnabled(false)
     }
+  }
+
+  override fun setToolbarTitle(resId: Int) {
+    supportActionBar?.setTitle(resId)
+  }
+
+  override fun showBottomNav(show: Boolean) {
+    bottomNav.visibility = if (show) View.VISIBLE else View.GONE
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

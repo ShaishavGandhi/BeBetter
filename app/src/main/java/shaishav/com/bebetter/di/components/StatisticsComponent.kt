@@ -14,13 +14,15 @@
  *
  */
 
-package shaishav.com.bebetter.data.models
+package shaishav.com.bebetter.di.components
 
-import android.graphics.drawable.Drawable
+import dagger.Subcomponent
+import shaishav.com.bebetter.controller.StatisticsController
+import shaishav.com.bebetter.di.scopes.ActivityScope
 
-data class UsageStat(
-        val packageName: String,
-        val appName: CharSequence,
-        val icon: Drawable,
-        var usage: Long
- )
+@Subcomponent
+@ActivityScope
+interface StatisticsComponent {
+
+  fun inject(controller: StatisticsController)
+}

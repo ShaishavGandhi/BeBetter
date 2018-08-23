@@ -18,10 +18,7 @@ package shaishav.com.bebetter.di
 import com.uber.autodispose.LifecycleScopeProvider
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.contracts.SummaryContract
-import shaishav.com.bebetter.di.components.PickGoalComponent
-import shaishav.com.bebetter.di.components.ServiceComponent
-import shaishav.com.bebetter.di.components.HomeComponent
-import shaishav.com.bebetter.di.components.SummaryComponent
+import shaishav.com.bebetter.di.components.*
 import shaishav.com.bebetter.di.modules.HomeModule
 
 /**
@@ -37,6 +34,9 @@ interface DependencyGraph {
 
   fun addSummaryComponent(view: SummaryContract, lifecycleScopeProvider: LifecycleScopeProvider<*>): SummaryComponent
   fun removeSummaryComponent()
+
+  fun addStatisticsComponent(): StatisticsComponent
+  fun removeStatisticsComponent()
 
   fun addServiceComponent(): ServiceComponent
   fun removeServiceComponent()

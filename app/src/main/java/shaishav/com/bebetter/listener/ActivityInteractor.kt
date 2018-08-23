@@ -14,13 +14,12 @@
  *
  */
 
-package shaishav.com.bebetter.data.models
+package shaishav.com.bebetter.listener
 
-import android.graphics.drawable.Drawable
+import androidx.annotation.StringRes
 
-data class UsageStat(
-        val packageName: String,
-        val appName: CharSequence,
-        val icon: Drawable,
-        var usage: Long
- )
+interface ActivityInteractor {
+
+  fun setToolbarTitle(@StringRes resId: Int)
+  fun showBottomNav(show: Boolean)
+}

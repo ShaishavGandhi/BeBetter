@@ -36,6 +36,7 @@ import shaishav.com.bebetter.contracts.HomeContract
 import shaishav.com.bebetter.data.models.*
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.di.modules.HomeModule
+import shaishav.com.bebetter.listener.ActivityInteractor
 import shaishav.com.bebetter.listener.SummaryListener
 import shaishav.com.bebetter.presenter.HomePresenter
 import shaishav.com.bebetter.utils.PermissionUtils
@@ -45,7 +46,7 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 12/24/17.
  */
-class HomeController : Controller(), HomeContract, SummaryListener {
+class HomeController: BaseController(), HomeContract, SummaryListener {
 
   lateinit var rootView: View
   lateinit var recyclerView: EpoxyRecyclerView
@@ -61,6 +62,7 @@ class HomeController : Controller(), HomeContract, SummaryListener {
   override fun onAttach(view: View) {
     super.onAttach(view)
     presenter?.refresh()
+    interactor?.setToolbarTitle(R.string.home)
     adapter?.permissionGiven = PermissionUtils.hasUsageStatsPermission(view.context)
   }
 
@@ -104,6 +106,10 @@ class HomeController : Controller(), HomeContract, SummaryListener {
   override fun onGivePermission() {
     val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
     startActivity(intent)
+  }
+
+  override fun shouldShowBottomNav(): Boolean {
+    return true
   }
 
   override fun setAverageDaiyUsage(usage: Long) {
