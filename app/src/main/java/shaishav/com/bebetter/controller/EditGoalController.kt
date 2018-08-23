@@ -30,6 +30,7 @@ import shaishav.com.bebetter.R
 import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.contracts.PickGoalContract
 import shaishav.com.bebetter.di.DependencyGraph
+import shaishav.com.bebetter.listener.ActivityInteractor
 import shaishav.com.bebetter.presenter.PickGoalPresenter
 import java.util.*
 import javax.inject.Inject
@@ -37,7 +38,7 @@ import javax.inject.Inject
 /**
  * Created by shaishav.gandhi on 3/19/18.
  */
-class EditGoalController: Controller(), PickGoalContract {
+class EditGoalController: BaseController(), PickGoalContract {
 
   lateinit var rootView: View
   lateinit var nextButton: Button
@@ -72,6 +73,10 @@ class EditGoalController: Controller(), PickGoalContract {
       calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1)
       presenter.saveGoal(calendar.timeInMillis, minutes.toInt())
     }
+  }
+
+  override fun shouldShowBottomNav(): Boolean {
+    return false
   }
 
   override fun permissionScreen() {

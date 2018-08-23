@@ -52,6 +52,7 @@ class BBApplication : Application(), DependencyGraph {
   private var serviceComponent: ServiceComponent? = null
   private var pickGoalComponent: PickGoalComponent? = null
   private var summaryComponent: SummaryComponent? = null
+  private var statisticsComponent: StatisticsComponent? = null
 
   @Inject lateinit var goalRepository: GoalRepository
 
@@ -134,5 +135,16 @@ class BBApplication : Application(), DependencyGraph {
 
   override fun removeSummaryComponent() {
     summaryComponent = null
+  }
+
+  override fun addStatisticsComponent(): StatisticsComponent {
+    if (statisticsComponent == null) {
+      statisticsComponent = appComponent.addStatisticsComponent()
+    }
+    return statisticsComponent!!
+  }
+
+  override fun removeStatisticsComponent() {
+    statisticsComponent = null
   }
 }

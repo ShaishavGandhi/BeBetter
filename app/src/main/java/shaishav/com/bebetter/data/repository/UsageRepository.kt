@@ -17,6 +17,7 @@ package shaishav.com.bebetter.data.repository
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
+import android.content.pm.PackageManager
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -36,6 +37,7 @@ import javax.inject.Inject
 class UsageRepository @Inject constructor(
         private val databaseManager: UsageDatabaseManager,
         private val usageStatsManager: UsageStatsManager,
+        private val packageManager: PackageManager,
         private val preferenceStore: PreferenceDataStore) {
 
   fun usages(): Observable<List<Usage>> {
@@ -55,6 +57,20 @@ class UsageRepository @Inject constructor(
   /**
    * Gets usage for the current day.
    *
+   * @param time the time since epoch of the day you want usage of. Defaults to current day.
+   * @return usage for current day.
+   */
+  fun rawDailyUsage(time: Long = System.currentTimeMillis()): Long {
+    return rawUsageStats(time)
+            .map { entry ->
+              Timber.d("${entry.packageName} with time ${entry.usage.toFormattedTime()}")
+              entry.usage
+            }.sum()
+  }
+
+  /**
+   * Get usage stats for the given [time].
+   *
    * We go through all the Events that are recorded by the phone and
    * look for foreground and background events. These are important since
    * the delta actually tells us the amount of time it's been used.
@@ -64,39 +80,65 @@ class UsageRepository @Inject constructor(
    * @param time the time since epoch of the day you want usage of. Defaults to current day.
    * @return usage for current day.
    */
-  fun rawDailyUsage(time: Long = System.currentTimeMillis()): Long {
+  private fun rawUsageStats(time: Long): List<UsageStat> {
+    // Map of installed packages.
+    val installedPackages = packageManager.getInstalledApplications(0)
+            .map { it.packageName to it }
+            .toMap()
+
+    // Set lower boundary. I.e 12am of the given date.
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = time
     calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.MINUTE, 0)
 
     Timber.d("Querying with ${calendar.timeInMillis} and $time")
+    // Get all usage events.
     val events = usageStatsManager.queryEvents(calendar.timeInMillis, System.currentTimeMillis())
-    val map = HashMap<String, UsageStat>()
 
+    val usageStatMap = HashMap<String, UsageStat>()
     var start = 0L
     while (events.hasNextEvent()) {
+      // Load the event
       val event = UsageEvents.Event()
       events.getNextEvent(event)
+
+      // Skip for the launcher
       if (event.timeStamp <= calendar.timeInMillis || event.packageName.contains("launcher")) {
         continue
       }
+
+      // App has moved to foreground. Record timestamp.
       if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
         start = event.timeStamp
       }
+
+      // App has moved to background.
       if (event.eventType == UsageEvents.Event.MOVE_TO_BACKGROUND) {
+        // Let's calculate delta.
         val time = event.timeStamp - start
-        val usageStat = map.getOrElse(event.packageName) { UsageStat(event.packageName, 0) }
+
+        val appInfo = installedPackages[event.packageName]
+        // Get app name
+        val appName = packageManager.getApplicationLabel(appInfo)
+        // Get app icon
+        val icon = packageManager.getApplicationIcon(appInfo)
+        // Construct usage stat.
+        val usageStat = usageStatMap.getOrElse(event.packageName) { UsageStat(event.packageName, appName, icon, 0) }
+        // Increment time
         usageStat.usage = usageStat.usage + time
-        map[event.packageName] = usageStat
+        usageStatMap[event.packageName] = usageStat
       }
     }
-    return map.values
+    return usageStatMap
+            .values
             .sortedByDescending { it.usage }
-            .map { entry ->
-              Timber.d("${entry.packageName} with time ${entry.usage.toFormattedTime()}")
-              entry.usage
-            }.sum()
+  }
+
+  fun usageStats(time: Long): Observable<List<UsageStat>> {
+    return Observable.fromCallable {
+      return@fromCallable rawUsageStats(time)
+    }
   }
 
   fun averageDailyUsage(): Observable<Long> {

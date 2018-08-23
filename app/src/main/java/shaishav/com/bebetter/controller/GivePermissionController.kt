@@ -31,9 +31,10 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import shaishav.com.bebetter.R
+import shaishav.com.bebetter.listener.ActivityInteractor
 import shaishav.com.bebetter.utils.PermissionUtils.hasUsageStatsPermission
 
-class GivePermissionController: Controller() {
+class GivePermissionController: BaseController() {
 
   lateinit var rootView: View
   lateinit var nextButton: Button
@@ -72,5 +73,9 @@ class GivePermissionController: Controller() {
   private fun initViews() {
     nextButton = rootView.findViewById(R.id.nextButton)
     givePermissionButton = rootView.findViewById(R.id.givePermission)
+  }
+
+  override fun shouldShowBottomNav(): Boolean {
+    return false
   }
 }

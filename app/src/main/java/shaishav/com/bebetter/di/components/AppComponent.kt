@@ -25,7 +25,8 @@ import shaishav.com.bebetter.utils.BBApplication
 /**
  * Created by shaishav.gandhi on 12/17/17.
  */
-@ApplicationScope @Component(modules = [(AppModule::class), (DatabaseModule::class), (UtilsModule::class)])
+@ApplicationScope
+@Component(modules = [(AppModule::class), (DatabaseModule::class), (UtilsModule::class)])
 interface AppComponent {
 
   fun getApplication(): Application
@@ -33,6 +34,7 @@ interface AppComponent {
   fun addServiceComponent(): ServiceComponent
   fun addPickGoalComponent(module: PickGoalModule): PickGoalComponent
   fun addSummaryComponent(module: SummaryModule): SummaryComponent
+  fun addStatisticsComponent(): StatisticsComponent
 
   fun inject(activity: MainActivity)
   fun inject(application: BBApplication)
