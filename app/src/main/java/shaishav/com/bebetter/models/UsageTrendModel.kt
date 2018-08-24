@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import shaishav.com.bebetter.extensions.toFormattedTime
 import shaishav.com.bebetter.utils.Constants
 import kotlin.collections.ArrayList
@@ -93,14 +94,8 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
         labels.add(Constants.getFormattedDate(Date(goal.date)))
       }
 
-      chart.xAxis.setValueFormatter { value, _ ->
-        if (value.toInt() < labels.size) {
-          return@setValueFormatter labels[value.toInt()]
-        }
-        return@setValueFormatter ""
-      }
+      chart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
       chart.description.isEnabled = false
-      chart.xAxis.labelCount = labels.size
 
       val usageDataSet: LineDataSet
       // create a dataset and give it a type
@@ -135,10 +130,6 @@ abstract class UsageTrendModel(val usages: List<Usage>, val goals: List<Goal>) :
         return@setValueFormatter value.toLong().toFormattedTime()
       }
       goalDataSet.isHighlightEnabled = false
-
-      chart.xAxis.apply {
-        setLabelCount(Math.max(goals.size, usages.size), true)
-      }
 
       val dataSets = ArrayList<ILineDataSet>()
       dataSets.add(usageDataSet) // add the datasets
