@@ -25,6 +25,11 @@ import shaishav.com.bebetter.data.repository.UsageRepository
 import shaishav.com.bebetter.extensions.toFormattedTime
 import shaishav.com.bebetter.utils.BBApplication
 import javax.inject.Inject
+import android.app.PendingIntent
+import androidx.core.view.accessibility.AccessibilityEventCompat.setAction
+import android.content.Intent
+import shaishav.com.bebetter.activities.MainActivity
+
 
 class DailyUsageWidget : AppWidgetProvider() {
 
@@ -54,6 +59,11 @@ class DailyUsageWidget : AppWidgetProvider() {
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.daily_usage)
     views.setTextViewText(R.id.usage, usage)
+
+    val intent = Intent(context, MainActivity::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+    views.setOnClickPendingIntent(R.id.root, pendingIntent)
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
