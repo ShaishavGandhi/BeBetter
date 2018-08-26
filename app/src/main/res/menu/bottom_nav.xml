@@ -22,6 +22,6 @@
           android:icon="@drawable/ic_baseline_home" />
     <item android:id="@+id/action_statistics"
           android:title="@string/statistics"
-          android:icon="@drawable/ic_baseline_bar_chart" />
+          android:icon="@drawable/ic_graph" />
 
 </menu>
