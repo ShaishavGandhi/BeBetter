@@ -16,7 +16,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.60'
+    ext.kotlin_version = '1.2.61'
     ext.gradle_plugin = "3.2.0-beta05"
     repositories {
         jcenter()
@@ -57,7 +57,7 @@ ext {
     conductor = "com.bluelinelabs:conductor:$conductorVersion"
     conductorLifecycle = "com.bluelinelabs:conductor-archlifecycle:$conductorVersion"
 
-    epoxyVersion = "2.16.0"
+    epoxyVersion = "2.16.4"
     epoxy = "com.airbnb.android:epoxy:$epoxyVersion"
     epoxyCompiler = "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
@@ -66,7 +66,6 @@ ext {
     ticker = "com.robinhood.ticker:ticker:1.2.2"
     spark = "com.robinhood.spark:spark:1.2.0"
 
-    supportVersion = "26.1.0"
     appCompat = "androidx.appcompat:appcompat:1.0.0-rc01"
     design = "com.google.android.material:material:1.0.0-rc01"
     v4 = "androidx.legacy:legacy-support-v4:1.0.0-rc01"
