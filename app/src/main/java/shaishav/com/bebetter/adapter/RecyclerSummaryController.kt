@@ -17,10 +17,10 @@
 package shaishav.com.bebetter.adapter
 
 import com.airbnb.epoxy.EpoxyController
+import shaishav.com.bebetter.R
 import shaishav.com.bebetter.data.models.Summary
-import shaishav.com.bebetter.models.AverageUsageModel_
-import shaishav.com.bebetter.models.GoalAchievedModel_
-import shaishav.com.bebetter.models.SummaryModel_
+import shaishav.com.bebetter.data.models.UsageStat
+import shaishav.com.bebetter.models.*
 import shaishav.com.bebetter.utils.ResourceManager
 
 class RecyclerSummaryController(private val resourceManager: ResourceManager): EpoxyController() {
@@ -55,10 +55,17 @@ class RecyclerSummaryController(private val resourceManager: ResourceManager): E
     requestModelBuild()
   }
 
+  var mostUsedApps: List<UsageStat> = emptyList()
+  set(value) {
+    field = value
+    requestModelBuild()
+  }
+
   override fun buildModels() {
     addGoalAchievedModel()
     addSummaryModel()
     addAverageUsageModel()
+    addMostUsedApps()
   }
 
   private fun addGoalAchievedModel() {
@@ -85,4 +92,18 @@ class RecyclerSummaryController(private val resourceManager: ResourceManager): E
       }
     }
   }
+
+  private fun addMostUsedApps() {
+    if (mostUsedApps.isNotEmpty()) {
+      header(R.string.most_used_apps) {
+        id("most_used_apps_header")
+      }
+      for (app in mostUsedApps) {
+        appInfo(app) {
+          id(app.packageName)
+        }
+      }
+    }
+  }
+
 }

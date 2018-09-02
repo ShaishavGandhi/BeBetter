@@ -15,6 +15,7 @@
 package shaishav.com.bebetter.contracts
 
 import shaishav.com.bebetter.data.models.Summary
+import shaishav.com.bebetter.data.models.UsageStat
 
 interface SummaryContract {
   fun setSummary(summary: Summary)
@@ -22,4 +23,5 @@ interface SummaryContract {
   fun setAverageUsage(averageUsage: Long)
   fun setAveragePoints(averagePoints: Int)
   fun setStreak(streak: Long)
+  fun setMostUsedApps(it: List<UsageStat>)
 }

@@ -17,16 +17,13 @@ package shaishav.com.bebetter.presenter
 import com.uber.autodispose.LifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.repository.PointsRepository
 import shaishav.com.bebetter.data.repository.StreakRepository
 import shaishav.com.bebetter.data.repository.SummaryRepository
 import shaishav.com.bebetter.data.repository.UsageRepository
-import shaishav.com.bebetter.extensions.yesterday
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 class SummaryPresenter @Inject constructor(
@@ -51,6 +48,7 @@ class SummaryPresenter @Inject constructor(
             }, { error ->
               Timber.e(error)
             })
+    mostUsedApps(date)
   }
 
   fun averageUsage() {
@@ -87,7 +85,20 @@ class SummaryPresenter @Inject constructor(
             }, { error ->
               Timber.e(error)
             })
+  }
 
+  fun mostUsedApps(date: Long) {
+    usageRepository
+            .usageStats(date)
+            .subscribeOn(Schedulers.io())
+            .map { it.subList(0, Math.min(5, it.size)) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(lifecycleScopeProvider)
+            .subscribe({
+              view?.setMostUsedApps(it)
+            }, {
+              Timber.e(it)
+            })
   }
 
   fun detach() {

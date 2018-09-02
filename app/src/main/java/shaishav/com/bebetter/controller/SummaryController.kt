@@ -30,6 +30,7 @@ import shaishav.com.bebetter.activities.MainActivity
 import shaishav.com.bebetter.adapter.RecyclerSummaryController
 import shaishav.com.bebetter.contracts.SummaryContract
 import shaishav.com.bebetter.data.models.Summary
+import shaishav.com.bebetter.data.models.UsageStat
 import shaishav.com.bebetter.di.DependencyGraph
 import shaishav.com.bebetter.extensions.yesterday
 import shaishav.com.bebetter.listener.ActivityInteractor
@@ -112,6 +113,10 @@ class SummaryController(
 
   override fun setAveragePoints(averagePoints: Int) {
     adapter.averagePoints = averagePoints
+  }
+
+  override fun setMostUsedApps(apps: List<UsageStat>) {
+    adapter.mostUsedApps = apps
   }
 
 }
