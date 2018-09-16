@@ -96,7 +96,6 @@ dependencies {
     implementation rootProject.conductor
     implementation rootProject.conductorLifecycle
     kapt rootProject.daggerCompiler
-    kapt 'androidx.databinding:databinding-compiler:3.2.0-beta05'
     kapt rootProject.bundlexCompiler
     compileOnly rootProject.navigatorAnnotations
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
