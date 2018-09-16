@@ -66,6 +66,8 @@ class SummaryPresenterUTest {
   @Test fun testStartReturns() {
     val time = Calendar.getInstance().yesterday().timeInMillis
 
+    whenever(usageRepository.usageStats(time)).thenReturn(Observable.just(emptyList()))
+
     val goal = Goal(id = 0, goal = 120 * 60 * 1000, date = time)
     val points = Point(id = 0, points = 120, date = time)
     val usage = Usage(id = 0, usage = 110 * 60 * 1000, date = time)
@@ -80,6 +82,8 @@ class SummaryPresenterUTest {
 
   @Test fun testStartDoesntHitGoal() {
     val time = Calendar.getInstance().yesterday().timeInMillis
+
+    whenever(usageRepository.usageStats(time)).thenReturn(Observable.just(emptyList()))
 
     val goal = Goal(id = 0, goal = 120 * 60 * 1000, date = time)
     val points = Point(id = 0, points = 120, date = time)
