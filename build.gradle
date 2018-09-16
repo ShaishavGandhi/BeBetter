@@ -17,7 +17,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.61'
-    ext.gradle_plugin = "3.2.0-beta05"
+    ext.gradle_plugin = "3.2.0-rc03"
     repositories {
         jcenter()
         maven {

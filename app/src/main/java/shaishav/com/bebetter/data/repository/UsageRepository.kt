@@ -119,15 +119,17 @@ class UsageRepository @Inject constructor(
         val time = event.timeStamp - start
 
         val appInfo = installedPackages[event.packageName]
-        // Get app name
-        val appName = packageManager.getApplicationLabel(appInfo)
-        // Get app icon
-        val icon = packageManager.getApplicationIcon(appInfo)
-        // Construct usage stat.
-        val usageStat = usageStatMap.getOrElse(event.packageName) { UsageStat(event.packageName, appName, icon, 0) }
-        // Increment time
-        usageStat.usage = usageStat.usage + time
-        usageStatMap[event.packageName] = usageStat
+        appInfo?.let {
+          // Get app name
+          val appName = packageManager.getApplicationLabel(appInfo)
+          // Get app icon
+          val icon = packageManager.getApplicationIcon(appInfo)
+          // Construct usage stat.
+          val usageStat = usageStatMap.getOrElse(event.packageName) { UsageStat(event.packageName, appName, icon, 0) }
+          // Increment time
+          usageStat.usage = usageStat.usage + time
+          usageStatMap[event.packageName] = usageStat
+        }
       }
     }
     return usageStatMap
