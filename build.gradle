@@ -72,7 +72,7 @@ ext {
     confetti = "com.github.jinatonic.confetti:confetti:1.1.1"
     conductorAutodispose = "com.bluelinelabs:conductor-autodispose:$conductorVersion"
     autodispose = "com.uber.autodispose:autodispose-kotlin:0.8.0"
-    navigatorAnnotations = "com.shaishavgandhi.navigator:navigator-annotations:0.3.1"
+    navigatorAnnotations = "com.shaishavgandhi.navigator:navigator-annotations:0.5.0"
     bundlexCompiler = "com.shaishavgandhi:bundlex-compiler:0.1.0"
     mpAndroid = "com.github.PhilJay:MPAndroidChart:v3.0.3"
     androidjob = "com.evernote:android-job:1.2.6"
