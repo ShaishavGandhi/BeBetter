@@ -53,7 +53,7 @@ ext {
     conductor = "com.bluelinelabs:conductor:$conductorVersion"
     conductorLifecycle = "com.bluelinelabs:conductor-archlifecycle:$conductorVersion"
 
-    epoxyVersion = "2.16.4"
+    epoxyVersion = "2.18.0"
     epoxy = "com.airbnb.android:epoxy:$epoxyVersion"
     epoxyCompiler = "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
