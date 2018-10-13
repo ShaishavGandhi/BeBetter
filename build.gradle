@@ -16,14 +16,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.61'
-    ext.gradle_plugin = "3.2.0-rc03"
+    ext.kotlin_version = '1.2.71'
+    ext.gradle_plugin = "3.2.0"
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
         maven { url 'https://maven.fabric.io/public' }
         google()
     }
@@ -57,7 +53,7 @@ ext {
     conductor = "com.bluelinelabs:conductor:$conductorVersion"
     conductorLifecycle = "com.bluelinelabs:conductor-archlifecycle:$conductorVersion"
 
-    epoxyVersion = "2.16.4"
+    epoxyVersion = "2.18.0"
     epoxy = "com.airbnb.android:epoxy:$epoxyVersion"
     epoxyCompiler = "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
@@ -76,7 +72,7 @@ ext {
     confetti = "com.github.jinatonic.confetti:confetti:1.1.1"
     conductorAutodispose = "com.bluelinelabs:conductor-autodispose:$conductorVersion"
     autodispose = "com.uber.autodispose:autodispose-kotlin:0.8.0"
-    navigatorAnnotations = "com.shaishavgandhi.navigator:navigator-annotations:0.3.1"
+    navigatorAnnotations = "com.shaishavgandhi.navigator:navigator-annotations:0.5.0"
     bundlexCompiler = "com.shaishavgandhi:bundlex-compiler:0.1.0"
     mpAndroid = "com.github.PhilJay:MPAndroidChart:v3.0.3"
     androidjob = "com.evernote:android-job:1.2.6"
